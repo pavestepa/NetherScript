@@ -1,0 +1,18 @@
+[package]
+name = "netherscript"
+version = "0.0.1"
+edition = "2021"
+
+[[bin]]
+doc = false
+name = "netherscript"
+
+[build-dependencies]
+cfgrammar = "0.13"
+lrlex = "0.13.1"
+lrpar = "0.13.1"
+
+[dependencies]
+cfgrammar = "0.13"
+lrlex = "0.13.1"
+lrpar = "0.13.1"
