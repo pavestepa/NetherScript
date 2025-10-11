@@ -7,12 +7,8 @@ edition = "2021"
 doc = false
 name = "netherscript"
 
-[build-dependencies]
-cfgrammar = "0.13"
-lrlex = "0.13.1"
-lrpar = "0.13.1"
-
 [dependencies]
-cfgrammar = "0.13"
-lrlex = "0.13.1"
-lrpar = "0.13.1"
+swc_ecma_parser = "=24.0.3"
+swc_common = "14.0.4"
+swc_ecma_ast = "15.0.0"
+readonly = "0.2.13"

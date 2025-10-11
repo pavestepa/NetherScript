@@ -1,28 +1,26 @@
-use std::env;
+use swc_common::{Globals, GLOBALS};
 
-use lrlex::lrlex_mod;
-use lrpar::lrpar_mod;
+use crate::ast::generate_ast::generate_ast;
 
-lrlex_mod!("netherscript.l"); // brings the lexer for `coconut.l` into scope.
-lrpar_mod!("netherscript.y"); // brings the Parser for `coconut.y` into scope.
-
+mod ast;
+mod er;
+mod ir;
+mod middle_end;
 fn main() {
-    let args: Vec<String> = env::args().collect();
-    if args.len() > 1 {
-        let input = &args[1]; // Create a lexer
-        let lexer_def = netherscript_l::lexerdef(); // Lex the input.
-        let lexer = lexer_def.lexer(&input);
-        let (res, errs) = netherscript_y::parse(&lexer); // Parse the input.
-        // Check for errors
-        for e in errs {
-            println!("{}", e.pp(&lexer, &netherscript_y::token_epp));
+    // Путь к TypeScript-файлу, который нужно распарсить
+    let path = "./from/main.ts";
+    let (module, handler) = generate_ast(path);
+
+    // Обрабатываем результат
+    GLOBALS.set(&Globals::new(), || {
+        match module {
+            Ok(m) => {
+                println!("{:#?}", m);
+            }
+            Err(err) => {
+                err.into_diagnostic(&handler).emit();
+            }
         }
-        // Print results
-        match res {
-            Some(Ok(r)) => println!("{:?}", r),
-            _ => eprintln!("Unable to evaluate expression."),
-        }
-    } else {
-        println!("Please provide at least one cli argument!")
-    }
+    });
+
 }
