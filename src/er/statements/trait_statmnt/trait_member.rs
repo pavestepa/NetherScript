@@ -1,8 +1,11 @@
-use crate::er::{statements::{fn_statmnt::FnArg, trait_statmnt::trait_default_impl::TraitDefaultImpl}, types::HasType};
+use crate::er::{
+    statements::{fn_statmnt::FnStatmntArg, FnStatmntExpr},
+    types::HasType,
+};
 
 pub struct TraitMember {
-  name: String,
-  args: Vec<FnArg>,
-  return_type: HasType,
-  default_impl: Option<TraitDefaultImpl>
+    name: String,
+    args: Vec<FnStatmntArg>,
+    return_type: HasType,
+    default_impl: Option<Vec<FnStatmntExpr>>,
 }

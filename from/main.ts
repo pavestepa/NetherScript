@@ -1,7 +1,3 @@
-import { foo } from "./foo";
+let a = 23;
 
-function main() {
-  let [a] = ["s"];
-
-  foo([a]);
-}
+console.log(a);

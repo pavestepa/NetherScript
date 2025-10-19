@@ -1,10 +1,13 @@
-use crate::er::{statements::fn_statmnt::{FnArg, FnExpr}, types::HasType};
+use crate::er::{
+    statements::fn_statmnt::{FnStatmntArg, FnStatmntExpr},
+    types::HasType,
+};
 
 pub struct ClassMethod {
-  pub is_pub: bool,
-  pub is_static: bool,
-  pub name: String,
-  pub args: Vec<FnArg>,
-  pub return_type: HasType,
-  pub body: Vec<FnExpr>
+    pub is_pub: bool,
+    pub is_static: bool,
+    pub name: String,
+    pub args: Vec<FnStatmntArg>,
+    pub return_type: HasType,
+    pub body: Vec<FnStatmntExpr>,
 }

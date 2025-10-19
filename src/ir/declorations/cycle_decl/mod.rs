@@ -1,9 +1,6 @@
-use swc_ecma_ast::FnExpr;
-
-use crate::ir::condition_decl::Condition;
-
+use crate::ir::{condition_decl::Condition, FnCallExpr};
 
 pub struct CycleDecl {
-  pub condition: Condition,
-  pub body: FnExpr
+    pub condition: Condition,
+    pub body: FnCallExpr,
 }
