@@ -8,7 +8,3 @@ doc = false
 name = "netherscript"
 
 [dependencies]
-swc_ecma_parser = "=24.0.3"
-swc_common = "14.0.4"
-swc_ecma_ast = "15.0.0"
-readonly = "0.2.13"
