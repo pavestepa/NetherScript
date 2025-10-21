@@ -1,5 +1,5 @@
 use crate::{
-    er::decloration::{condition_decl::ConditionDecl, VarDecl},
+    ast::decloration::{condition_decl::ConditionDecl, VarDecl},
     ir::cycle_decl::CycleDecl,
 };
 

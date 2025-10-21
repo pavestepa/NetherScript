@@ -1,4 +1,4 @@
-use crate::er::{expressions::Expr, operators::LogicalOperator};
+use crate::ast::{expressions::Expr, operators::LogicalOperator};
 
 pub struct Condition {
     pub left: ConditionExpr,

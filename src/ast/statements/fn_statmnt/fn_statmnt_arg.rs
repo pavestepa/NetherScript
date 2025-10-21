@@ -1,4 +1,4 @@
-use crate::er::types::HasType;
+use crate::ast::types::HasType;
 
 pub struct FnStatmntArg {
     pub name: String,
