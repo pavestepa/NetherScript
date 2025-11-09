@@ -1,7 +1,11 @@
-pub mod assign;
-pub mod decloration;
-pub mod expressions;
-pub mod module;
+mod module;
+pub use module::Module;
+pub mod decl;
+mod expr;
+pub use expr::Expr;
+pub use expr::Property;
 pub mod operators;
-pub mod statements;
-pub mod types;
+pub mod stmt;
+pub use stmt::Stmt;
+mod typ;
+pub use typ::Typ;

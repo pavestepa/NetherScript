@@ -1,5 +1,16 @@
-use crate::ast::statements::Statmnt;
+use crate::ast::decl::Decl;
 
-pub struct ERModule {
-    pub statmnts: Vec<Statmnt>,
+#[derive(Debug)]
+pub struct Module {
+    decls: Vec<Decl>,
+}
+
+impl Module {
+    pub fn new(decls: Vec<Decl>) -> Self {
+        Self { decls }
+    }
+    
+    pub fn decls(&self) -> &[Decl] {
+        &self.decls
+    }
 }

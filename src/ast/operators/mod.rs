@@ -1,6 +1,4 @@
-mod arithmetic_operator; pub use arithmetic_operator::ArithmeticOperator;
-mod logical_operator; pub use logical_operator::LogicalOperator;
-pub enum Operator {
-  ArithmeticOperator(ArithmeticOperator),
-  LogicalOperator(LogicalOperator)
-}
+mod binary_operator;
+pub use binary_operator::BinaryOperator;
+mod logic_operator;
+pub use logic_operator::LogicOperator;

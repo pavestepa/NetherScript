@@ -1,4 +1,4 @@
-use crate::lexer::{Atom, Keyword};
+use crate::{lexer::Keyword, Atom};
 
 #[derive(Debug, Clone, PartialEq)]
 pub enum Token {
