@@ -1,4 +1,4 @@
-use crate::{ast::Stmt, lexer::{Keyword, Token}};
+use crate::{Atom, ast::{Expr, Stmt, stmt::VarKind}, lexer::{Keyword, Token}};
 
 use super::parser::Parser;
 
@@ -7,11 +7,11 @@ impl Parser {
     match self.peek() {
         Some(Token::Keyword(Keyword::Let)) => {
             self.advance();
-            self.parse_var_declaration(VarKind::Let)
+            self.parse_var_stmt(VarKind::Let)
         }
         Some(Token::Keyword(Keyword::Const)) => {
             self.advance();
-            self.parse_var_declaration(VarKind::Const)
+            self.parse_var_stmt(VarKind::Const)
         }
         Some(Token::Keyword(Keyword::Return)) => {
             self.advance();
@@ -33,7 +33,7 @@ impl Parser {
         }
     }
 }
-  fn parse_stmt_block(&mut self) -> Result<Vec<Stmt>, String> {
+  pub fn parse_stmt_block(&mut self) -> Result<Vec<Stmt>, String> {
     let mut statements = Vec::new();
 
     while !self.check(&Token::RightBrace) && !self.is_at_end() {
@@ -48,4 +48,21 @@ impl Parser {
 
     Ok(statements)
 }
+fn parse_var_stmt(&mut self, kind: VarKind) -> Result<Stmt, String> {
+        let name = match self.advance() {
+            Some(Token::Ident(name)) => name,
+            other => return Err(format!("Expected variable name, found {:?}", other)),
+        };
+
+        let init = if self.check(&Token::Assign) {
+            self.advance(); // consume "="
+            Some(self.parse_expression()?)
+        } else {
+            None
+        };
+
+        self.expect(Token::Semicolon)?;
+
+        Ok(Stmt::VarDecl { kind, name, init })
+    }
 }

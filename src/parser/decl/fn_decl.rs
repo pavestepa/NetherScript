@@ -1,16 +1,16 @@
-use crate::ast::stmt::ArgStmt;
+use crate::ast::decl::FnArg;
 use crate::ast::{decl::Decl, decl::FnDecl, Typ};
 use crate::lexer::Token;
 use super::Parser;
 
 impl Parser {
-    pub fn parse_function_decl(&mut self, is_pub: bool) -> Result<Decl, String> {
+    pub fn parse_fn_decl(&mut self, is_pub: bool) -> Result<Decl, String> {
         let name = match self.advance() {
             Some(Token::Ident(n)) => n,
             _ => return Err("Expected function name".into()),
         };
 
-        self.expect(Token::LeftParen)?;
+        self.expect(Token::LeftParen);
         let args = self.parse_parameter_list()?;
         self.expect(Token::RightParen)?;
 
@@ -25,7 +25,7 @@ impl Parser {
         };
 
         self.expect(Token::LeftBrace)?;
-        let body = self.parse_block()?;
+        let body = self.parse_stmt_block()?;
         self.expect(Token::RightBrace)?;
 
         Ok(Decl::FnDecl(FnDecl::new(
@@ -33,7 +33,7 @@ impl Parser {
         )))
     }
 
-    fn parse_parameter_list(&mut self) -> Result<Vec<ArgStmt>, String> {
+    fn parse_parameter_list(&mut self) -> Result<Vec<FnArg>, String> {
         let mut params = Vec::new();
 
         if !self.check(&Token::RightParen) {
@@ -54,7 +54,7 @@ impl Parser {
                     Typ::Void // Default type if not specified
                 };
 
-                params.push(ArgStmt::new(ident, type_kind));
+                params.push(FnArg::new(ident, type_kind));
 
                 if !self.check(&Token::Comma) {
                     break;

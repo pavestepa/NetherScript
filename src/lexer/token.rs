@@ -12,6 +12,9 @@ pub enum Token {
     // "function", "let", "class" e.t.c
     Keyword(Keyword),
 
+    // &T, &mut T, T
+    Type(Atom),
+
     // Operators
     Assign,             // "="
     Plus,               // "+"

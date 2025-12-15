@@ -25,7 +25,7 @@ impl Parser {
     }
 
     pub fn parse_decl(&mut self) -> Result<Decl, String> {
-        let is_public = if self.check_keyword(Keyword::Public) {
+        let is_pub = if self.check_keyword(Keyword::Public) {
             self.advance();
             true
         } else {
@@ -35,11 +35,11 @@ impl Parser {
         match self.peek() {
             Some(Token::Keyword(Keyword::Function)) => {
                 self.advance();
-                self.parse_function_decl(is_public)
+                self.parse_fn_decl(is_pub)
             }
             Some(Token::Keyword(Keyword::Class)) => {
                 self.advance();
-                self.parse_class_decl(is_public)
+                self.parse_class_decl(is_pub)
             }
             Some(Token::Keyword(Keyword::Const)) => {
                 self.advance();
