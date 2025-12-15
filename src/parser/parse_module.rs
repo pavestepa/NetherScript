@@ -298,7 +298,7 @@ impl Parser {
     }
 
     /// Parse a block of statements
-    fn parse_block(&mut self) -> Result<Vec<Stmt>, String> {
+    fn parse_stmt_block(&mut self) -> Result<Vec<Stmt>, String> {
         let mut statements = Vec::new();
 
         while !self.check(&Token::RightBrace) && !self.is_at_end() {

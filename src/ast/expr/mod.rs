@@ -1,24 +1,20 @@
-use crate::{Atom, ast::operators::BinaryOperator};
+mod binary_expr;
+mod class_construct_expr;
+mod call_fn_expr;
+mod logical_expr;
+
+use crate::{Atom, ast::expr::{call_fn_expr::CallFnExpr, class_construct_expr::ClassConstructExpr}};
+use binary_expr::BinaryExpr;
+use logical_expr::LogicalExpr;
 
 #[derive(Debug)]
 pub enum Expr {
     NumberLiteral(Atom),
     StringLiteral(Atom),
-    Identifier(Atom),
-    ObjectLiteral(Vec<Property>),
-    Binary {
-        left: Box<Expr>,
-        op: BinaryOperator,
-        right: Box<Expr>,
-    },
-    Call {
-        callee: Box<Expr>,
-        args: Vec<Expr>,
-    },
-    Member {
-        object: Box<Expr>,
-        properties: Option<Vec<Expr>>,
-    },
+    Logical(LogicalExpr),
+    Binary(BinaryExpr),
+    CallFn(CallFnExpr),
+    ClassConstruct(ClassConstructExpr)
 }
 
 #[derive(Debug)]

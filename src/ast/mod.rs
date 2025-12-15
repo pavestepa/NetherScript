@@ -4,7 +4,6 @@ pub mod decl;
 mod expr;
 pub use expr::Expr;
 pub use expr::Property;
-pub mod operators;
 pub mod stmt;
 pub use stmt::Stmt;
 mod typ;
