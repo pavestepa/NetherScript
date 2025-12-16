@@ -1,5 +1,4 @@
 use crate::lexer::{Token, Keyword};
-use crate::ast::Module;
 
 pub struct Parser {
     pub tokens: Vec<Token>,

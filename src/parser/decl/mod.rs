@@ -1,5 +1,3 @@
-use crate::ast::{Module, decl::Decl};
-use crate::lexer::{Token, Keyword};
 use super::parser::Parser;
 
 mod fn_decl;

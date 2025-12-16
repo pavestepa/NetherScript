@@ -1,6 +1,4 @@
-use crate::ast::Typ;
-use crate::lexer::Token;
-use super::parser::Parser;
+use super::Parser;
 
 impl Parser {
 

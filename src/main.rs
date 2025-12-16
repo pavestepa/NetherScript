@@ -3,7 +3,7 @@ mod parser;
 mod atom;
 pub use atom::{atom, Atom};
 
-use crate::{lexer::{Keyword, Token}, parser::parser::Parser};
+use crate::{lexer::{Keyword, Token}, parser::Parser};
 mod ir;
 mod lexer;
 
