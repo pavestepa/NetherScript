@@ -1,8 +1,8 @@
-mod declorations; pub use declorations::{condition_decl, cycle_decl, struct_decl};
-mod expressions; pub use expressions::{Arithmetic, ArithmeticExpr, FnCallExpr, Expr, ObjectExpr, ValueExpr, VarCallExpr};
-mod operators; pub use operators::{ArithmeticOperator, LogicalOperator, Operator};
-mod statements; pub use statements::{GlobalConstStatmnt, EnumStatmnt, FnStatmnt, ModStatmnt, UseStatmnt, Statement};
-mod types; pub use types::{HasType, PrimType, RefType};
+mod declorations; use declorations::{condition_decl, cycle_decl, struct_decl};
+mod expressions; use expressions::{Arithmetic, ArithmeticExpr, FnCallExpr, Expr, ObjectExpr, ValueExpr, VarCallExpr};
+mod operators; use operators::{ArithmeticOperator, LogicalOperator, Operator};
+mod statements; use statements::{GlobalConstStatmnt, EnumStatmnt, FnStatmnt, ModStatmnt, UseStatmnt, Statement};
+mod types; use types::{HasType, PrimType, RefType};
 
 
 pub struct IRFile {

@@ -16,14 +16,17 @@ impl Parser {
         Self { tokens, position: 0 }
     }
 
+    // get current position token
     pub fn peek(&self) -> Option<&Token> {
         self.tokens.get(self.position)
     }
 
+    // get with jumped position token
     pub fn peek_ahead(&self, offset: usize) -> Option<&Token> {
         self.tokens.get(self.position + offset)
     }
 
+    // get current token and +1 to position
     pub fn advance(&mut self) -> Option<Token> {
         let token = self.tokens.get(self.position).cloned();
         if token.is_some() {
@@ -32,14 +35,17 @@ impl Parser {
         token
     }
 
+    // is current token equal with expected
     pub fn check(&self, expected: &Token) -> bool {
         self.peek() == Some(expected)
     }
 
+    // is current token keyword equal with expected
     pub fn check_keyword(&self, keyword: Keyword) -> bool {
         matches!(self.peek(), Some(Token::Keyword(k)) if *k == keyword)
     }
 
+    // is current token equal or send Err
     pub fn expect(&mut self, expected: Token) -> Result<(), String> {
         match self.advance() {
             Some(t) if t == expected => Ok(()),
@@ -48,35 +54,23 @@ impl Parser {
         }
     }
 
+    // is position more than tokens length
     pub fn is_at_end(&self) -> bool {
         self.position >= self.tokens.len()
     }
 
-    pub fn synchronize(&mut self) {
+    // find first equal token and set to this position or none
+    pub fn first_finded(&mut self, _token: Token) -> Option<Token> {
+        let token = Some(&_token);
+        let old_position = self.position;
         self.advance();
         while !self.is_at_end() {
-            if matches!(
-                self.peek(),
-                Some(Token::Keyword(
-                    Keyword::Function
-                        | Keyword::Class
-                        | Keyword::Const
-                        | Keyword::Let
-                        | Keyword::Return
-                ))
-            ) {
-                return;
+            if self.peek() == token {
+                return Some(_token);
             }
             self.advance();
         }
-    }
-}
-
-/// Public API
-pub fn parse_module(tokens: Vec<Token>) -> Module {
-    let mut parser = Parser::new(tokens);
-    match parser.parse_module() {
-        Ok(m) => m,
-        Err(_) => Module::new(Vec::new()),
+        self.position = old_position;
+        return None;
     }
 }

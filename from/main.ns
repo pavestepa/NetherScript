@@ -1,3 +1,4 @@
-function main() {
+public function main() {
     console.log("hello");
+    let a = 4;
 }

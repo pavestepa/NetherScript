@@ -1,7 +1,7 @@
 mod module;
 pub use module::Module;
 pub mod decl;
-mod expr;
+pub mod expr;
 pub use expr::Expr;
 pub use expr::Property;
 pub mod stmt;

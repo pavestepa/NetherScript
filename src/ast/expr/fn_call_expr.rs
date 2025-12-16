@@ -1,5 +1,8 @@
-use crate::{Atom, ir::expressions::Expr};
+use crate::Atom;
 
+use super::Expr;
+
+#[derive(Debug)]
 pub struct FnCallExpr {
   pub name: Atom,
   pub args: Vec<Expr>

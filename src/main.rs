@@ -2,13 +2,24 @@ mod ast;
 mod parser;
 mod atom;
 pub use atom::{atom, Atom};
+
+use crate::{lexer::{Keyword, Token}, parser::parser::Parser};
 mod ir;
 mod lexer;
 
 fn main() {
-    // Путь к TypeScript-файлу, который нужно распарсить
+    // Путь к NetherScript-файлу, который нужно распарсить
     let path = "./from/main.ns";
-    let a = lexer::lexer(path);
-    let b = parser::parse_module(a);
-    println!("{:?}", b);
+    let lexem = lexer::lexer(path);
+    println!(" ");
+    println!(" ");
+    let mut parsed = Parser::new(lexem);
+    println!("{:?}", parsed.tokens);
+    println!(" ");
+    println!(" ");
+    println!("{:?}", parsed.first_finded(Token::GreaterThanOrEqual));
+    println!("{:?}", parsed.position);
+    println!(" ");
+    println!(" ");
+    println!("{:?}", parsed.tokens);
 }

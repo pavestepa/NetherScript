@@ -7,6 +7,16 @@ pub struct BinaryExpr {
   right: Box<Expr>,
 }
 
+impl BinaryExpr {
+  pub fn new(left: Expr, op: BinaryOperator, right: Expr) -> Self {
+    Self {
+      left: Box::new(left),
+      op: op,
+      right: Box::new(right)
+    }
+  }
+}
+
 #[derive(Debug)]
 pub enum BinaryOperator {
   Add,
