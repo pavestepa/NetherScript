@@ -11,13 +11,12 @@ fn main() {
     // Путь к NetherScript-файлу, который нужно распарсить
     let path = "./from/main.ns";
     let lexem = lexer::lexer(path);
-    println!(" ");
-    println!(" ");
     let mut parsed = Parser::new(lexem);
-    println!("{:?}", parsed.tokens);
     println!(" ");
     println!(" ");
-    println!("{:?}", parsed.first_finded(Token::GreaterThanOrEqual));
+    println!(" ");
+    println!(" ");
+    println!("{:?}", parsed.parse_fn_decl());
     println!("{:?}", parsed.position);
     println!(" ");
     println!(" ");

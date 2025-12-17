@@ -1,4 +1,5 @@
 use crate::lexer::{Token, Keyword};
+use crate::ast::Module;
 
 pub struct Parser {
     pub tokens: Vec<Token>,
@@ -32,6 +33,16 @@ impl Parser {
             self.position += 1;
         }
         token
+    }
+
+    // get next token and +1 to position
+    pub fn next(&mut self) -> Option<Token> {
+      self.position += 1;
+      let token = self.tokens.get(self.position).cloned();
+      if token.is_some() {
+        return token;
+      }
+      None
     }
 
     // is current token equal with expected

@@ -69,6 +69,10 @@ pub fn lexer(file_path: &str) -> Vec<Token> {
                 chars.next();
                 tokens.push(Token::RightBrace);
             }
+            ':' => {
+                chars.next();
+                tokens.push(Token::Colon)
+            }
             ';' => {
                 chars.next();
                 tokens.push(Token::Semicolon);
