@@ -79,8 +79,8 @@ impl Parser {
             returns_type = Typ::Void;
             self.next(); // return type is void
         } else if self.peek().unwrap() == &Token::Colon {
-            let typ_token = self.next();
-            if let Token::Ident(value) = self.peek().unwrap() {
+            let typ_token = self.next().unwrap();
+            if let Token::Ident(value) = typ_token {
                 returns_type = self.parse_type()?;
                 self.next();
                 // Check to "{" after ":T"

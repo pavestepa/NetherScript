@@ -1,25 +1,23 @@
-use crate::{Atom, ast::Expr};
+use crate::{
+    ast::{shared::VarKind, Expr},
+    Atom,
+};
 
 #[derive(Debug)]
 pub struct VarStmt {
-  kind: VarKind,  // let / const / var
-  name: Atom,
-  init: Option<Expr>,
+    pub kind: VarKind,
+    pub declare: bool,
+    pub name: Atom,
+    pub init: Option<Box<Expr>>,
 }
 
 impl VarStmt {
-  pub fn new(kind: VarKind, name: Atom, init: Option<Expr>) -> Self {
-    Self {
-      kind,
-      name,
-      init
+    pub fn new(kind: VarKind, name: Atom, init: Option<Box<Expr>>) -> Self {
+        Self {
+            kind: kind,
+            declare: init.is_some(),
+            name: name,
+            init: init,
+        }
     }
-  } 
-}
-
-#[derive(Debug)]
-pub enum VarKind {
-    Let,
-    Const,
-    Var,
 }

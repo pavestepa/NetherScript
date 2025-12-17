@@ -6,5 +6,6 @@ pub use expr::Expr;
 pub use expr::Property;
 pub mod stmt;
 pub use stmt::Stmt;
+pub mod shared;
 mod typ;
 pub use typ::Typ;
