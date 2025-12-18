@@ -1,5 +1,6 @@
-use crate::lexer::{Token, Keyword};
 use crate::ast::Module;
+use crate::lexer::{Keyword, Token};
+use crate::Atom;
 
 pub struct Parser {
     pub tokens: Vec<Token>,
@@ -13,7 +14,10 @@ impl Parser {
             .filter(|t| !matches!(t, Token::Whitespace | Token::CommentLine))
             .collect();
 
-        Self { tokens, position: 0 }
+        Self {
+            tokens,
+            position: 0,
+        }
     }
 
     // get current position token
@@ -37,17 +41,24 @@ impl Parser {
 
     // get next token and +1 to position
     pub fn next(&mut self) -> Option<Token> {
-      self.position += 1;
-      let token = self.tokens.get(self.position).cloned();
-      if token.is_some() {
-        return token;
-      }
-      None
+        self.position += 1;
+        let token = self.tokens.get(self.position).cloned();
+        if token.is_some() {
+            return token;
+        }
+        None
     }
 
     // is current token equal with expected
-    pub fn check(&self, expected: &Token) -> bool {
-        self.peek() == Some(expected)
+    pub fn check(&self, expected: Token) -> Result<(), String> {
+        if self.peek() == Some(&expected) {
+            return Ok(());
+        }
+        Err(format!(
+            "[loc] expected {:?}, but found {:?}",
+            expected,
+            *self.peek().unwrap()
+        ))
     }
 
     // is current token keyword equal with expected
@@ -82,5 +93,29 @@ impl Parser {
         }
         self.position = old_position;
         return None;
+    }
+
+    pub fn ident(&mut self) -> Result<Atom, String> {
+        if let Some(&Token::Ident(value)) = self.peek() {
+            return Ok(value.clone());
+        }
+        Err(format!(
+            "expected Ident, but found {:?}",
+            *self.peek().unwrap()
+        ))
+    }
+
+    pub fn keyword(&mut self) -> Result<Keyword, String> {
+        if let Some(&Token::Keyword(value)) = self.peek() {
+            return Ok(value.clone());
+        }
+        Err(format!(
+            "expected Ident, but found {:?}",
+            *self.peek().unwrap()
+        ))
+    }
+
+    pub fn is(&self, token: Token) -> bool {
+        self.peek().unwrap() == &token
     }
 }

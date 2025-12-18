@@ -12,10 +12,6 @@ use crate::{
 };
 
 impl Parser {
-    fn err_expected(&self, token: Token) -> Result<(), String> {
-        Err(format!("expected '{:?}' but is '{:?}'", token, self.peek()))
-    }
-
     pub fn parse_fn_decl(&mut self) -> Result<FnDecl, String> {
         // Check is public Function Declaration
         let fn_and_pub = self.check_token_function_or_public_function();
@@ -27,7 +23,7 @@ impl Parser {
         self.next();
 
         // Check identificator of function
-        let parse_ident = self.check_token_ident();
+        let parse_ident = self.ident();
         if parse_ident.is_err() {
             return Err(parse_ident.err().unwrap());
         }
@@ -36,9 +32,9 @@ impl Parser {
         self.next();
 
         // Check is "("
-        let left_colon = self.check_token_left_paren();
-        if left_colon.is_err() {
-            return Err(left_colon.err().unwrap());
+        let left_paren = self.check(Token::LeftParen);
+        if left_paren.is_err() {
+            return Err(left_paren.err().unwrap());
         }
         // now we have "("
         self.next();
@@ -49,30 +45,18 @@ impl Parser {
             if self.peek().unwrap() == &Token::RightParen {
                 break;
             }
-            let arg = parse_fn_arg(self);
-            if arg.is_ok() {
-                args.push(arg.unwrap());
-            } else {
-                if self.peek().unwrap() == &Token::Comma {
-                    self.next();
-                } else {
-                    return Err(format!(
-                        "expected Comma, but found {:?}",
-                        self.peek().unwrap()
-                    ));
-                }
-            }
+            let arg = parse_fn_arg(self)?;
+            args.push(arg);
         }
 
         // Check if now is not ")"
-        if self.peek().unwrap() != &Token::RightParen {
-            return Err(format!(
-                "expected RightParen, but found {:?}",
-                self.peek().unwrap()
-            ));
+        let right_paren = self.check(Token::RightParen);
+        if right_paren.is_err() {
+            return Err(left_paren.err().unwrap());
         }
         self.next();
         println!("{:?}", self.peek().unwrap());
+
         // Check to returns type
         let returns_type;
         if self.peek().unwrap() == &Token::LeftBrace {
@@ -115,76 +99,22 @@ impl Parser {
 
         // Check if is "function" keyword
         if is_pub == false {
-            if self.check(&fn_token) {
+            let is_fn = self.check(fn_token);
+            if is_fn.is_ok() {
                 return Ok(is_pub);
             } else {
-                // is not "function"
-                return Err(format!(
-                    "expected {:?}, but found {:?}",
-                    fn_token,
-                    self.peek().unwrap()
-                ));
+                return Err(is_fn.err().unwrap());
             }
         } else {
             // we have "public" before
             self.next();
             // get next token after "public"
-            if self.peek().is_some() {
-                if self.peek().unwrap() == &fn_token {
-                    return Ok(is_pub);
-                } else {
-                    return Err(format!(
-                        "expected {:?}, but found {:?}",
-                        fn_token,
-                        self.peek().unwrap()
-                    ));
-                }
+            let is_fn = self.check(fn_token);
+            if is_fn.is_ok() {
+                return Ok(is_pub);
             } else {
-                return Err(format!(
-                    "expected {:?}, but found {:?}",
-                    fn_token,
-                    self.peek().unwrap()
-                ));
+                return Err(is_fn.err().unwrap());
             }
-        }
-    }
-
-    fn check_token_ident(&mut self) -> Result<Atom, String> {
-        if self.peek().is_some() {
-            if let Token::Ident(value) = self.peek().unwrap() {
-                return Ok(*value);
-            } else {
-                return Err(format!(
-                    "expected {:?}, but found {:?}",
-                    Token::Ident(atom("".to_string())),
-                    self.peek().unwrap()
-                ));
-            }
-        } else {
-            return Err("Token not found".to_string());
-        }
-    }
-
-    fn check_token_left_paren(&mut self) -> Result<(), String> {
-        if self.peek().is_some() {
-            if *self.peek().unwrap() == Token::LeftParen {
-                return Ok(());
-            } else {
-                return self.err_expected(Token::LeftParen);
-            }
-        } else {
-            return Err("Token not found".to_string());
-        }
-    }
-    fn check_token_right_paren(&mut self) -> Result<(), String> {
-        if self.peek().is_some() {
-            if *self.peek().unwrap() == Token::RightParen {
-                return Ok(());
-            } else {
-                return self.err_expected(Token::RightParen);
-            }
-        } else {
-            return Err("Token not found".to_string());
         }
     }
 }

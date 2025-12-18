@@ -2,7 +2,7 @@ use std::{collections::HashSet, sync::OnceLock};
 
 static KEYWORDS: OnceLock<HashSet<&'static str>> = OnceLock::new();
 
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Copy, Clone, PartialEq)]
 pub enum Keyword {
     Async,
     Await,
