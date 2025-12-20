@@ -55,7 +55,6 @@ impl Parser {
             return Err(left_paren.err().unwrap());
         }
         self.next();
-        println!("{:?}", self.peek().unwrap());
 
         // Check to returns type
         let returns_type;
@@ -88,7 +87,8 @@ impl Parser {
                 self.peek().unwrap()
             ));
         }
-        println!("{:?}", self.peek().unwrap());
+        println!("now: {:?}", self.peek().unwrap());
+        println!("next: {:?}", self.next().unwrap());
 
         Ok(FnDecl::new(is_pub, ident, args, returns_type, vec![]))
     }

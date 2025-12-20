@@ -51,7 +51,7 @@ pub fn lexer(file_path: &str) -> Vec<Token> {
             }
             '*' => {
                 chars.next();
-                tokens.push(Token::Multiply);
+                tokens.push(Token::Star);
             }
             '(' => {
                 chars.next();
@@ -88,7 +88,7 @@ pub fn lexer(file_path: &str) -> Vec<Token> {
                     consume_line_comment(&mut chars);
                     tokens.push(Token::CommentLine);
                 } else {
-                    tokens.push(Token::Divide);
+                    tokens.push(Token::Slash);
                 }
             }
             '=' => {
@@ -114,18 +114,18 @@ pub fn lexer(file_path: &str) -> Vec<Token> {
                 chars.next();
                 if let Some(&'=') = chars.peek() {
                     chars.next();
-                    tokens.push(Token::LessThanOrEqual);
+                    tokens.push(Token::LessEqual);
                 } else {
-                    tokens.push(Token::LessThan);
+                    tokens.push(Token::Less);
                 }
             }
             '>' => {
                 chars.next();
                 if let Some(&'=') = chars.peek() {
                     chars.next();
-                    tokens.push(Token::GreaterThanOrEqual);
+                    tokens.push(Token::GreaterEqual);
                 } else {
-                    tokens.push(Token::GreaterThan);
+                    tokens.push(Token::Greater);
                 }
             }
             '.' => {

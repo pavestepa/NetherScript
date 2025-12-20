@@ -1,4 +1,4 @@
-public function main(a: i32): string {
-    console.log("Hello world");
-    return "hey";
+public function main(a: i32): i32 {
+    console.log("Hello world" );
+    return a + 1;
 }

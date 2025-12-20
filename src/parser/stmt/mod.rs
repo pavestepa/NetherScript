@@ -1,3 +1,5 @@
+mod var_stmt;
+
 use crate::{
     ast::{
         shared::VarKind,
@@ -10,12 +12,7 @@ use crate::{
 
 impl Parser {
     pub fn parse_block_stmt(&mut self) -> Result<BlockStmt, String> {
-        if self.is(Token::LeftBrace) {
-            return Err(format!(
-                "expected LeftBrace, but found {:?}",
-                *self.peek().unwrap()
-            ));
-        }
+        self.check(Token::LeftBrace)?;
         self.next();
 
         let mut block_stmt = BlockStmt { stmts: vec![] };
@@ -34,6 +31,7 @@ impl Parser {
                     return Err(res.unwrap());
                 };
             }
+
             _ => {}
         }
 

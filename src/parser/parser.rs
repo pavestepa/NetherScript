@@ -115,7 +115,18 @@ impl Parser {
         ))
     }
 
+    fn consume(&mut self, expected: &Token) {
+        let tok = self.next();
+        if tok.clone().unwrap() != *expected {
+            panic!("expected {:?}, got {:?}", expected, tok);
+        }
+    }
+
     pub fn is(&self, token: Token) -> bool {
         self.peek().unwrap() == &token
+    }
+
+    pub fn is_not(&self, token: Token) -> bool {
+        self.peek().unwrap() != &token
     }
 }
