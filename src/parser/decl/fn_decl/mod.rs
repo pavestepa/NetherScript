@@ -3,6 +3,7 @@ mod fn_arg;
 use crate::{
     ast::{
         decl::{FnArg, FnDecl},
+        stmt::BlockStmt,
         Typ,
     },
     atom,
@@ -90,7 +91,13 @@ impl Parser {
         println!("now: {:?}", self.peek().unwrap());
         println!("next: {:?}", self.next().unwrap());
 
-        Ok(FnDecl::new(is_pub, ident, args, returns_type, vec![]))
+        Ok(FnDecl::new(
+            is_pub,
+            ident,
+            args,
+            returns_type,
+            BlockStmt::new(),
+        ))
     }
 
     fn check_token_function_or_public_function(&mut self) -> Result<bool, String> {
