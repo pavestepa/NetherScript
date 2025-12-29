@@ -13,26 +13,43 @@ use crate::{
 impl Parser {
     pub fn parse_block_stmt(&mut self) -> Result<BlockStmt, String> {
         self.check(Token::LeftBrace)?;
-        self.next();
-
         let mut block_stmt = BlockStmt { stmts: vec![] };
 
-        let keyword = self.keyword()?;
-        match keyword {
-            Keyword::Let => {
-                let res = self.match_var(VarKind::Let, &mut block_stmt).err();
-                if res.is_some() {
-                    return Err(res.unwrap());
-                };
-            }
-            Keyword::Const => {
-                let res = self.match_var(VarKind::Const, &mut block_stmt).err();
-                if res.is_some() {
-                    return Err(res.unwrap());
-                };
-            }
+        self.next();
 
-            _ => {}
+        while self.peek().unwrap() != &Token::RightBrace {
+            match *self.peek().unwrap() {
+                Token::Keyword(v) => match v {
+                    Keyword::If => {
+                        println!("'If' parse");
+                        // TODO: IfExpr parser
+                    }
+                    Keyword::For => {
+                        println!("'For' parse");
+                        // TODO: ForExpr parser
+                    }
+                    Keyword::Return => {
+                        println!("'Return' parse");
+                        // TODO: ReturnExpr parser
+                    }
+                    Keyword::Let | Keyword::Const => {
+                        println!("'Var' parse");
+                        //TODO: VarExpr parser
+                    }
+                    e => {
+                        return Err(format!(
+                            "expexted statement support keyword, bur found {:?}",
+                            e
+                        ));
+                    }
+                },
+                Token::Ident(v) => {
+                    println!("'Ident' parse");
+                    // TODO: Ident starts expression parser
+                }
+                Token::StringLiteral()
+                _ => {}
+            }
         }
 
         Ok(block_stmt)

@@ -90,13 +90,9 @@ impl Parser {
 
         println!("now: {:?}", self.peek().unwrap());
 
-        Ok(FnDecl::new(
-            is_pub,
-            ident,
-            args,
-            returns_type,
-            BlockStmt::new(),
-        ))
+        let block_stmt: BlockStmt = self.parse_block_stmt()?;
+
+        Ok(FnDecl::new(is_pub, ident, args, returns_type, block_stmt))
     }
 
     fn check_token_function_or_public_function(&mut self) -> Result<bool, String> {
