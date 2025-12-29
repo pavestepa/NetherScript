@@ -26,10 +26,4 @@ fn main() {
         println!(" ");
         println!("{:?}", parsed.tokens);
     }
-    {
-        let path = "./from/expr.ns";
-        let lexem = lexer::lexer(path);
-        let mut parsed = Parser::new(lexem);
-        println!("[][]{:?}", parsed.parse_expr(0));
-    }
 }

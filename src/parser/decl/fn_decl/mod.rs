@@ -59,37 +59,36 @@ impl Parser {
 
         // Check to returns type
         let returns_type;
-        if self.peek().unwrap() == &Token::LeftBrace {
-            returns_type = Typ::Void;
-            self.next(); // return type is void
-        } else if self.peek().unwrap() == &Token::Colon {
-            let typ_token = self.next().unwrap();
-            if let Token::Ident(value) = typ_token {
-                returns_type = self.parse_type()?;
+
+        match *self.peek().unwrap() {
+            Token::LeftBrace => {
+                returns_type = Typ::Void;
                 self.next();
-                // Check to "{" after ":T"
-                if self.peek().unwrap() == &Token::LeftBrace {
-                    self.next();
-                } else {
-                    return Err(format!(
-                        "expected LeftBrace, but found {:?}",
-                        self.peek().unwrap()
-                    ));
+            }
+            Token::Colon => {
+                let type_token = self.next().unwrap();
+                match type_token {
+                    Token::Ident(v) => {
+                        returns_type = self.parse_type()?;
+                        self.next();
+                    }
+                    _ => {
+                        return Err(format!(
+                            "expected Ident, but found {:?}",
+                            self.peek().unwrap()
+                        ));
+                    }
                 }
-            } else {
+            }
+            _ => {
                 return Err(format!(
-                    "expected Ident, but found {:?}",
+                    "expected Colon, but found {:?}",
                     self.peek().unwrap()
                 ));
             }
-        } else {
-            return Err(format!(
-                "expected Colon, but found {:?}",
-                self.peek().unwrap()
-            ));
         }
+
         println!("now: {:?}", self.peek().unwrap());
-        println!("next: {:?}", self.next().unwrap());
 
         Ok(FnDecl::new(
             is_pub,
