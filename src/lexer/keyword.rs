@@ -15,6 +15,7 @@ pub enum Keyword {
     Else,
     Return,
     For,
+    While,
     Extends,
     Implements,
     Static,
@@ -25,6 +26,7 @@ pub enum Keyword {
     Switch,
     Case,
     Match,
+    Break,
 }
 
 pub fn keyword_to_token(ident: &str) -> Option<Keyword> {
@@ -41,6 +43,7 @@ pub fn keyword_to_token(ident: &str) -> Option<Keyword> {
         "else" => Some(Keyword::Else),
         "return" => Some(Keyword::Return),
         "for" => Some(Keyword::For),
+        "while" => Some(Keyword::While),
         "extends" => Some(Keyword::Extends),
         "implements" => Some(Keyword::Implements),
         "impl" => Some(Keyword::Implements),
@@ -52,6 +55,7 @@ pub fn keyword_to_token(ident: &str) -> Option<Keyword> {
         "switch" => Some(Keyword::Switch),
         "case" => Some(Keyword::Case),
         "match" => Some(Keyword::Match),
+        "break" => Some(Keyword::Break),
         _ => None,
     }
 }

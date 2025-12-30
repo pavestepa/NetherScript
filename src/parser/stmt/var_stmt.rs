@@ -6,6 +6,7 @@ use crate::{
 
 impl Parser {
     pub fn parse_var_stmt(&mut self) -> Result<VarStmt, String> {
+        // TODO: to refactor
         // Check to "let" or "const"
         let kind = match self.keyword() {
             Ok(Keyword::Let) => VarKind::Let,

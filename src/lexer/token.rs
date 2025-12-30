@@ -1,6 +1,6 @@
 use crate::{lexer::Keyword, Atom};
 
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Copy, PartialEq)]
 pub enum Token {
     // identificator
     Ident(Atom),
