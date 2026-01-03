@@ -4,8 +4,6 @@ mod call_expr;
 mod class_construct_expr;
 mod index_expr;
 mod logical_expr;
-mod property_expr;
-mod ternary_expr;
 mod unary_expr;
 
 use crate::Atom;
@@ -15,8 +13,6 @@ pub use call_expr::CallExpr;
 pub use class_construct_expr::ClassConstructExpr;
 pub use index_expr::IndexExpr;
 pub use logical_expr::{LogicalExpr, LogicalOperator};
-pub use property_expr::PropertyExpr;
-pub use ternary_expr::TernaryExpr;
 pub use unary_expr::{UnaryExpr, UnaryOperator};
 
 #[derive(Debug)]
@@ -29,9 +25,7 @@ pub enum Expr {
     Index(IndexExpr),
     Logical(LogicalExpr),
     NumberLiteral(Atom),
-    Property(PropertyExpr),
     StringLiteral(Atom),
-    Ternary(TernaryExpr),
     Unary(UnaryExpr),
 }
 

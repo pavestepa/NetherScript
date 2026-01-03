@@ -1,18 +1,12 @@
-mod precedence;
-use std::fmt::format;
+mod assign_expr;
+mod binary_expr;
+mod call_expr;
+mod class_construct_expr;
+mod index_expr;
+mod logical_expr;
+mod unary_expr;
 
-use crate::{
-    ast::{
-        expr::{
-            AssignExpr, AssignOperator, BinaryExpr, BinaryOperator, CallExpr, IndexExpr,
-            PropertyExpr, TernaryExpr, UnaryExpr, UnaryOperator,
-        },
-        Expr,
-    },
-    lexer::Token,
-    parser::Parser,
-};
-use precedence::precedence;
+use crate::{ast::Expr, parser::Parser};
 
 impl Parser {
     pub fn parse_expr(&mut self, min_prec: u8) -> Result<Expr, String> {
