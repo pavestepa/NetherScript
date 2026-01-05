@@ -3,15 +3,16 @@ use crate::{
         expr::{BinaryExpr, BinaryOperator},
         Expr,
     },
+    lexer::Token,
     parser::Parser,
     Atom,
 };
 
 impl Parser {
-    pub fn parse_binary_expr(&mut self) -> Result<BinaryExpr, String> {
+    pub fn parse_binary_expr(&mut self, left: Expr, token: Token) -> Result<BinaryExpr, String> {
         // TODO: parse_bimary_expr
         Ok(BinaryExpr::new(
-            Expr::NumberLiteral(Atom::from("1")),
+            left,
             BinaryOperator::Plus,
             Expr::NumberLiteral(Atom::from("1")),
         ))

@@ -3,16 +3,16 @@ use crate::{
         expr::{AssignExpr, AssignOperator},
         Expr,
     },
-    atom,
+    lexer::Token,
     parser::Parser,
     Atom,
 };
 
 impl Parser {
-    pub fn parse_assign_expr(&mut self) -> Result<AssignExpr, String> {
+    pub fn parse_assign_expr(&mut self, left: Expr) -> Result<AssignExpr, String> {
         // TODO: parse_assign_expression
         Ok(AssignExpr::new(
-            Expr::Boolean(true),
+            left,
             AssignOperator::Assign,
             Expr::NumberLiteral(Atom::from("1")),
         ))

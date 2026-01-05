@@ -4,6 +4,7 @@ mod call_expr;
 mod class_construct_expr;
 mod index_expr;
 mod logical_expr;
+mod member_expr;
 mod unary_expr;
 
 use crate::{ast::Expr, parser::Parser};

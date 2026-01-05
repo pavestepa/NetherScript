@@ -10,7 +10,7 @@ pub struct CallExpr {
 }
 
 impl CallExpr {
-    pub fn new(callee: Expr, ident: Atom, args: Vec<Expr>, prop: Option<CallExpr>) -> Self {
+    pub fn new(callee: Expr, args: Vec<Expr>) -> Self {
         Self {
             callee: Box::new(callee),
             args: args,

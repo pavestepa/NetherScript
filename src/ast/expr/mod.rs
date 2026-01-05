@@ -14,7 +14,8 @@ pub use call_expr::CallExpr;
 pub use class_construct_expr::ClassConstructExpr;
 pub use index_expr::IndexExpr;
 pub use logical_expr::{LogicalExpr, LogicalOperator};
-pub use unary_expr::{UnaryExpr, UnaryOperator};
+pub use member_expr::MemberExpr;
+pub use unary_expr::UnaryExpr;
 
 #[derive(Debug)]
 pub enum Expr {
@@ -23,6 +24,7 @@ pub enum Expr {
     Ident(Atom),
     Call(CallExpr),
     Boolean(bool),
+    Member(MemberExpr),
     Assign(AssignExpr),
     Binary(BinaryExpr),
     ClassConstruct(ClassConstructExpr),
