@@ -1,19 +1,15 @@
 mod fn_arg;
 
 use crate::{
-    ast::{
-        decl::{FnArg, FnDecl},
-        stmt::BlockStmt,
-        Typ,
-    },
+    ast::{decl::FunctionDecl, stmt::BlockStmt, Typ},
     atom,
     lexer::{Keyword, Token},
-    parser::{decl::fn_decl::fn_arg::parse_fn_arg, Parser},
+    parser::{decl::function_decl::fn_arg::parse_fn_arg, Parser},
     Atom,
 };
 
 impl Parser {
-    pub fn parse_fn_decl(&mut self) -> Result<FnDecl, String> {
+    pub fn parse_fn_decl(&mut self) -> Result<FunctionDecl, String> {
         // Check is public Function Declaration
         let fn_and_pub = self.check_token_function_or_public_function();
         if fn_and_pub.is_err() {
@@ -63,7 +59,6 @@ impl Parser {
         match *self.peek().unwrap() {
             Token::LeftBrace => {
                 returns_type = Typ::Void;
-                self.next();
             }
             Token::Colon => {
                 let type_token = self.next().unwrap();
@@ -92,7 +87,13 @@ impl Parser {
 
         let block_stmt: BlockStmt = self.parse_block_stmt()?;
 
-        Ok(FnDecl::new(is_pub, ident, args, returns_type, block_stmt))
+        Ok(FunctionDecl::new(
+            is_pub,
+            ident,
+            args,
+            returns_type,
+            block_stmt,
+        ))
     }
 
     fn check_token_function_or_public_function(&mut self) -> Result<bool, String> {

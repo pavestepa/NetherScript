@@ -1,13 +1,13 @@
-pub mod fn_arg;
+mod fn_arg;
 
 use crate::{
     ast::{stmt::BlockStmt, Stmt, Typ},
     Atom,
 };
-use fn_arg::FnArg;
+pub use fn_arg::FnArg;
 
 #[derive(Debug)]
-pub struct FnDecl {
+pub struct FunctionDecl {
     is_pub: bool,
     ident: Atom,
     args: Vec<FnArg>,
@@ -15,7 +15,7 @@ pub struct FnDecl {
     body: BlockStmt,
 }
 
-impl FnDecl {
+impl FunctionDecl {
     pub fn new(is_pub: bool, ident: Atom, args: Vec<FnArg>, returns: Typ, body: BlockStmt) -> Self {
         Self {
             is_pub,

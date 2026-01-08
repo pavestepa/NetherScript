@@ -1,4 +1,4 @@
-use crate::{Atom, ast::Typ};
+use crate::{ast::Typ, Atom};
 
 #[derive(Debug)]
 pub struct FnArg {

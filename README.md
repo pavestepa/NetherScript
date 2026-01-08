@@ -9,23 +9,30 @@ A concise overview of the **NetherScript** language syntax and concepts.
 ```text
 function foo(): i32 { ... }                     // default function declaration
 
-class Car { ... }                               // default heap-allocated class with `extend` inheritance
+class Car { ... }                               // default heap-allocated class with `extend` 
+                                                //inheritance
+
                                                 // and trait implementations. All fields are public by default.
                                                 // Prefix an identifier with '_' to make it private.
 
 trait Buyable { ... }                           // traits (similar to Rust)
 
-struct Animal { ... }                           // data-only structure. All fields are public by default.
-                                                // Prefix an identifier with '_' to make it private.
+struct Animal { ... }                           // data-only structure. All fields are public by 
+                                                // default.
+
+                                                // Prefix an identifier with '_' to make it       
+                                                //private.
 
 enum Color { Red, White, Blue, Other(String) }  // enum like in Rust, with associated data
 
 implement Animal { ... }                        // `impl`-like block (methods only).
-                                                // Prefix an identifier with '_' to make it private.
+                                                // Prefix an identifier with '_' to make it 
+                                                // private.
                                                 // Trait implementations are always public.
 
 implement Speaking for Animal { ... }           // `implement` can be used for all data types:
-                                                // structs, enums, primitives (e.g., i32), String, etc.
+                                                // structs, enums, primitives (e.g., i32), String, 
+                                                // etc.
                                                 // Not allowed for classes.
 
 const SOME = 4;                                 // global compile-time constant

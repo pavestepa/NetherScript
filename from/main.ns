@@ -1,5 +1,5 @@
 function main() {
-    let d = 3;
+    let d = s;
     console.log("Hello world" );
     return a + d;
 }

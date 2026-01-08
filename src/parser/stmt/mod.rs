@@ -14,6 +14,7 @@ mod while_stmt;
 
 impl Parser {
     pub fn parse_stmt(&mut self) -> Result<Stmt, String> {
+        println!("starting parsing statement:");
         match *self.peek().unwrap() {
             Token::Ident(v) | Token::StringLiteral(v) | Token::NumberLiteral(v) => {
                 Ok(Stmt::Expr(self.parse_expr_stmt()?))

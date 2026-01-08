@@ -1,10 +1,10 @@
 use super::parser::Parser;
 
-mod fn_decl;
 mod class_decl;
-mod global_const_decl;
-mod type_decl;
+mod const_decl;
+mod function_decl;
+mod implement_decl;
+mod struct_decl;
+mod trait_decl;
 
-impl Parser {
-
-}
+impl Parser {}

@@ -1,16 +1,23 @@
 mod class_decl;
+mod const_decl;
+mod function_decl;
+mod implement_decl;
+mod struct_decl;
+mod trait_decl;
+
 pub use class_decl::ClassDecl;
-mod fn_decl;
-pub use fn_decl::{FnDecl, fn_arg::FnArg};
-mod global_const_decl;
-pub use global_const_decl::GlobalConstDecl;
-mod type_decl;
-pub use type_decl::TypeDecl;
+pub use const_decl::ConstDecl;
+pub use function_decl::{FnArg, FunctionDecl};
+pub use implement_decl::ImplementDecl;
+pub use struct_decl::StructDecl;
+pub use trait_decl::TraitDecl;
 
 #[derive(Debug)]
 pub enum Decl {
-    ClassDecl(ClassDecl),
-    FnDecl(FnDecl),
-    GlobalConstDecl(GlobalConstDecl),
-    TypeDecl(TypeDecl),
+    Class(ClassDecl),
+    Const(ConstDecl),
+    Function(FunctionDecl),
+    Implement(ImplementDecl),
+    Struct(StructDecl),
+    Trait(TraitDecl),
 }
