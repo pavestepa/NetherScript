@@ -9,6 +9,6 @@ use crate::{
 impl Parser {
     pub fn parse_while_stmt(&mut self) -> Result<WhileStmt, String> {
         // TODO: parse_while_stmt
-        Ok(WhileStmt::new(Expr::Boolean(true), BlockStmt::new()))
+        Ok(WhileStmt::new(Expr::Empty, BlockStmt::new()))
     }
 }

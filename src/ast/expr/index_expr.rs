@@ -1,6 +1,6 @@
 use crate::ast::Expr;
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct IndexExpr {
     target: Box<Expr>,
     index: Box<Expr>,

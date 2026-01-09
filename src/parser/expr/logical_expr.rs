@@ -9,10 +9,14 @@ use crate::{
 };
 
 impl Parser {
-    pub fn parse_logical_expr(&mut self, left: Expr, op: Token) -> Result<LogicalExpr, String> {
+    pub fn parse_logical_expr(
+        &mut self,
+        left: &mut Expr,
+        op: LogicalOperator,
+    ) -> Result<LogicalExpr, String> {
         // TODO: parse_bimary_expr
         Ok(LogicalExpr::new(
-            left,
+            left.clone(),
             LogicalOperator::EqualTo,
             Expr::NumberLiteral(Atom::from("1")),
         ))

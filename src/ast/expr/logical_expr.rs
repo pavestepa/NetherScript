@@ -1,6 +1,8 @@
+use crate::lexer::Token;
+
 use super::Expr;
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct LogicalExpr {
     left: Box<Expr>,
     op: LogicalOperator,
@@ -15,7 +17,16 @@ impl LogicalExpr {
         }
     }
 }
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub enum LogicalOperator {
     EqualTo,
+}
+
+impl LogicalOperator {
+    pub fn from_token(token: &Token) -> Option<Self> {
+        match *token {
+            Token::Equals => Some(LogicalOperator::EqualTo),
+            _ => None,
+        }
+    }
 }

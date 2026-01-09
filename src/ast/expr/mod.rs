@@ -17,13 +17,13 @@ pub use logical_expr::{LogicalExpr, LogicalOperator};
 pub use member_expr::MemberExpr;
 pub use unary_expr::UnaryExpr;
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub enum Expr {
     NumberLiteral(Atom),
     StringLiteral(Atom),
     Ident(Atom),
     Call(CallExpr),
-    Boolean(bool),
+    Boolean(Atom),
     Member(MemberExpr),
     Assign(AssignExpr),
     Binary(BinaryExpr),
@@ -31,6 +31,7 @@ pub enum Expr {
     Index(IndexExpr),
     Logical(LogicalExpr),
     Unary(UnaryExpr),
+    Empty,
 }
 
 #[derive(Debug)]

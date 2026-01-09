@@ -82,8 +82,9 @@ impl Parser {
                 ));
             }
         }
-
-        println!("now: {:?}", self.peek().unwrap());
+        println!("");
+        println!("FUNCTION DECL BOILERPALETE: {:?}", ident);
+        println!("");
 
         let block_stmt: BlockStmt = self.parse_block_stmt()?;
 

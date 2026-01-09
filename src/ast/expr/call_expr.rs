@@ -3,7 +3,7 @@ use crate::{lexer::Token, Atom};
 use super::Expr;
 
 // TODO: think more
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct CallExpr {
     pub callee: Box<Expr>,
     pub args: Vec<Expr>,

@@ -8,6 +8,7 @@ pub enum Token {
     // literals
     NumberLiteral(Atom), // 123
     StringLiteral(Atom), // "Some string"
+    BooleanLiteral(Atom),
 
     // keywords "function", "let", "class" e.t.c
     Keyword(Keyword),

@@ -1,6 +1,6 @@
 use crate::{ast::Expr, lexer::Token};
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct UnaryExpr {
     pub op: UnaryOperator,
     pub expr: Box<Expr>,
@@ -12,7 +12,7 @@ impl UnaryExpr {
     }
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub enum UnaryOperator {
     Minus,
     Plus,

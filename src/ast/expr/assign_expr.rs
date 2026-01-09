@@ -2,7 +2,7 @@ use crate::lexer::Token;
 
 use super::Expr;
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct AssignExpr {
     left: Box<Expr>,
     op: AssignOperator,
@@ -19,7 +19,7 @@ impl AssignExpr {
     }
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub enum AssignOperator {
     Assign,
     PlusAssign,

@@ -9,10 +9,14 @@ use crate::{
 };
 
 impl Parser {
-    pub fn parse_assign_expr(&mut self, left: Expr) -> Result<AssignExpr, String> {
+    pub fn parse_assign_expr(
+        &mut self,
+        left: &mut Expr,
+        op: AssignOperator,
+    ) -> Result<AssignExpr, String> {
         // TODO: parse_assign_expression
         Ok(AssignExpr::new(
-            left,
+            left.clone(),
             AssignOperator::Assign,
             Expr::NumberLiteral(Atom::from("1")),
         ))

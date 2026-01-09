@@ -2,8 +2,8 @@ use crate::Atom;
 
 use super::Expr;
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct ClassConstructExpr {
-  callee: Box<Atom>,
-  args: Vec<Expr>,
+    callee: Box<Atom>,
+    args: Vec<Expr>,
 }

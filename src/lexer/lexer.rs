@@ -24,6 +24,8 @@ pub fn lexer(file_path: &str) -> Vec<Token> {
                 let ident = consume_identifier(&mut chars);
                 if let Some(keyword) = keyword_to_token(&ident) {
                     tokens.push(Token::Keyword(keyword));
+                } else if let Some(boolean_literal) = ident_to_boolean(&ident) {
+                    tokens.push(boolean_literal);
                 } else {
                     tokens.push(Token::Ident(atom(ident)));
                 }
@@ -204,5 +206,12 @@ fn consume_line_comment(chars: &mut Peekable<Chars>) {
             break;
         }
         chars.next();
+    }
+}
+fn ident_to_boolean(ident: &str) -> Option<Token> {
+    match ident {
+        "true" => Some(Token::BooleanLiteral(atom("true".to_string()))),
+        "false" => Some(Token::BooleanLiteral(atom("false".to_string()))),
+        _ => None,
     }
 }

@@ -8,7 +8,7 @@ use crate::{
 };
 
 impl Parser {
-    pub fn parse_member_expr(&mut self, left: Expr) -> Result<MemberExpr, String> {
+    pub fn parse_member_expr(&mut self, left: &mut Expr) -> Result<MemberExpr, String> {
         let token = self.next().unwrap();
         println!("* parse_member_expr: {:?}", token);
 
@@ -18,7 +18,7 @@ impl Parser {
                     self.next();
                     let args = self.parse_args()?;
                     return Ok(MemberExpr::new(
-                        left,
+                        left.clone(),
                         Expr::Call(CallExpr::new(Expr::Ident(v), args)),
                     ));
                 }
@@ -37,12 +37,18 @@ impl Parser {
         println!("from '('");
         let mut args = vec![];
         while *self.peek().unwrap() != Token::RightParen {
+            println!("|");
+            println!("keep parsing args");
+            println!("|");
             let expr = self.parse_expr(0)?;
+
             args.push(expr);
-            println!("nex");
             self.next();
-            println!("nex");
+            println!("|");
+            println!("{:?}", args);
+            println!("|");
         }
+
         println!("while ')'");
         Ok(args)
     }

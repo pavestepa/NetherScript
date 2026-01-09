@@ -2,7 +2,7 @@ use crate::lexer::Token;
 
 use super::Expr;
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct BinaryExpr {
     left: Box<Expr>,
     op: BinaryOperator,
@@ -19,7 +19,7 @@ impl BinaryExpr {
     }
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub enum BinaryOperator {
     Plus,
     Minus,

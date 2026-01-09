@@ -9,10 +9,14 @@ use crate::{
 };
 
 impl Parser {
-    pub fn parse_binary_expr(&mut self, left: Expr, token: Token) -> Result<BinaryExpr, String> {
+    pub fn parse_binary_expr(
+        &mut self,
+        left: &mut Expr,
+        op: BinaryOperator,
+    ) -> Result<BinaryExpr, String> {
         // TODO: parse_bimary_expr
         Ok(BinaryExpr::new(
-            left,
+            left.clone(),
             BinaryOperator::Plus,
             Expr::NumberLiteral(Atom::from("1")),
         ))

@@ -2,7 +2,7 @@ use crate::{ast::expr::CallExpr, Atom};
 
 use super::Expr;
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct MemberExpr {
     object: Box<Expr>,
     prop: Box<Expr>, // .x | .x()
