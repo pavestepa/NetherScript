@@ -15,10 +15,10 @@ impl Parser {
         op: BinaryOperator,
     ) -> Result<BinaryExpr, String> {
         // TODO: parse_bimary_expr
-        Ok(BinaryExpr::new(
-            left.clone(),
-            BinaryOperator::Plus,
-            Expr::NumberLiteral(Atom::from("1")),
-        ))
+
+        println!("-----------------");
+        println!("      {:?}", self.next());
+        println!("-----------------");
+        Ok(BinaryExpr::new(left.clone(), op, self.parse_expr(0)?))
     }
 }

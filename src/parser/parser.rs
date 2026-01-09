@@ -23,7 +23,6 @@ impl Parser {
     // get current position token
     pub fn peek(&self) -> Option<&Token> {
         let token = self.tokens.get(self.position);
-        println!("[LOG] peek: {:?}", token);
         token
     }
 
@@ -45,7 +44,6 @@ impl Parser {
     pub fn next(&mut self) -> Option<Token> {
         self.position += 1;
         let token = self.tokens.get(self.position).cloned();
-        println!("[LOG] next: {:?}", token);
         if token.is_some() {
             return token;
         }

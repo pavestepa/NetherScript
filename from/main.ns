@@ -1,5 +1,2 @@
-function main() {
-    let d = s;
-    console.log("Hello world" );
-    return a + d;
+public function main(a: i32 b: b32) {
 }

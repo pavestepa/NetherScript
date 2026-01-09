@@ -19,7 +19,7 @@ fn main() {
     println!(" ");
     println!(" ");
     println!(" ");
-    println!("{:?}", parsed.parse_fn_decl());
+    println!("{:#?}", parsed.parse_fn_decl());
     println!("{:?}", parsed.position);
     println!(" ");
     println!(" ");

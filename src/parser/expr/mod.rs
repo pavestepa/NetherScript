@@ -51,25 +51,31 @@ impl Parser {
             ));
             }
         }
-        println!("~ parsed expr: {:?}", left);
+        println!("~ parsed expr: {:?} [{:?}]", left, self.peek().unwrap());
         return Ok(left);
     }
     fn right_parse(&mut self, left: &mut Expr, v: Atom) -> Result<(), String> {
         let token = *self.peek().unwrap();
         match token {
-            Token::Semicolon | Token::Comma | Token::RightParen => {
+            Token::Semicolon | Token::Comma => {
+                *left = Expr::Ident(v);
+                self.next();
+            }
+            Token::RightParen => {
                 *left = Expr::Ident(v);
             }
             Token::LeftParen => {
                 *left = Expr::Call(self.parse_call_expr(left)?);
+                self.next();
             }
             Token::Dot => {
                 *left = Expr::Member(self.parse_member_expr(left)?);
+                self.next();
             }
             Token::Minus | Token::Plus | Token::Star | Token::Slash | Token::Percent => {
                 *left = Expr::Binary(
                     self.parse_binary_expr(left, BinaryOperator::from_token(&token).unwrap())?,
-                );
+                )
             }
             Token::Greater
             | Token::Less
@@ -80,6 +86,7 @@ impl Parser {
                 *left = Expr::Logical(
                     self.parse_logical_expr(left, LogicalOperator::from_token(&token).unwrap())?,
                 );
+                self.next();
             }
             Token::Assign
             | Token::PlusAssign
