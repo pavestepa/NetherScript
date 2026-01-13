@@ -63,7 +63,7 @@ impl Parser {
             Token::Colon => {
                 let type_token = self.next().unwrap();
                 match type_token {
-                    Token::Ident(v) => {
+                    Token::Ident(_) => {
                         returns_type = self.parse_type()?;
                         self.next();
                     }

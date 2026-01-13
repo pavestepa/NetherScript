@@ -1,5 +1,5 @@
 use crate::{
-    ast::{Expr, Typ},
+    ast::{Expr, TypeRef},
     Atom,
 };
 
@@ -7,16 +7,16 @@ use crate::{
 pub struct ConstDecl {
     is_pub: bool,
     ident: Atom,
-    typ: Typ,
+    data_type: TypeRef,
     val: Expr,
 }
 
 impl ConstDecl {
-    pub fn new(is_pub: bool, ident: Atom, typ: Typ, val: Expr) -> Self {
+    pub fn new(is_pub: bool, ident: Atom, data_type: TypeRef, val: Expr) -> Self {
         Self {
             is_pub,
             ident,
-            typ,
+            data_type,
             val,
         }
     }

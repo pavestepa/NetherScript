@@ -1,7 +1,6 @@
 mod decl;
 mod expr;
-mod stmt;
-mod typ;
 mod parser;
+mod stmt;
 
 pub use parser::Parser;

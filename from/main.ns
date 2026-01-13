@@ -1,2 +1,5 @@
 public function main(a: i32 b: b32) {
+    let a = 4;
+    a + 2;
+    return a;
 }
