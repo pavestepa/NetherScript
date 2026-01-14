@@ -1,7 +1,13 @@
-use crate::{lexer::Keyword, Atom};
+use crate::{lexer::Keyword, Atom, TextRange};
+
+#[derive(Debug, Clone)]
+pub struct Token {
+    pub kind: TokenKind,
+    pub range: TextRange,
+}
 
 #[derive(Debug, Clone, Copy, PartialEq)]
-pub enum Token {
+pub enum TokenKind {
     // identificator
     Ident(Atom),
 

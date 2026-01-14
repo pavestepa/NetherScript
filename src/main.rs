@@ -1,14 +1,14 @@
 mod ast;
-mod ast_parser;
 mod atom;
 mod parser;
+mod text_range;
 pub use atom::{atom, Atom};
+pub use text_range::TextRange;
 
 use crate::{
     lexer::{Keyword, Token},
     parser::Parser,
 };
-mod ir;
 mod lexer;
 
 fn main() {

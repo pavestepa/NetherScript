@@ -1,4 +1,4 @@
-use crate::{ast::Expr, lexer::Token};
+use crate::{ast::Expr, lexer::TokenKind};
 
 #[derive(Debug, Clone)]
 pub enum BinaryOp {
@@ -10,12 +10,12 @@ pub enum BinaryOp {
 }
 
 impl BinaryOp {
-    pub fn from(token: Token, expr: Expr) -> Self {
+    pub fn from(token: TokenKind, expr: Expr) -> Self {
         match token {
-            Token::Plus => BinaryOp::Plus(Box::new(expr)),
-            Token::Minus => BinaryOp::Minus(Box::new(expr)),
-            Token::Star => BinaryOp::Star(Box::new(expr)),
-            Token::Slash => BinaryOp::Slash(Box::new(expr)),
+            TokenKind::Plus => BinaryOp::Plus(Box::new(expr)),
+            TokenKind::Minus => BinaryOp::Minus(Box::new(expr)),
+            TokenKind::Star => BinaryOp::Star(Box::new(expr)),
+            TokenKind::Slash => BinaryOp::Slash(Box::new(expr)),
             e => panic!("Token {:?} is not suitable for binary expression", e),
         }
     }

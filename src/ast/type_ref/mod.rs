@@ -1,4 +1,7 @@
 use crate::Atom;
 
 #[derive(Debug, Clone)]
-pub struct TypeRef(Atom);
+pub enum TypeRef {
+    Literal(Atom),
+    Error,
+}

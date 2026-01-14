@@ -1,4 +1,4 @@
-use crate::{ast::Expr, lexer::Token};
+use crate::{ast::Expr, lexer::TokenKind};
 
 #[derive(Debug, Clone)]
 pub enum LogicalOp {
@@ -11,14 +11,14 @@ pub enum LogicalOp {
 }
 
 impl LogicalOp {
-    pub fn from(token: Token, expr: Expr) -> Self {
+    pub fn from(token: TokenKind, expr: Expr) -> Self {
         match token {
-            Token::Equals => LogicalOp::Equals(Box::new(expr)),
-            Token::NotEquals => LogicalOp::NotEquals(Box::new(expr)),
-            Token::Less => LogicalOp::Less(Box::new(expr)),
-            Token::Greater => LogicalOp::Greater(Box::new(expr)),
-            Token::LessEqual => LogicalOp::LessEqual(Box::new(expr)),
-            Token::GreaterEqual => LogicalOp::GreaterEqual(Box::new(expr)),
+            TokenKind::Equals => LogicalOp::Equals(Box::new(expr)),
+            TokenKind::NotEquals => LogicalOp::NotEquals(Box::new(expr)),
+            TokenKind::Less => LogicalOp::Less(Box::new(expr)),
+            TokenKind::Greater => LogicalOp::Greater(Box::new(expr)),
+            TokenKind::LessEqual => LogicalOp::LessEqual(Box::new(expr)),
+            TokenKind::GreaterEqual => LogicalOp::GreaterEqual(Box::new(expr)),
             e => panic!("Token {:?} is not suitable for logical expression", e),
         }
     }

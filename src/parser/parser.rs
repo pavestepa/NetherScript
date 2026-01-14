@@ -1,22 +1,24 @@
-use crate::ast::Module;
-use crate::lexer::{Keyword, Token};
+use crate::lexer::{Keyword, Token, TokenKind};
+use crate::parser::SyntaxError;
 use crate::Atom;
 
 pub struct Parser {
     pub tokens: Vec<Token>,
     pub position: usize,
+    errors: Vec<SyntaxError>,
 }
 
 impl Parser {
     pub fn new(tokens: Vec<Token>) -> Self {
         let tokens = tokens
             .into_iter()
-            .filter(|t| !matches!(t, Token::Whitespace | Token::CommentLine))
+            .filter(|t| !matches!(t.kind, TokenKind::Whitespace | TokenKind::CommentLine))
             .collect();
 
         Self {
             tokens,
             position: 0,
+            errors: vec![],
         }
     }
 
@@ -50,27 +52,10 @@ impl Parser {
         None
     }
 
-    // is current token equal with expected
-    pub fn check(&self, expected: Token) -> Result<(), String> {
-        if self.peek() == Some(&expected) {
-            return Ok(());
-        }
-        Err(format!(
-            "[loc] expected {:?}, but found {:?}",
-            expected,
-            *self.peek().unwrap()
-        ))
-    }
-
-    // is current token keyword equal with expected
-    pub fn check_keyword(&self, keyword: Keyword) -> bool {
-        matches!(self.peek(), Some(Token::Keyword(k)) if *k == keyword)
-    }
-
     // is current token equal or send Err
-    pub fn expect(&mut self, expected: Token) -> Result<(), String> {
+    pub fn expect(&mut self, expected: TokenKind) -> Result<(), String> {
         match self.advance() {
-            Some(t) if t == expected => Ok(()),
+            Some(t) if t.kind == expected => Ok(()),
             Some(t) => Err(format!("Expected {:?}, found {:?}", expected, t)),
             None => Err(format!("Expected {:?}, found EOF", expected)),
         }
@@ -81,53 +66,11 @@ impl Parser {
         self.position >= self.tokens.len()
     }
 
-    // find first equal token and set to this position or none
-    pub fn first_finded(&mut self, _token: Token) -> Option<Token> {
-        let token = Some(&_token);
-        let old_position = self.position;
-        self.advance();
-        while !self.is_at_end() {
-            if self.peek() == token {
-                return Some(_token);
-            }
-            self.advance();
-        }
-        self.position = old_position;
-        return None;
-    }
-
-    pub fn ident(&mut self) -> Result<Atom, String> {
-        if let Some(&Token::Ident(value)) = self.peek() {
-            return Ok(value.clone());
-        }
-        Err(format!(
-            "expected Ident, but found {:?}",
-            *self.peek().unwrap()
-        ))
-    }
-
-    pub fn keyword(&mut self) -> Result<Keyword, String> {
-        if let Some(&Token::Keyword(value)) = self.peek() {
-            return Ok(value.clone());
-        }
-        Err(format!(
-            "expected Ident, but found {:?}",
-            *self.peek().unwrap()
-        ))
-    }
-
-    fn consume(&mut self, expected: &Token) {
-        let tok = self.next();
-        if tok.clone().unwrap() != *expected {
-            panic!("expected {:?}, got {:?}", expected, tok);
-        }
-    }
-
-    pub fn is(&self, token: Token) -> bool {
-        self.peek().unwrap() == &token
-    }
-
-    pub fn is_not(&self, token: Token) -> bool {
-        self.peek().unwrap() != &token
+    fn error(&mut self, message: impl Into<String>) {
+        let token = self.peek().unwrap();
+        self.errors.push(SyntaxError {
+            message: message.into(),
+            range: token.range,
+        });
     }
 }

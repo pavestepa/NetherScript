@@ -14,4 +14,5 @@ pub enum OpExpr {
     Binary(BinaryOp),
     Logical(LogicalOp),
     Unary(UnaryOp),
+    Error,
 }

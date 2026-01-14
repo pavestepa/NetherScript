@@ -23,4 +23,5 @@ pub enum Stmt {
     Loop(LoopStmt),
     Var(VarStmt),
     Expr(ExprStmt),
+    Error,
 }

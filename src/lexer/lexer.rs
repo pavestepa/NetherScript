@@ -1,217 +1,207 @@
-use std::{fs, iter::Peekable, str::Chars};
+use std::{fs, iter::Peekable, str::CharIndices};
 
 use crate::{
     atom,
-    lexer::{keyword_to_token, Token},
+    lexer::{keyword_to_token, Token, TokenKind},
+    TextRange,
 };
 
 pub fn lexer(file_path: &str) -> Vec<Token> {
     let contents = fs::read_to_string(file_path).expect("Failed to read file");
 
-    let mut tokens = vec![];
-    let mut chars = contents.chars().peekable();
+    let mut tokens = Vec::new();
+    let mut chars = contents.char_indices().peekable();
 
-    while let Some(&c) = chars.peek() {
-        match c {
-            // Whitespace
+    while let Some((start, ch)) = chars.peek().copied() {
+        match ch {
+            // ───────── whitespace ─────────
             c if c.is_whitespace() => {
-                consume_whitespace(&mut chars);
-                tokens.push(Token::Whitespace);
+                let end = consume_whitespace(&mut chars, start);
+                tokens.push(token(TokenKind::Whitespace, start, end));
             }
 
-            // Identifiers (start with letter or underscore)
+            // ───────── identifier / keyword / boolean ─────────
             c if c.is_alphabetic() || c == '_' => {
-                let ident = consume_identifier(&mut chars);
+                let (end, ident) = consume_identifier(&mut chars, start);
+
                 if let Some(keyword) = keyword_to_token(&ident) {
-                    tokens.push(Token::Keyword(keyword));
-                } else if let Some(boolean_literal) = ident_to_boolean(&ident) {
-                    tokens.push(boolean_literal);
+                    tokens.push(token(TokenKind::Keyword(keyword), start, end));
+                } else if ident == "true" || ident == "false" {
+                    tokens.push(token(TokenKind::BooleanLiteral(atom(ident)), start, end));
                 } else {
-                    tokens.push(Token::Ident(atom(ident)));
+                    tokens.push(token(TokenKind::Ident(atom(ident)), start, end));
                 }
             }
 
-            // Numbers
+            // ───────── number ─────────
             c if c.is_ascii_digit() => {
-                let number = consume_number(&mut chars);
-                tokens.push(Token::NumberLiteral(atom(number)));
+                let (end, number) = consume_number(&mut chars, start);
+                tokens.push(token(TokenKind::NumberLiteral(atom(number)), start, end));
             }
 
-            // String literals
+            // ───────── string ─────────
             '"' => {
-                let string_lit = consume_string(&mut chars);
-                tokens.push(Token::StringLiteral(atom(string_lit)));
+                let (end, string) = consume_string(&mut chars, start);
+                tokens.push(token(TokenKind::StringLiteral(atom(string)), start, end));
             }
 
-            '+' => {
-                chars.next();
-                tokens.push(Token::Plus);
-            }
-            '-' => {
-                chars.next();
-                tokens.push(Token::Minus);
-            }
-            '*' => {
-                chars.next();
-                tokens.push(Token::Star);
-            }
-            '(' => {
-                chars.next();
-                tokens.push(Token::LeftParen);
-            }
-            ')' => {
-                chars.next();
-                tokens.push(Token::RightParen);
-            }
-            '{' => {
-                chars.next();
-                tokens.push(Token::LeftBrace);
-            }
-            '}' => {
-                chars.next();
-                tokens.push(Token::RightBrace);
-            }
-            ':' => {
-                chars.next();
-                tokens.push(Token::Colon)
-            }
-            ';' => {
-                chars.next();
-                tokens.push(Token::Semicolon);
-            }
-            ',' => {
-                chars.next();
-                tokens.push(Token::Comma);
-            }
-            // Commentaries
+            // ───────── operators / punctuation ─────────
+            '+' => single(&mut chars, &mut tokens, TokenKind::Plus),
+            '-' => single(&mut chars, &mut tokens, TokenKind::Minus),
+            '*' => single(&mut chars, &mut tokens, TokenKind::Star),
+            '(' => single(&mut chars, &mut tokens, TokenKind::LeftParen),
+            ')' => single(&mut chars, &mut tokens, TokenKind::RightParen),
+            '{' => single(&mut chars, &mut tokens, TokenKind::LeftBrace),
+            '}' => single(&mut chars, &mut tokens, TokenKind::RightBrace),
+            ':' => single(&mut chars, &mut tokens, TokenKind::Colon),
+            ';' => single(&mut chars, &mut tokens, TokenKind::Semicolon),
+            ',' => single(&mut chars, &mut tokens, TokenKind::Comma),
+            '.' => single(&mut chars, &mut tokens, TokenKind::Dot),
+
             '/' => {
-                chars.next();
-                if let Some(&'/') = chars.peek() {
-                    consume_line_comment(&mut chars);
-                    tokens.push(Token::CommentLine);
+                let (_, _) = chars.next().unwrap();
+                if let Some(&(_, '/')) = chars.peek() {
+                    let end = consume_line_comment(&mut chars, start);
+                    tokens.push(token(TokenKind::CommentLine, start, end));
                 } else {
-                    tokens.push(Token::Slash);
+                    tokens.push(token(TokenKind::Slash, start, start + 1));
                 }
             }
+
             '=' => {
-                chars.next();
-                if let Some(&'=') = chars.peek() {
-                    chars.next();
-                    tokens.push(Token::Equals);
+                let (_, _) = chars.next().unwrap();
+                if let Some(&(_, '=')) = chars.peek() {
+                    let (end, _) = chars.next().unwrap();
+                    tokens.push(token(TokenKind::Equals, start, end + 1));
                 } else {
-                    tokens.push(Token::Assign);
+                    tokens.push(token(TokenKind::Assign, start, start + 1));
                 }
             }
+
             '!' => {
-                chars.next();
-                if let Some(&'=') = chars.peek() {
-                    chars.next();
-                    tokens.push(Token::NotEquals);
+                let (_, _) = chars.next().unwrap();
+                if let Some(&(_, '=')) = chars.peek() {
+                    let (end, _) = chars.next().unwrap();
+                    tokens.push(token(TokenKind::NotEquals, start, end + 1));
                 } else {
-                    tokens.push(Token::Ident(atom("!".to_string())));
+                    tokens.push(token(TokenKind::Not, start, start + 1));
                 }
             }
 
             '<' => {
-                chars.next();
-                if let Some(&'=') = chars.peek() {
-                    chars.next();
-                    tokens.push(Token::LessEqual);
+                let (_, _) = chars.next().unwrap();
+                if let Some(&(_, '=')) = chars.peek() {
+                    let (end, _) = chars.next().unwrap();
+                    tokens.push(token(TokenKind::LessEqual, start, end + 1));
                 } else {
-                    tokens.push(Token::Less);
+                    tokens.push(token(TokenKind::Less, start, start + 1));
                 }
             }
+
             '>' => {
-                chars.next();
-                if let Some(&'=') = chars.peek() {
-                    chars.next();
-                    tokens.push(Token::GreaterEqual);
+                let (_, _) = chars.next().unwrap();
+                if let Some(&(_, '=')) = chars.peek() {
+                    let (end, _) = chars.next().unwrap();
+                    tokens.push(token(TokenKind::GreaterEqual, start, end + 1));
                 } else {
-                    tokens.push(Token::Greater);
+                    tokens.push(token(TokenKind::Greater, start, start + 1));
                 }
             }
-            '.' => {
-                chars.next();
-                // if after dot coming digit - its float number (i guess)
-                if let Some(&next) = chars.peek() {
-                    if next.is_ascii_digit() {
-                        // Warning: starting with dot
-                        let mut number = String::from(".");
-                        number.push_str(&consume_number(&mut chars));
-                        tokens.push(Token::NumberLiteral(atom(number)));
-                    } else {
-                        tokens.push(Token::Dot);
-                    }
-                } else {
-                    tokens.push(Token::Dot);
-                }
-            }
+
             _ => {
-                eprintln!("⚠ Unknown character: {}", c);
+                eprintln!("⚠ Unknown character: {}", ch);
                 chars.next();
             }
         }
     }
+
     tokens
 }
 
-fn consume_whitespace(chars: &mut Peekable<Chars>) {
-    while let Some(&c) = chars.peek() {
+fn consume_whitespace(chars: &mut Peekable<CharIndices>, start: usize) -> usize {
+    let mut end = start;
+    while let Some(&(i, c)) = chars.peek() {
         if c.is_whitespace() {
             chars.next();
+            end = i + c.len_utf8();
         } else {
             break;
         }
     }
+    end
 }
-fn consume_identifier(chars: &mut Peekable<Chars>) -> String {
+
+fn consume_identifier(chars: &mut Peekable<CharIndices>, start: usize) -> (usize, String) {
     let mut ident = String::new();
-    while let Some(&c) = chars.peek() {
+    let mut end = start;
+
+    while let Some(&(i, c)) = chars.peek() {
         if c.is_alphanumeric() || c == '_' {
-            ident.push(chars.next().unwrap());
+            chars.next();
+            ident.push(c);
+            end = i + c.len_utf8();
         } else {
             break;
         }
     }
-    ident
+    (end, ident)
 }
-fn consume_number(chars: &mut Peekable<Chars>) -> String {
+
+fn consume_number(chars: &mut Peekable<CharIndices>, start: usize) -> (usize, String) {
     let mut number = String::new();
-    while let Some(&c) = chars.peek() {
+    let mut end = start;
+
+    while let Some(&(i, c)) = chars.peek() {
         if c.is_ascii_digit() || c == '.' {
-            number.push(chars.next().unwrap());
+            chars.next();
+            number.push(c);
+            end = i + c.len_utf8();
         } else {
             break;
         }
     }
-    number
+    (end, number)
 }
-fn consume_string(chars: &mut Peekable<Chars>) -> String {
-    chars.next(); // consume opening quote
+
+fn consume_string(chars: &mut Peekable<CharIndices>, start: usize) -> (usize, String) {
+    chars.next(); // opening "
     let mut s = String::new();
-    while let Some(&c) = chars.peek() {
+    let mut end = start + 1;
+
+    while let Some(&(i, c)) = chars.peek() {
+        chars.next();
         if c == '"' {
-            chars.next(); // closing quote
+            end = i + 1;
             break;
         } else {
-            s.push(chars.next().unwrap());
+            s.push(c);
+            end = i + c.len_utf8();
         }
     }
-    s
+    (end, s)
 }
-fn consume_line_comment(chars: &mut Peekable<Chars>) {
-    chars.next(); // consume second '/'
-    while let Some(&c) = chars.peek() {
+
+fn consume_line_comment(chars: &mut Peekable<CharIndices>, start: usize) -> usize {
+    let mut end = start;
+    while let Some(&(i, c)) = chars.peek() {
+        chars.next();
+        end = i + c.len_utf8();
         if c == '\n' {
             break;
         }
-        chars.next();
+    }
+    end
+}
+
+fn token(kind: TokenKind, start: usize, end: usize) -> Token {
+    Token {
+        kind,
+        range: TextRange::new(start as u32, end as u32),
     }
 }
-fn ident_to_boolean(ident: &str) -> Option<Token> {
-    match ident {
-        "true" => Some(Token::BooleanLiteral(atom("true".to_string()))),
-        "false" => Some(Token::BooleanLiteral(atom("false".to_string()))),
-        _ => None,
-    }
+
+fn single(chars: &mut Peekable<CharIndices>, tokens: &mut Vec<Token>, kind: TokenKind) {
+    let (start, ch) = chars.next().unwrap();
+    let end = start + ch.len_utf8();
+    tokens.push(token(kind, start, end));
 }

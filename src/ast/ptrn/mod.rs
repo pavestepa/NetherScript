@@ -8,4 +8,5 @@ pub use typed_binding_ptrn::TypedBindingPtrn;
 pub enum Ptrn {
     Binding,
     TypedBinding,
+    Error,
 }

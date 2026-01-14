@@ -1,8 +1,4 @@
-use crate::{
-    ast::{stmt::BlockStmt, Stmt},
-    lexer::{Keyword, Token},
-    parser::Parser,
-};
+use crate::{ast::BlockStmt, lexer::Token, parser::Parser};
 
 impl Parser {
     pub fn parse_block_stmt(&mut self) -> Result<BlockStmt, String> {

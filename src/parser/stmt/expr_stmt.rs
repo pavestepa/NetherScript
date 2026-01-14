@@ -1,6 +1,5 @@
 use crate::{
-    ast::{stmt::ExprStmt, Expr},
-    lexer::Token,
+    ast::{Expr, ExprStmt},
     parser::Parser,
 };
 

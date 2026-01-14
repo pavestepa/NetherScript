@@ -14,4 +14,5 @@ pub enum CallExpr {
     Literal(LiteralCall),
     Member(MemberCall),
     Ident(IdentCall),
+    Error,
 }
