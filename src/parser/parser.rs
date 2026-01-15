@@ -5,7 +5,6 @@ use crate::Atom;
 pub struct Parser {
     pub tokens: Vec<Token>,
     pub position: usize,
-    errors: Vec<SyntaxError>,
 }
 
 impl Parser {
@@ -18,7 +17,6 @@ impl Parser {
         Self {
             tokens,
             position: 0,
-            errors: vec![],
         }
     }
 
@@ -66,11 +64,11 @@ impl Parser {
         self.position >= self.tokens.len()
     }
 
-    fn error(&mut self, message: impl Into<String>) {
+    fn error(&mut self, message: impl Into<String>) -> SyntaxError {
         let token = self.peek().unwrap();
-        self.errors.push(SyntaxError {
+        SyntaxError {
             message: message.into(),
             range: token.range,
-        });
+        }
     }
 }
