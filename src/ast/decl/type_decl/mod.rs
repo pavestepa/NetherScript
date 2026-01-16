@@ -1,2 +1,6 @@
+use crate::ast::Ident;
+
 #[derive(Debug)]
-pub struct TypeDecl {}
+pub struct TypeDecl {
+    ident: Ident,
+}

@@ -2,7 +2,6 @@ mod const_decl;
 mod enum_decl;
 mod export_decl;
 mod function_decl;
-mod implement_decl;
 mod import_decl;
 mod index_decl;
 mod struct_decl;
@@ -12,7 +11,6 @@ pub use const_decl::ConstDecl;
 pub use enum_decl::EnumDecl;
 pub use export_decl::ExportDecl;
 pub use function_decl::FunctionDecl;
-pub use implement_decl::ImplementDecl;
 pub use import_decl::ImportDecl;
 pub use index_decl::IndexDecl;
 pub use struct_decl::StructDecl;
@@ -24,7 +22,6 @@ pub enum Decl {
     Enum(EnumDecl),
     Export(ExportDecl),
     Function(FunctionDecl),
-    Implement(ImplementDecl),
     ImportDecl(ImportDecl),
     IndexDecl(IndexDecl),
     Struct(StructDecl),

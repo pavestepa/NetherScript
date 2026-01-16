@@ -5,6 +5,7 @@ use crate::Atom;
 pub struct Parser {
     pub tokens: Vec<Token>,
     pub position: usize,
+    pub errors: Vec<SyntaxError>,
 }
 
 impl Parser {
@@ -17,6 +18,7 @@ impl Parser {
         Self {
             tokens,
             position: 0,
+            errors: vec![],
         }
     }
 
@@ -50,25 +52,11 @@ impl Parser {
         None
     }
 
-    // is current token equal or send Err
-    pub fn expect(&mut self, expected: TokenKind) -> Result<(), String> {
-        match self.advance() {
-            Some(t) if t.kind == expected => Ok(()),
-            Some(t) => Err(format!("Expected {:?}, found {:?}", expected, t)),
-            None => Err(format!("Expected {:?}, found EOF", expected)),
-        }
-    }
-
-    // is position more than tokens length
-    pub fn is_at_end(&self) -> bool {
-        self.position >= self.tokens.len()
-    }
-
-    fn error(&mut self, message: impl Into<String>) -> SyntaxError {
+    pub fn error(&mut self, message: impl Into<String>) {
         let token = self.peek().unwrap();
-        SyntaxError {
+        self.errors.push(SyntaxError {
             message: message.into(),
             range: token.range,
-        }
+        });
     }
 }

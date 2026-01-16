@@ -1,11 +1,11 @@
 use crate::{
     ast::{BlockStmt, FunctionDecl, TypeRef},
     lexer::{Keyword, Token},
-    parser::Parser,
+    parser::{Parse, Parser},
 };
 
 impl Parser {
-    pub fn parse_fn_decl(&mut self) -> Result<FunctionDecl, String> {
+    pub fn parse_function_decl(&mut self) -> Parse<FunctionDecl> {
         // Check is public Function Declaration
         if fn_and_pub.is_err() {
             return Err(fn_and_pub.err().unwrap());

@@ -1,5 +1,38 @@
-public function main(a: i32 b: b32) {
-    let a = 4;
-    a + 2;
-    return a;
+// [src.entities.animal] animal.ns
+
+export struct Animal {
+    isMale: boolean,
+    age: u32
+}
+
+implement Animal {
+    (_isMale: boolean): Animal {
+        return {
+            isMale: _isMale,
+            age: 0,
+        }
+    }
+
+    aged (_isMale: boolean, _age: u32): Animal {
+        return {
+            isMale: _isMale,
+            age: _age,
+        }
+    }
+}
+
+// [src.entities] index.ns
+
+index animal;
+import Animal from animal;
+export Animal;
+
+// [src] main.ns
+
+index entities;
+import Animal from entities;
+
+function main() {
+    const newBornAnimal: Animal = Animal(true);
+    const agedAnimal: Animal = Animal.aged(true, 2);
 }

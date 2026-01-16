@@ -1,20 +1,15 @@
-use crate::{
-    ast::{Expr, TypeRef},
-    Atom,
-};
+use crate::ast::{Expr, Ident, TypeRef};
 
 #[derive(Debug)]
 pub struct ConstDecl {
-    is_pub: bool,
-    ident: Atom,
+    ident: Ident,
     data_type: TypeRef,
     val: Expr,
 }
 
 impl ConstDecl {
-    pub fn new(is_pub: bool, ident: Atom, data_type: TypeRef, val: Expr) -> Self {
+    pub fn new(ident: Ident, data_type: TypeRef, val: Expr) -> Self {
         Self {
-            is_pub,
             ident,
             data_type,
             val,

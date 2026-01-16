@@ -9,7 +9,7 @@ mod stmt;
 mod type_ref;
 
 pub use decl::{
-    ConstDecl, Decl, EnumDecl, FunctionDecl, ImplementDecl, ImportDecl, IndexDecl, StructDecl,
+    ConstDecl, Decl, EnumDecl, ExportDecl, FunctionDecl, ImportDecl, IndexDecl, StructDecl,
     TypeDecl,
 };
 pub use expr::{CallExpr, Expr, OpExpr};
