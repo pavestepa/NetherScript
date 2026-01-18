@@ -1,5 +1,6 @@
 use crate::parser::SyntaxError;
 
+#[derive(Debug)]
 pub struct Parse<T> {
     pub syntax: T,
     pub errors: Vec<SyntaxError>,

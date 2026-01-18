@@ -1,6 +1,5 @@
-use crate::lexer::{Keyword, Token, TokenKind};
+use crate::lexer::{Token, TokenKind};
 use crate::parser::SyntaxError;
-use crate::Atom;
 
 pub struct Parser {
     pub tokens: Vec<Token>,
