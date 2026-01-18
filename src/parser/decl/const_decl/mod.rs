@@ -1,10 +1,14 @@
+mod expect;
+
 use crate::{
     ast::ConstDecl,
+    atom,
+    lexer::TokenKind,
     parser::{parse::parse, Parse, Parser},
 };
 
 impl Parser {
-    pub fn parse_const_decl(&mut self) -> Parse<ConstDecl> {
-        parse(ConstDecl::new(ident, data_type, val), errors)
+    pub fn parse_const_decl(&mut self) -> ParseResult<ConstDecl> {
+        self.expect_let_or_const
     }
 }

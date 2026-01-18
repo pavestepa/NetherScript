@@ -4,7 +4,7 @@ use crate::{
 };
 
 impl Parser {
-    pub fn parse_index_decl(&mut self) -> Parse<IndexDecl> {
+    pub fn parse_index_decl(&mut self) -> IndexDecl {
         parse(IndexDecl {}, error)
     }
 }

@@ -4,7 +4,7 @@ use crate::{
 };
 
 impl Parser {
-    pub fn parse_import_decl(&mut self) -> Parse<ImportDecl> {
+    pub fn parse_import_decl(&mut self) -> ImportDecl {
         parse(ImportDecl { from: vec![] }, error)
     }
 }

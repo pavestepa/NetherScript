@@ -4,7 +4,7 @@ use crate::{
 };
 
 impl Parser {
-    pub fn parse_export_decl(&mut self) -> Parse<ExportDecl> {
+    pub fn parse_export_decl(&mut self) -> ExportDecl {
         parse(ExportDecl {}, errors)
     }
 }

@@ -5,13 +5,13 @@ use crate::{
 };
 
 impl Parser {
-    pub fn parse_block_stmt(&mut self) -> Parse<BlockStmt> {
+    pub fn parse_block_stmt(&mut self) -> BlockStmt {
         let mut block = BlockStmt { stmts: vec![] };
 
         while self.peek().unwrap().kind != TokenKind::RightBrace {
             block.stmts.push(self.parse_stmt())
         }
 
-        Ok(block)
+        block
     }
 }

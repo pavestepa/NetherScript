@@ -70,6 +70,6 @@ impl fmt::Debug for Atom {
     }
 }
 
-pub fn atom(a: String) -> Atom {
+pub fn atom(a: impl Into<String>) -> Atom {
     Atom::from(a.as_str())
 }

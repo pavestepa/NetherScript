@@ -4,7 +4,7 @@ use crate::{
 };
 
 impl Parser {
-    pub fn parse_enum_decl(&mut self) -> Parse<EnumDecl> {
+    pub fn parse_enum_decl(&mut self) -> EnumDecl {
         parse(EnumDecl {}, errors)
     }
 }

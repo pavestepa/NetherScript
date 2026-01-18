@@ -13,11 +13,11 @@ mod var_stmt;
 mod while_stmt;
 
 impl Parser {
-    pub fn parse_stmt(&mut self) -> Result<Stmt, String> {
+    pub fn parse_stmt(&mut self) -> Stmt {
         println!("starting parsing statement:");
         match *self.peek().unwrap() {
             Token::Ident(v) | Token::StringLiteral(v) | Token::NumberLiteral(v) => {
-                Ok(Stmt::Expr(self.parse_expr_stmt()?))
+                Stmt::Expr(self.parse_expr_stmt()?)
             }
             Token::Keyword(v) => match v {
                 Keyword::Break => Ok(Stmt::Break(self.parse_break_stmt()?)),

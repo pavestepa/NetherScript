@@ -6,14 +6,14 @@ use crate::{
 
 #[derive(Debug, Clone)]
 pub struct FunctionCall {
-    pub callee: Box<Ident>,
+    pub callee: Ident,
     pub args: Vec<Expr>,
 }
 
 impl FunctionCall {
     pub fn new(callee: Ident, args: Vec<Expr>) -> Self {
         Self {
-            callee: Box::new(callee),
+            callee: callee,
             args: args,
         }
     }

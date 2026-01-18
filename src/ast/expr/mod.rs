@@ -8,5 +8,4 @@ pub use op_expr::OpExpr;
 pub enum Expr {
     Op(OpExpr),
     Call(CallExpr),
-    Error,
 }
