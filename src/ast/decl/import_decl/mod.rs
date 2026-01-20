@@ -1,4 +1,4 @@
-use crate::ast::Ident;
+use crate::ast::{ast::Ast, Ident};
 
 #[derive(Debug)]
 pub struct ImportDecl {

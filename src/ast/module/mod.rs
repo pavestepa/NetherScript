@@ -1,4 +1,4 @@
-use crate::ast::decl::Decl;
+use crate::ast::{ast::Ast, decl::Decl};
 
 #[derive(Debug)]
 pub struct Module {
@@ -6,11 +6,11 @@ pub struct Module {
 }
 
 impl Module {
-    pub fn new(decls: Vec<Decl>) -> Self {
+    pub fn new(decls: Vec<Ast<Decl>>) -> Self {
         Self { decls }
     }
 
-    pub fn decls(&self) -> &[Decl] {
+    pub fn decls(&self) -> &[Ast<Decl>] {
         &self.decls
     }
 }

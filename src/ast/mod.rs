@@ -7,6 +7,7 @@ mod module;
 mod patterns;
 mod shared;
 mod stmt;
+mod syntax_error;
 mod type_ref;
 
 pub use decl::{
@@ -18,6 +19,7 @@ pub use expr::{CallExpr, Expr, OpExpr};
 pub use ident::Ident;
 pub use literal::Literal;
 pub use module::Module;
-pub use patterns::{BindingPtrn, TypedBindingPtrn};
+pub use patterns::{Binding, EnumMember, TypedBinding};
 pub use stmt::{BlockStmt, BreakStmt, ExprStmt, IfStmt, LoopStmt, ReturnStmt, Stmt, VarStmt};
+pub use syntax_error::SyntaxError;
 pub use type_ref::TypeRef;

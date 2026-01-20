@@ -26,4 +26,5 @@ pub enum Decl {
     IndexDecl(IndexDecl),
     Struct(StructDecl),
     Type(TypeDecl),
+    Error,
 }

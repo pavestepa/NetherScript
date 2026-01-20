@@ -5,5 +5,5 @@ use crate::{
 };
 
 impl Parser {
-    pub fn parse_function_decl(&mut self) -> FunctionDecl {
+    pub fn parse_function_decl(&mut self) -> FunctionDecl {}
 }

@@ -1,5 +1,5 @@
+use crate::ast::SyntaxError;
 use crate::lexer::{Token, TokenKind};
-use crate::parser::SyntaxError;
 
 pub struct Parser {
     pub tokens: Vec<Token>,

@@ -20,38 +20,31 @@ impl Parser {
             match keyword {
                 Keyword::Const => {
                     self.next();
-                    let decl_kind = self.parse_const_decl();
-                    Decl::Const(decl_kind.syntax)
+                    Decl::Const(self.parse_const_decl())
                 }
                 Keyword::Enum => {
                     self.next();
-                    let decl_kind = self.parse_enum_decl();
-                    Decl::Enum(decl_kind.syntax)
+                    Decl::Enum(self.parse_enum_decl())
                 }
                 Keyword::Export => {
                     self.next();
-                    let decl_kind = self.parse_export_decl();
-                    Decl::Export(decl_kind.syntax)
+                    Decl::Export(self.parse_export_decl())
                 }
                 Keyword::Function => {
                     self.next();
-                    let decl_kind = self.parse_function_decl();
-                    Decl::Function(decl_kind.syntax)
+                    Decl::Function(self.parse_function_decl())
                 }
                 Keyword::Import => {
                     self.next();
-                    let decl_kind = self.parse_import_decl();
-                    Decl::ImportDecl(decl_kind.syntax)
+                    Decl::ImportDecl(self.parse_import_decl())
                 }
                 Keyword::Index => {
                     self.next();
-                    let decl_kind = self.parse_index_decl();
-                    Decl::IndexDecl(decl_kind.syntax)
+                    Decl::IndexDecl(self.parse_index_decl())
                 }
                 Keyword::Struct => {
                     self.next();
-                    let decl_kind = self.parse_struct_decl();
-                    Decl::Struct(decl_kind.syntax)
+                    Decl::Struct(self.parse_struct_decl())
                 }
                 Keyword::Type => {
                     self.next();

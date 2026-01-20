@@ -1,4 +1,4 @@
-use crate::ast::{stmt::BlockStmt, Expr, Stmt};
+use crate::ast::{stmt::BlockStmt, Expr};
 
 #[derive(Debug)]
 pub struct IfStmt {
