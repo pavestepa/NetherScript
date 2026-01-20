@@ -2,15 +2,15 @@ use crate::ast::{ast::Ast, decl::Decl};
 
 #[derive(Debug)]
 pub struct Module {
-    decls: Vec<Ast<Decl>>,
+    decls: Vec<Decl>,
 }
 
 impl Module {
-    pub fn new(decls: Vec<Ast<Decl>>) -> Self {
+    pub fn new(decls: Vec<Decl>) -> Self {
         Self { decls }
     }
 
-    pub fn decls(&self) -> &[Ast<Decl>] {
+    pub fn decls(&self) -> &[Decl] {
         &self.decls
     }
 }

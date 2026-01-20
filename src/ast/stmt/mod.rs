@@ -16,7 +16,6 @@ pub use var_stmt::VarStmt;
 
 #[derive(Debug)]
 pub enum Stmt {
-    Block(BlockStmt),
     Return(ReturnStmt),
     Break(BreakStmt),
     If(IfStmt),

@@ -20,9 +20,11 @@ fn main() {
     println!(" ");
     println!(" ");
     println!(" ");
-    println!("{:?}", parsed.parse_function_decl());
-    println!("{:?}", parsed.position);
+    println!("{:#?}", parsed.parse_module());
     println!(" ");
-    println!(" ");
-    println!("{:?}", parsed.tokens);
+    for e in parsed.errors {
+        println!("[ERROR] start: {:?}, end: {:?}", e.range.start, e.range.end);
+        println!("  * {:#?}", e.message);
+        println!("");
+    }
 }

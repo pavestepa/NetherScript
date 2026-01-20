@@ -1,4 +1,4 @@
-use crate::ast::{ast::Ast, syntax_error, Expr, Ident, SyntaxError, TypeRef};
+use crate::ast::{ast::Ast, Expr, Ident, SyntaxError, TypeRef};
 
 #[derive(Debug)]
 pub struct ConstDecl {

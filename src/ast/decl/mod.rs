@@ -16,15 +16,17 @@ pub use index_decl::IndexDecl;
 pub use struct_decl::StructDecl;
 pub use type_decl::TypeDecl;
 
+use crate::ast::ast::Ast;
+
 #[derive(Debug)]
 pub enum Decl {
-    Const(ConstDecl),
-    Enum(EnumDecl),
-    Export(ExportDecl),
-    Function(FunctionDecl),
-    ImportDecl(ImportDecl),
-    IndexDecl(IndexDecl),
-    Struct(StructDecl),
-    Type(TypeDecl),
+    Const(Ast<ConstDecl>),
+    Enum(Ast<EnumDecl>),
+    Export(Ast<ExportDecl>),
+    Function(Ast<FunctionDecl>),
+    ImportDecl(Ast<ImportDecl>),
+    IndexDecl(Ast<IndexDecl>),
+    Struct(Ast<StructDecl>),
+    Type(Ast<TypeDecl>),
     Error,
 }

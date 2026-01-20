@@ -1,5 +1,11 @@
 #[derive(Debug)]
 pub enum Ast<T> {
     Parsed(T),
-    Error,
+    Error(String),
+}
+
+impl<T> Ast<T> {
+    pub fn err<I: Into<String>>(err: I) -> Self {
+        Ast::Error(err.into())
+    }
 }

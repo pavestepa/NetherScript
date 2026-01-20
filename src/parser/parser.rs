@@ -21,6 +21,10 @@ impl Parser {
         }
     }
 
+    pub fn token(&self) -> TokenKind {
+        self.peek().unwrap().kind
+    }
+
     // get current position token
     pub fn peek(&self) -> Option<&Token> {
         let token = self.tokens.get(self.position);
@@ -51,11 +55,13 @@ impl Parser {
         None
     }
 
-    pub fn error(&mut self, message: impl Into<String>) {
+    pub fn error(&mut self, message: impl Into<String>) -> SyntaxError {
         let token = self.peek().unwrap();
-        self.errors.push(SyntaxError {
+        let syntax_error = SyntaxError {
             message: message.into(),
             range: token.range,
-        });
+        };
+        self.errors.push(syntax_error.clone());
+        syntax_error
     }
 }
