@@ -1,5 +1,5 @@
 use crate::ast::SyntaxError;
-use crate::lexer::{Token, TokenKind};
+use crate::lexer::{Keyword, Token, TokenKind};
 
 pub struct Parser {
     pub tokens: Vec<Token>,
@@ -63,5 +63,30 @@ impl Parser {
         };
         self.errors.push(syntax_error.clone());
         syntax_error
+    }
+
+    pub fn go_to_next_decl(&mut self) {
+        loop {
+            println!("see");
+            if self.peek().is_some() {
+                match self.token() {
+                    TokenKind::Keyword(keyword) => match keyword {
+                        Keyword::Const
+                        | Keyword::Enum
+                        | Keyword::Export
+                        | Keyword::Function
+                        | Keyword::Import
+                        | Keyword::Index
+                        | Keyword::Struct
+                        | Keyword::Type => {
+                            break;
+                        }
+                        _ => {}
+                    },
+                    _ => {}
+                }
+            }
+            break;
+        }
     }
 }

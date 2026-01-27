@@ -7,7 +7,6 @@ impl Parser {
         println!("started parse of module");
         while self.peek().is_some() {
             decls.push(self.parse_decl());
-            self.next();
         }
 
         println!("ended parse of module");

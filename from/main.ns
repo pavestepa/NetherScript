@@ -1,3 +1,4 @@
+import User fros src.entities;
+
 function main(): void {
- sdfs
 }

@@ -9,7 +9,7 @@ use super::parser::Parser;
 // mod enum_decl;
 // mod export_decl;
 mod function_decl;
-// mod import_decl;
+mod import_decl;
 // mod index_decl;
 // mod struct_decl;
 // mod type_decl;
@@ -32,13 +32,15 @@ impl Parser {
                 //     Decl::Export(self.parse_export_decl())
                 // }
                 Keyword::Function => {
+                    println!("parse_decl: match Keyword::Function");
                     self.next();
                     Decl::Function(self.parse_function_decl())
                 }
-                // Keyword::Import => {
-                //     self.next();
-                //     Decl::ImportDecl(self.parse_import_decl())
-                // }
+                Keyword::Import => {
+                    println!("parse_decl: match Keyword::Import");
+                    self.next();
+                    Decl::ImportDecl(self.parse_import_decl())
+                }
                 // Keyword::Index => {
                 //     self.next();
                 //     Decl::IndexDecl(self.parse_index_decl())
