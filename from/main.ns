@@ -1,4 +1,6 @@
-import User fros src.entities;
+import User from src.entities;
 
-function main(): void {
+function main (): void {
 }
+
+export main;

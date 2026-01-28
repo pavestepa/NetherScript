@@ -7,7 +7,7 @@ use super::parser::Parser;
 
 // mod const_decl;
 // mod enum_decl;
-// mod export_decl;
+mod export_decl;
 mod function_decl;
 mod import_decl;
 // mod index_decl;
@@ -16,7 +16,8 @@ mod import_decl;
 
 impl Parser {
     pub fn parse_decl(&mut self) -> Decl {
-        println!("started parsing of decl");
+        println!("decl");
+        println!("{:?}", self.token());
         if let TokenKind::Keyword(keyword) = self.peek().unwrap().kind {
             match keyword {
                 // Keyword::Const => {
@@ -27,10 +28,11 @@ impl Parser {
                 //     self.next();
                 //     Decl::Enum(self.parse_enum_decl())
                 // }
-                // Keyword::Export => {
-                //     self.next();
-                //     Decl::Export(self.parse_export_decl())
-                // }
+                Keyword::Export => {
+                    println!("parse_decl: match Keyword::Export");
+                    self.next();
+                    Decl::Export(self.parse_export_decl())
+                }
                 Keyword::Function => {
                     println!("parse_decl: match Keyword::Function");
                     self.next();
@@ -54,6 +56,7 @@ impl Parser {
                 //     Decl::Type(self.parse_type_decl())
                 // }
                 e => {
+                    self.go_to_next_decl();
                     self.error(format!(
                         "Keyword {:?} can not be used for Decl declaration",
                         e
@@ -66,6 +69,7 @@ impl Parser {
                 "Token {:?} is not keyword and not suitable for Decl",
                 self.peek().unwrap().kind
             ));
+            self.go_to_next_decl();
             Decl::Error
         }
     }

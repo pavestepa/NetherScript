@@ -67,7 +67,6 @@ impl Parser {
 
     pub fn go_to_next_decl(&mut self) {
         loop {
-            println!("see");
             if self.peek().is_some() {
                 match self.token() {
                     TokenKind::Keyword(keyword) => match keyword {
@@ -81,12 +80,26 @@ impl Parser {
                         | Keyword::Type => {
                             break;
                         }
-                        _ => {}
+                        _ => self.position += 1,
                     },
-                    _ => {}
+                    _ => self.position += 1,
                 }
+            } else {
+                break;
             }
-            break;
+        }
+    }
+
+    pub fn parse_semicolon(&mut self) -> Result<(), ()> {
+        match self.token() {
+            TokenKind::Semicolon => {
+                self.next();
+                Ok(())
+            }
+            _ => {
+                self.next();
+                Err(())
+            }
         }
     }
 }
