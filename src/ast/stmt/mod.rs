@@ -14,13 +14,15 @@ pub use loop_stmt::LoopStmt;
 pub use return_stmt::ReturnStmt;
 pub use var_stmt::VarStmt;
 
+use crate::ast::ast::Ast;
+
 #[derive(Debug)]
 pub enum Stmt {
-    Return(ReturnStmt),
-    Break(BreakStmt),
-    If(IfStmt),
-    Loop(LoopStmt),
-    Var(VarStmt),
-    Expr(ExprStmt),
+    Return(Ast<ReturnStmt>),
+    Break(Ast<BreakStmt>),
+    If(Ast<IfStmt>),
+    Loop(Ast<LoopStmt>),
+    Var(Ast<VarStmt>),
+    Expr(Ast<ExprStmt>),
     Error,
 }

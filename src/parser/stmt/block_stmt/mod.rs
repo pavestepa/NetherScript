@@ -1,6 +1,6 @@
 use crate::{
-    ast::{ast::Ast, BlockStmt},
-    lexer::TokenKind,
+    ast::{ast::Ast, BlockStmt, Stmt},
+    lexer::{Keyword, TokenKind},
     parser::Parser,
 };
 
@@ -12,12 +12,12 @@ impl Parser {
             }
             e => {
                 self.error(format!(
-                    "expected '}}' for declare block of code statements, but found {:?}",
+                    "expected '{{' for declare block of code statements, but found {:?}",
                     e
                 ));
                 return BlockStmt {
                     stmts: Ast::Error(format!(
-                        "expected '}}' for declare block of code statements, but found {:?}",
+                        "expected '{{' for declare block of code statements, but found {:?}",
                         e
                     )),
                 };

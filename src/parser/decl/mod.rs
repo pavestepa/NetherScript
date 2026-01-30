@@ -73,4 +73,29 @@ impl Parser {
             Decl::Error
         }
     }
+
+    pub fn go_to_next_decl(&mut self) {
+        loop {
+            if self.peek().is_some() {
+                match self.token() {
+                    TokenKind::Keyword(keyword) => match keyword {
+                        Keyword::Const
+                        | Keyword::Enum
+                        | Keyword::Export
+                        | Keyword::Function
+                        | Keyword::Import
+                        | Keyword::Index
+                        | Keyword::Struct
+                        | Keyword::Type => {
+                            break;
+                        }
+                        _ => self.position += 1,
+                    },
+                    _ => self.position += 1,
+                }
+            } else {
+                break;
+            }
+        }
+    }
 }

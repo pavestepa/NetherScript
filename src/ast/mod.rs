@@ -20,6 +20,7 @@ pub use ident::Ident;
 pub use literal::Literal;
 pub use module::Module;
 pub use patterns::{Binding, EnumMember, TypedBinding};
+pub use shared::VarKind;
 pub use stmt::{BlockStmt, BreakStmt, ExprStmt, IfStmt, LoopStmt, ReturnStmt, Stmt, VarStmt};
 pub use syntax_error::SyntaxError;
 pub use type_ref::TypeRef;
