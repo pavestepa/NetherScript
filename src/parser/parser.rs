@@ -2,9 +2,9 @@ use crate::ast::SyntaxError;
 use crate::lexer::{Keyword, Token, TokenKind};
 
 pub struct Parser {
-    pub tokens: Vec<Token>,
-    pub position: usize,
-    pub errors: Vec<SyntaxError>,
+    tokens: Vec<Token>,
+    position: usize,
+    errors: Vec<SyntaxError>,
 }
 
 impl Parser {
@@ -21,23 +21,19 @@ impl Parser {
         }
     }
 
-    pub fn token(&self) -> TokenKind {
-        self.peek().unwrap().kind
+    pub fn current(&self) -> &Token {
+        self.tokens.get(self.position).unwrap()
     }
 
-    // get current position token
-    pub fn peek(&self) -> Option<&Token> {
-        let token = self.tokens.get(self.position);
-        token
+    pub fn previous(&self) -> &Token {
+        self.tokens.get(self.position - 1).unwrap()
     }
 
-    // get with jumped position token
-    pub fn peek_ahead(&self, offset: usize) -> Option<&Token> {
+    pub fn peek(&self, offset: usize) -> Option<&Token> {
         self.tokens.get(self.position + offset)
     }
 
-    // get current token and +1 to position
-    pub fn advance(&mut self) -> Option<Token> {
+    pub fn consume(&mut self) -> Option<Token> {
         let token = self.tokens.get(self.position).cloned();
         if token.is_some() {
             self.position += 1;
@@ -45,35 +41,40 @@ impl Parser {
         token
     }
 
-    // get next token and +1 to position
-    pub fn next(&mut self) -> Option<Token> {
-        self.position += 1;
-        let token = self.tokens.get(self.position).cloned();
-        if token.is_some() {
-            return token;
-        }
-        None
-    }
-
-    pub fn error(&mut self, message: impl Into<String>) -> SyntaxError {
-        let token = self.peek().unwrap();
+    pub fn error(&mut self, message: impl Into<String>) {
+        let token = self.current();
         let syntax_error = SyntaxError {
             message: message.into(),
             range: token.range,
         };
         self.errors.push(syntax_error.clone());
-        syntax_error
+        self.synchronize();
     }
 
-    pub fn parse_semicolon(&mut self) -> Result<(), ()> {
-        match self.token() {
-            TokenKind::Semicolon => {
-                self.next();
-                Ok(())
+    fn synchronize(&mut self) {
+        self.position += 1;
+
+        while self.position < self.tokens.len() {
+            if self.previous().kind == TokenKind::Semicolon {
+                return;
             }
-            _ => {
-                self.next();
-                Err(())
+            match self.current().kind {
+                TokenKind::Keyword(keyword) => match keyword {
+                    Keyword::Let
+                    | Keyword::Loop
+                    | Keyword::If
+                    | Keyword::Function
+                    | Keyword::Const
+                    | Keyword::Enum
+                    | Keyword::Import
+                    | Keyword::Index
+                    | Keyword::Struct
+                    | Keyword::Type => {
+                        return;
+                    }
+                    _ => {}
+                },
+                _ => {}
             }
         }
     }

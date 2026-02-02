@@ -14,6 +14,7 @@ pub enum Keyword {
     Else,
     Return,
     Match,
+    Loop,
     Break,
 }
 
@@ -33,6 +34,7 @@ pub fn keyword_to_token(ident: &str) -> Option<Keyword> {
         "else" => Some(Keyword::Else),
         "return" => Some(Keyword::Return),
         "match" => Some(Keyword::Match),
+        "loop" => Some(Keyword::Loop),
         "break" => Some(Keyword::Break),
         _ => None,
     }
