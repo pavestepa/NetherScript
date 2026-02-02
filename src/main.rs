@@ -22,7 +22,7 @@ fn main() {
     println!(" ");
     println!("{:#?}", parsed.parse_module());
     println!(" ");
-    for e in parsed.errors {
+    for e in parsed.get_errors() {
         println!("[ERROR] start: {:?}, end: {:?}", e.range.start, e.range.end);
         println!("  * {:#?}", e.message);
         println!("");

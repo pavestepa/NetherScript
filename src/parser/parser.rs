@@ -33,12 +33,16 @@ impl Parser {
         self.tokens.get(self.position + offset)
     }
 
-    pub fn consume(&mut self) -> Option<Token> {
-        let token = self.tokens.get(self.position).cloned();
-        if token.is_some() {
-            self.position += 1;
+    pub fn consume(&mut self, token_kind: TokenKind) -> Token {
+        let token = self.current().clone();
+        if token_kind != token.kind {
+            self.error(format!(
+                "Expected {:?}, but got {:?}",
+                token_kind, token.kind
+            ));
         }
-        token
+        self.position += 1;
+        return token;
     }
 
     pub fn error(&mut self, message: impl Into<String>) {
