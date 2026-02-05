@@ -17,11 +17,11 @@ class Car { ... }                               // default heap-allocated class 
 
 trait Buyable { ... }                           // traits (similar to Rust)
 
-struct Animal { ... }                           // data-only structure. All fields are public by 
-                                                // default.
-
-                                                // Prefix an identifier with '_' to make it       
-                                                //private.
+struct Animal {                                 // data-only structure. 
+    name: String,                               // All fields are public by default.
+    age: u32,
+    _id: i32,                                   // Prefix an identifier with '_' to make it       
+}                                               // private.
 
 enum Color { Red, White, Blue, Other(String) }  // enum like in Rust, with associated data
 
