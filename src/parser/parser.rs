@@ -43,7 +43,7 @@ impl Parser {
         }
         self.position += 1;
         return token;
-    }
+    } // TODO: consume ident way
 
     pub fn error(&mut self, message: impl Into<String>) {
         let token = self.current();

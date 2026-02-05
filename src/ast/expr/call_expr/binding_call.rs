@@ -1,4 +1,4 @@
 use crate::ast::Ident;
 
 #[derive(Debug, Clone)]
-pub struct IdentCall(Ident);
+pub struct BindignCall(Ident);

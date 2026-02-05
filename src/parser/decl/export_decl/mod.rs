@@ -8,10 +8,9 @@ impl Parser {
     pub fn parse_export_decl(&mut self) -> Ast<ExportDecl> {
         println!("decl_export");
         let ident;
-        match self.token() {
+        match self.current() {
             TokenKind::Ident(i) => {
-                self.next();
-                println!("{:?}", self.token());
+                self.consume(i);
                 ident = Ident(i);
             }
 

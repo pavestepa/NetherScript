@@ -19,8 +19,10 @@ pub use expr::{CallExpr, Expr, OpExpr};
 pub use ident::Ident;
 pub use literal::Literal;
 pub use module::Module;
-pub use patterns::{Binding, EnumMember, TypedBinding};
-pub use shared::VarKind;
-pub use stmt::{BlockStmt, BreakStmt, ExprStmt, IfStmt, LoopStmt, ReturnStmt, Stmt, VarStmt};
+pub use patterns::{Binding, EnumMember};
+pub use shared::LetOrVar;
+pub use stmt::{
+    AssignStmt, BindingStmt, BreakStmt, ExprStmt, IfStmt, LoopStmt, ReturnStmt, Stmt, StmtsBlock,
+};
 pub use syntax_error::SyntaxError;
 pub use type_ref::TypeRef;

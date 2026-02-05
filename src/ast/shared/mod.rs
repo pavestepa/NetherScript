@@ -1,3 +1,3 @@
-mod var_kind;
+mod let_or_var;
 
-pub use var_kind::VarKind;
+pub use let_or_var::LetOrVar;

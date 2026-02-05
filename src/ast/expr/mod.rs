@@ -6,7 +6,7 @@ pub use op_expr::OpExpr;
 
 #[derive(Debug, Clone)]
 pub enum Expr {
-    Op(OpExpr),
     Call(CallExpr),
+    Op(OpExpr),
     Error,
 }

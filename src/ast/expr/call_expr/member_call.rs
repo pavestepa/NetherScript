@@ -16,16 +16,16 @@
 * sugar of regular function calling with self object puting in argument.
 */
 
-use crate::ast::{expr::call_expr::IdentCall, Ident};
+use crate::ast::{expr::call_expr::BindignCall, Ident};
 
 #[derive(Debug, Clone)]
 pub struct MemberCall {
-    object: Box<IdentCall>,
+    object: Box<BindignCall>,
     prop: Box<Ident>,
 }
 
 impl MemberCall {
-    pub fn new(object: IdentCall, prop: Ident) -> Self {
+    pub fn new(object: BindignCall, prop: Ident) -> Self {
         Self {
             object: Box::new(object),
             prop: Box::new(prop),

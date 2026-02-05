@@ -1,20 +1,15 @@
-use crate::ast::{ast::Ast, BlockStmt, Ident, SyntaxError, TypeRef, TypedBinding};
+use crate::ast::{ast::Ast, Binding, Ident, StmtsBlock, SyntaxError, TypeRef};
 
 #[derive(Debug)]
 pub struct FunctionDecl {
     pub ident: Ident,
-    pub args: Vec<Ast<TypedBinding>>,
+    pub args: Vec<Ast<Binding>>,
     pub returns: TypeRef,
-    pub body: BlockStmt,
+    pub body: StmtsBlock,
 }
 
 impl FunctionDecl {
-    pub fn new(
-        ident: Ident,
-        args: Vec<Ast<TypedBinding>>,
-        returns: TypeRef,
-        body: BlockStmt,
-    ) -> Self {
+    pub fn new(ident: Ident, args: Vec<Ast<Binding>>, returns: TypeRef, body: StmtsBlock) -> Self {
         Self {
             ident,
             args,

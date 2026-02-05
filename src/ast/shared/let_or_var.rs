@@ -1,5 +1,5 @@
 #[derive(Debug)]
-pub enum VarKind {
+pub enum LetOrVar {
     Let,
     Const,
 }
