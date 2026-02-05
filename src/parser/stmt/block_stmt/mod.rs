@@ -1,21 +1,21 @@
 use crate::{
-    ast::{ast::Ast, BlockStmt, Stmt},
+    ast::{ast::Ast, Stmt, StmtsBlock},
     lexer::{Keyword, TokenKind},
     parser::Parser,
 };
 
 impl Parser {
-    pub fn parse_block_stmt(&mut self) -> BlockStmt {
-        match self.token() {
+    pub fn parse_block_stmt(&mut self) -> StmtsBlock {
+        match self.current().kind {
             TokenKind::LeftBrace => {
-                self.next();
+                self.consume(TokenKind::LeftBrace);
             }
             e => {
                 self.error(format!(
                     "expected '{{' for declare block of code statements, but found {:?}",
                     e
                 ));
-                return BlockStmt {
+                return StmtsBlock {
                     stmts: Ast::Error(format!(
                         "expected '{{' for declare block of code statements, but found {:?}",
                         e
@@ -24,16 +24,16 @@ impl Parser {
             }
         };
 
-        match self.token() {
+        match self.current().kind {
             TokenKind::RightBrace => {
-                self.next();
-                return BlockStmt {
+                self.consume(TokenKind::RightBrace);
+                return StmtsBlock {
                     stmts: Ast::Parsed(vec![]),
                 };
             }
             _ => {
                 self.error("[TODO] make stmts parser");
-                return BlockStmt {
+                return StmtsBlock {
                     stmts: Ast::Error("[TODO] make stmts parser".to_string()),
                 };
             }

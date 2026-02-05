@@ -7,28 +7,16 @@ use crate::{
 impl Parser {
     pub fn parse_export_decl(&mut self) -> Ast<ExportDecl> {
         println!("decl_export");
-        let ident;
-        match self.current() {
-            TokenKind::Ident(i) => {
-                self.consume(i);
-                ident = Ident(i);
-            }
-
-            e => {
-                self.go_to_next_decl();
-                let err = format!("'{:?}' is not Ident and can not be used for export", e);
-                self.error(err.clone());
-                return Ast::err(err);
-            }
-        };
-
-        let semicolon = self.parse_semicolon();
-        if semicolon.is_err() {
-            self.error("expected ';' after export declaration");
+        let ident = self.parse_ident();
+        if ident.is_err() {
+            let err = ident.err().unwrap();
+            self.error(err.clone());
+            return Ast::Error(err);
         }
+        self.consume(TokenKind::Semicolon);
 
         Ast::Parsed(ExportDecl {
-            ident: Ast::Parsed(ident),
+            ident: Ast::Parsed(ident.unwrap()),
         })
     }
 }

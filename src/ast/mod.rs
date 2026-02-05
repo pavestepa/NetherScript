@@ -20,7 +20,7 @@ pub use ident::Ident;
 pub use literal::Literal;
 pub use module::Module;
 pub use patterns::{Binding, EnumMember};
-pub use shared::LetOrVar;
+pub use shared::{LetOrVar, RefKind};
 pub use stmt::{
     AssignStmt, BindingStmt, BreakStmt, ExprStmt, IfStmt, LoopStmt, ReturnStmt, Stmt, StmtsBlock,
 };

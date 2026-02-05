@@ -1,6 +1,6 @@
 import User from src.entities;
 
-function main (): void }{}
+function main (): own void {}
   
 
 

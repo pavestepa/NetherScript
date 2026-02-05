@@ -5,7 +5,7 @@ impl Parser {
         let mut decls = vec![];
 
         println!("started parse of module");
-        while self.peek().is_some() {
+        while self.is_not_end() {
             decls.push(self.parse_decl());
         }
 

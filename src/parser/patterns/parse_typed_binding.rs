@@ -1,18 +1,18 @@
 use crate::{
-    ast::{ast::Ast, Ident, TypeRef, TypedBinding},
+    ast::{ast::Ast, Binding, Ident},
     lexer::TokenKind,
-    parser::{type_ref, Parser},
+    parser::Parser,
 };
 
 impl Parser {
-    pub fn parse_typed_binding(&mut self) -> Ast<TypedBinding> {
+    pub fn parse_typed_binding(&mut self) -> Ast<Binding> {
         let type_ref;
         let ident;
 
-        match self.token() {
+        match self.current().kind {
             TokenKind::Ident(i) => {
                 ident = Ident(i);
-                self.next();
+                self.consume(TokenKind::Ident(i));
             }
             e => {
                 self.error(format!("{:?} can not be used as name identificator", e));
@@ -20,9 +20,9 @@ impl Parser {
             }
         };
 
-        match self.token() {
+        match self.current().kind {
             TokenKind::Colon => {
-                self.next();
+                self.consume(TokenKind::Colon);
             }
             e => {
                 self.error(format!(
@@ -44,7 +44,7 @@ impl Parser {
             type_ref = parsed_type_ref.unwrap();
         }
 
-        return Ast::Parsed(TypedBinding {
+        return Ast::Parsed(Binding {
             ident: ident,
             type_ref: type_ref,
         });

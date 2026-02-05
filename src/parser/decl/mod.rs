@@ -17,8 +17,8 @@ mod import_decl;
 impl Parser {
     pub fn parse_decl(&mut self) -> Decl {
         println!("decl");
-        println!("{:?}", self.token());
-        if let TokenKind::Keyword(keyword) = self.peek().unwrap().kind {
+        println!("{:?}", self.current().kind);
+        if let TokenKind::Keyword(keyword) = self.current().kind {
             match keyword {
                 // Keyword::Const => {
                 //     self.next();
@@ -30,17 +30,17 @@ impl Parser {
                 // }
                 Keyword::Export => {
                     println!("parse_decl: match Keyword::Export");
-                    self.next();
+                    self.consume(TokenKind::Keyword(keyword));
                     Decl::Export(self.parse_export_decl())
                 }
                 Keyword::Function => {
                     println!("parse_decl: match Keyword::Function");
-                    self.next();
+                    self.consume(TokenKind::Keyword(keyword));
                     Decl::Function(self.parse_function_decl())
                 }
                 Keyword::Import => {
                     println!("parse_decl: match Keyword::Import");
-                    self.next();
+                    self.consume(TokenKind::Keyword(keyword));
                     Decl::ImportDecl(self.parse_import_decl())
                 }
                 // Keyword::Index => {
@@ -56,7 +56,6 @@ impl Parser {
                 //     Decl::Type(self.parse_type_decl())
                 // }
                 e => {
-                    self.go_to_next_decl();
                     self.error(format!(
                         "Keyword {:?} can not be used for Decl declaration",
                         e
@@ -67,35 +66,9 @@ impl Parser {
         } else {
             self.error(format!(
                 "Token {:?} is not keyword and not suitable for Decl",
-                self.peek().unwrap().kind
+                self.current().kind
             ));
-            self.go_to_next_decl();
             Decl::Error
-        }
-    }
-
-    pub fn go_to_next_decl(&mut self) {
-        loop {
-            if self.peek().is_some() {
-                match self.token() {
-                    TokenKind::Keyword(keyword) => match keyword {
-                        Keyword::Const
-                        | Keyword::Enum
-                        | Keyword::Export
-                        | Keyword::Function
-                        | Keyword::Import
-                        | Keyword::Index
-                        | Keyword::Struct
-                        | Keyword::Type => {
-                            break;
-                        }
-                        _ => self.position += 1,
-                    },
-                    _ => self.position += 1,
-                }
-            } else {
-                break;
-            }
         }
     }
 }

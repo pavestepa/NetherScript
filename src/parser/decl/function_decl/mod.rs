@@ -1,5 +1,5 @@
 use crate::{
-    ast::{ast::Ast, FunctionDecl, Ident, TypeRef, TypedBinding},
+    ast::{ast::Ast, Binding, FunctionDecl, TypeRef},
     lexer::TokenKind,
     parser::Parser,
 };
@@ -13,19 +13,21 @@ impl Parser {
             self.error(ident.clone().err().unwrap());
             return Ast::Error(ident.err().unwrap());
         }
+        println!("fn ident parsed");
 
         /* parsing arguments of function like: "(a: i32, s: String)" */
         let args = self.parse_arguments_with_parens();
         if args.is_err() {
             return Ast::Error(args.err().unwrap());
         }
-
+        println!("fn args parsed");
         /* parsing for function return type */
         let returns = self.parse_returns();
         if returns.is_err() {
             return Ast::Error(returns.err().unwrap());
         }
 
+        println!("fn returns type parsed");
         let body = self.parse_block_stmt();
 
         Ast::Parsed(FunctionDecl::new(
@@ -36,22 +38,14 @@ impl Parser {
         ))
     }
 
-    fn parse_arguments_with_parens(&mut self) -> Result<Vec<Ast<TypedBinding>>, String> {
+    fn parse_arguments_with_parens(&mut self) -> Result<Vec<Ast<Binding>>, String> {
         /* check for "(" existing */
-        match self.token() {
-            TokenKind::LeftParen => {
-                self.next();
-            }
-            e => {
-                self.error(format!("expected '(' but found {:?}", e));
-                return Err(format!("expected '(' but found {:?}", e));
-            }
-        };
+        self.consume(TokenKind::LeftParen);
 
         /* check for Ident of argument parse starting or is closing with ")" */
-        match self.token() {
+        match self.current().kind {
             TokenKind::RightParen => {
-                self.next();
+                self.consume(TokenKind::RightParen);
                 return Ok(vec![]);
             }
             TokenKind::Ident(_) => {
@@ -76,11 +70,11 @@ impl Parser {
         }
     }
 
-    fn parse_arguments(&mut self) -> Result<Vec<Ast<TypedBinding>>, String> {
+    fn parse_arguments(&mut self) -> Result<Vec<Ast<Binding>>, String> {
         let typed_bindings = self.parse_typed_bindings();
-        match self.token() {
+        match self.current().kind {
             TokenKind::RightParen => {
-                self.next();
+                self.consume(TokenKind::RightParen);
                 return Ok(typed_bindings);
             }
             e => {
@@ -91,9 +85,11 @@ impl Parser {
     }
 
     fn parse_returns(&mut self) -> Result<TypeRef, String> {
-        match self.token() {
+        println!("started parse fn returns");
+        match self.current().kind {
             TokenKind::Colon => {
-                self.next();
+                self.consume(TokenKind::Colon);
+                println!("Colon parsed");
             }
             e => {
                 self.error(format!(

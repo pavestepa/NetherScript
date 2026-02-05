@@ -45,6 +45,14 @@ impl Parser {
         return token;
     } // TODO: consume ident way
 
+    pub fn is_end(&self) -> bool {
+        self.position >= self.tokens.len()
+    }
+
+    pub fn is_not_end(&self) -> bool {
+        self.position < self.tokens.len()
+    }
+
     pub fn error(&mut self, message: impl Into<String>) {
         let token = self.current();
         let syntax_error = SyntaxError {
@@ -55,10 +63,14 @@ impl Parser {
         self.synchronize();
     }
 
+    pub fn get_errors(&self) -> Vec<SyntaxError> {
+        self.errors.clone()
+    }
+
     fn synchronize(&mut self) {
         self.position += 1;
 
-        while self.position < self.tokens.len() {
+        while self.is_not_end() {
             if self.previous().kind == TokenKind::Semicolon {
                 return;
             }

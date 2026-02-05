@@ -4,23 +4,22 @@ use crate::{
     parser::Parser,
 };
 
+mod binding_stmt;
 mod block_stmt;
-mod var_stmt;
 
 impl Parser {
     pub fn parse_stmt(&mut self) -> Stmt {
-        match self.token() {
+        match self.current().kind {
             TokenKind::Keyword(keyword) => match keyword {
                 Keyword::Let => {
-                    self.next();
-                    Stmt::Var(self.parse_var_stmt_let())
+                    self.consume(TokenKind::Keyword(keyword));
+                    Stmt::Binding(self.parse_binding_stmt_let())
                 }
-                Keyword::Const => {
-                    self.next();
-                    Stmt::Var(self.parse_var_stmt_const())
+                Keyword::Var => {
+                    self.consume(TokenKind::Keyword(keyword));
+                    Stmt::Binding(self.parse_binding_stmt_const())
                 }
                 e => {
-                    self.go_to_next_stmt();
                     self.error(format!(
                         "Keyword {:?} can not be used for Stmt declaration",
                         e
@@ -33,28 +32,7 @@ impl Parser {
                     "Token {:?} is not keyword and not suitable for Stmt",
                     e
                 ));
-                self.go_to_next_stmt();
                 Stmt::Error
-            }
-        }
-    }
-    pub fn go_to_next_stmt(&mut self) {
-        loop {
-            if self.peek().is_some() {
-                match self.token() {
-                    TokenKind::Keyword(keyword) => match keyword {
-                        Keyword::Const | Keyword::Let => {
-                            break;
-                        }
-                        _ => self.position += 1,
-                    },
-                    TokenKind::RightBrace => {
-                        break;
-                    }
-                    _ => self.position += 1,
-                }
-            } else {
-                break;
             }
         }
     }
