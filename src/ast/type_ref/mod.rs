@@ -1,7 +1,7 @@
 mod ref_kind;
 mod type_ident;
 
-use crate::ast::{type_ref::ref_kind::RefKind, Ident};
+use crate::ast::{shared::RefKind, Ident};
 
 #[derive(Debug, Clone)]
 pub struct TypeRef {
