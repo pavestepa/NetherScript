@@ -51,7 +51,8 @@ return                       // return a value from a function
 
 break                        // break out of a loop
 
-let a: i32                   // initialize a variable with `let` (mutable) or `const` (immutable)
+var a: i32                   // initialize a variable with `var` (mutable) or `let` (immutable)
+let b: u32
 
 foo(), a, 4, a = 34, a > b.x // expressions
 
