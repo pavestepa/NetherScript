@@ -26,7 +26,7 @@ impl Parser {
         ))
     }
 
-    fn parse_ref_kind(&mut self) -> Result<RefKind, String> {
+    pub fn parse_ref_kind(&mut self) -> Result<RefKind, String> {
         match self.current().kind {
             TokenKind::Keyword(keyword) => match keyword {
                 Keyword::Own => {

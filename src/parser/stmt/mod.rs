@@ -28,6 +28,9 @@ impl Parser {
                     Stmt::Error
                 }
             },
+            TokenKind::Ident(ident) => {
+                // TODO: create stmt parse
+            }
             e => {
                 self.error(format!(
                     "Token {:?} is not keyword and not suitable for Stmt",

@@ -25,6 +25,10 @@ impl Parser {
         self.tokens.get(self.position).unwrap()
     }
 
+    pub fn peek(&self, offset: usize) -> &Token {
+        self.tokens.get(self.position + offset).unwrap()
+    }
+
     pub fn previous(&self) -> &Token {
         self.tokens.get(self.position - 1).unwrap()
     }
