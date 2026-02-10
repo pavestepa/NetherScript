@@ -5,10 +5,11 @@ use crate::{
 };
 
 mod binding_stmt;
-mod block_stmt;
+mod stmts_block;
 
 impl Parser {
     pub fn parse_stmt(&mut self) -> Stmt {
+        println!("[STARTED] parse kind of Stmt");
         match self.current().kind {
             TokenKind::Keyword(keyword) => match keyword {
                 Keyword::Let => {

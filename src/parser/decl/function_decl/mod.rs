@@ -6,7 +6,7 @@ use crate::{
 
 impl Parser {
     pub fn parse_function_decl(&mut self) -> Ast<FunctionDecl> {
-        println!("started parsing of function_decl");
+        println!("[STARTED] parse FunctionDecl");
         /*  parsing of function name Ident */
         let ident = self.parse_ident();
         if ident.is_err() {
@@ -23,17 +23,14 @@ impl Parser {
         println!("fn args parsed");
         /* parsing for function return type */
         let returns = self.parse_returns();
-        if returns.is_err() {
-            return Ast::Error(returns.err().unwrap());
-        }
 
         println!("fn returns type parsed");
-        let body = self.parse_block_stmt();
+        let body = self.parse_stmts_block();
 
         Ast::Parsed(FunctionDecl::new(
             ident.unwrap(),
             args.unwrap(),
-            returns.unwrap(),
+            returns,
             body,
         ))
     }
@@ -71,7 +68,7 @@ impl Parser {
     }
 
     fn parse_arguments(&mut self) -> Result<Vec<Ast<Binding>>, String> {
-        let typed_bindings = self.parse_typed_bindings();
+        let typed_bindings = self.parse_bindings();
         match self.current().kind {
             TokenKind::RightParen => {
                 self.consume(TokenKind::RightParen);
@@ -84,25 +81,9 @@ impl Parser {
         }
     }
 
-    fn parse_returns(&mut self) -> Result<TypeRef, String> {
+    fn parse_returns(&mut self) -> Ast<TypeRef> {
         println!("started parse fn returns");
-        match self.current().kind {
-            TokenKind::Colon => {
-                self.consume(TokenKind::Colon);
-                println!("Colon parsed");
-            }
-            e => {
-                self.error(format!(
-                    "expected ':' for declare return type of function, but found {:?}",
-                    e
-                ));
-                return Err(format!(
-                    "expected ':' for declare return type of function, but found {:?}",
-                    e
-                ));
-            }
-        }
-
+        self.consume(TokenKind::Colon);
         self.parse_type_ref()
     }
 }

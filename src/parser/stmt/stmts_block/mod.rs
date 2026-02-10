@@ -5,7 +5,8 @@ use crate::{
 };
 
 impl Parser {
-    pub fn parse_block_stmt(&mut self) -> StmtsBlock {
+    pub fn parse_stmts_block(&mut self) -> StmtsBlock {
+        println!("[STARTED] parse StmtsBlock");
         match self.current().kind {
             TokenKind::LeftBrace => {
                 self.consume(TokenKind::LeftBrace);

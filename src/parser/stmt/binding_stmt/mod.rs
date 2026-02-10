@@ -13,10 +13,11 @@ impl Parser {
     }
 
     fn parse_binding_stmt(&mut self, is_let: bool) -> Ast<BindingStmt> {
+        println!("[STARTED] parse BindingStmt");
         /*  parsing binding kind. let or var */
         let kind = if is_let { LetOrVar::Let } else { LetOrVar::Var };
 
-        let typed_binding = self.parse_typed_binding();
+        let typed_binding = self.parse_binding();
 
         self.consume(TokenKind::Semicolon);
 

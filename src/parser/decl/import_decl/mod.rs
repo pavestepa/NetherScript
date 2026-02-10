@@ -6,6 +6,7 @@ use crate::{
 
 impl Parser {
     pub fn parse_import_decl(&mut self) -> Ast<ImportDecl> {
+        println!("[STARTED] parse ImportDecl");
         let ident;
 
         match self.current().kind {

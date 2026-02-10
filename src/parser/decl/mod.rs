@@ -16,7 +16,7 @@ mod import_decl;
 
 impl Parser {
     pub fn parse_decl(&mut self) -> Decl {
-        println!("decl");
+        println!("[STARTED] parse kind of Decl");
         println!("{:?}", self.current().kind);
         if let TokenKind::Keyword(keyword) = self.current().kind {
             match keyword {

@@ -6,7 +6,7 @@ use crate::{
 
 impl Parser {
     pub fn parse_export_decl(&mut self) -> Ast<ExportDecl> {
-        println!("decl_export");
+        println!("[STARTED] parse ExportDecl");
         let ident = self.parse_ident();
         if ident.is_err() {
             let err = ident.err().unwrap();

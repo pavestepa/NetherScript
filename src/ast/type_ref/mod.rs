@@ -1,4 +1,3 @@
-mod ref_kind;
 mod type_ident;
 
 use crate::ast::{ident, shared::RefKind, Ident};

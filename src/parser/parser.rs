@@ -29,10 +29,6 @@ impl Parser {
         self.tokens.get(self.position - 1).unwrap()
     }
 
-    pub fn peek(&self, offset: usize) -> Option<&Token> {
-        self.tokens.get(self.position + offset)
-    }
-
     pub fn consume(&mut self, token_kind: TokenKind) -> Token {
         let token = self.current().clone();
         if token_kind != token.kind {
@@ -45,18 +41,16 @@ impl Parser {
         return token;
     } // TODO: consume ident way
 
-    pub fn is_end(&self) -> bool {
-        self.position >= self.tokens.len()
-    }
-
     pub fn is_not_end(&self) -> bool {
         self.position < self.tokens.len()
     }
 
     pub fn error(&mut self, message: impl Into<String>) {
+        let msg = message.into();
+        println!("[ERROR] {}", &msg);
         let token = self.current();
         let syntax_error = SyntaxError {
-            message: message.into(),
+            message: msg,
             range: token.range,
         };
         self.errors.push(syntax_error.clone());
@@ -68,6 +62,7 @@ impl Parser {
     }
 
     fn synchronize(&mut self) {
+        println!("[SYNCH]");
         self.position += 1;
 
         while self.is_not_end() {
@@ -88,9 +83,9 @@ impl Parser {
                     | Keyword::Type => {
                         return;
                     }
-                    _ => {}
+                    _ => self.position += 1,
                 },
-                _ => {}
+                _ => self.position += 1,
             }
         }
     }
