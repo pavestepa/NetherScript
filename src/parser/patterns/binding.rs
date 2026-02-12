@@ -11,7 +11,7 @@ impl Parser {
         loop {
             typed_bindings.push(self.parse_binding());
             if self.current().kind == TokenKind::Comma {
-                self.consume(TokenKind::Comma);
+                self.parse(TokenKind::Comma);
             } else {
                 break;
             }
@@ -28,7 +28,7 @@ impl Parser {
             return Ast::Error(ident.err().unwrap());
         }
 
-        self.consume(TokenKind::Colon);
+        self.parse(TokenKind::Colon);
 
         let type_ref = self.parse_type_ref();
 

@@ -30,17 +30,17 @@ impl Parser {
                 // }
                 Keyword::Export => {
                     println!("parse_decl: match Keyword::Export");
-                    self.consume(TokenKind::Keyword(keyword));
+                    self.parse(TokenKind::Keyword(keyword));
                     Decl::Export(self.parse_export_decl())
                 }
                 Keyword::Function => {
                     println!("parse_decl: match Keyword::Function");
-                    self.consume(TokenKind::Keyword(keyword));
+                    self.parse(TokenKind::Keyword(keyword));
                     Decl::Function(self.parse_function_decl())
                 }
                 Keyword::Import => {
                     println!("parse_decl: match Keyword::Import");
-                    self.consume(TokenKind::Keyword(keyword));
+                    self.parse(TokenKind::Keyword(keyword));
                     Decl::ImportDecl(self.parse_import_decl())
                 }
                 // Keyword::Index => {

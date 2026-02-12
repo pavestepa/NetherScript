@@ -19,7 +19,7 @@ impl Parser {
 
         let typed_binding = self.parse_binding();
 
-        self.consume(TokenKind::Semicolon);
+        self.parse(TokenKind::Semicolon);
 
         Ast::Parsed(BindingStmt {
             kind: kind,

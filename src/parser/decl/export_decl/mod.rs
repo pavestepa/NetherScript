@@ -13,7 +13,7 @@ impl Parser {
             self.error(err.clone());
             return Ast::Error(err);
         }
-        self.consume(TokenKind::Semicolon);
+        self.parse(TokenKind::Semicolon);
 
         Ast::Parsed(ExportDecl {
             ident: Ast::Parsed(ident.unwrap()),

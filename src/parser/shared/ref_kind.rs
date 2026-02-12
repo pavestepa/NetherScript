@@ -9,15 +9,15 @@ impl Parser {
         if let TokenKind::Keyword(keyword) = self.current().kind {
             match keyword {
                 Keyword::Ref => {
-                    self.consume(TokenKind::Keyword(keyword));
+                    self.parse(TokenKind::Keyword(keyword));
                     return Ok(RefKind::Ref);
                 }
                 Keyword::Var => {
-                    self.consume(TokenKind::Keyword(keyword));
+                    self.parse(TokenKind::Keyword(keyword));
                     return Ok(RefKind::Var);
                 }
                 Keyword::Own => {
-                    self.consume(TokenKind::Keyword(keyword));
+                    self.parse(TokenKind::Keyword(keyword));
                     return Ok(RefKind::Own);
                 }
                 e => {

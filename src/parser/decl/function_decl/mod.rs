@@ -37,12 +37,12 @@ impl Parser {
 
     fn parse_arguments_with_parens(&mut self) -> Result<Vec<Ast<Binding>>, String> {
         /* check for "(" existing */
-        self.consume(TokenKind::LeftParen);
+        self.parse(TokenKind::LeftParen);
 
         /* check for Ident of argument parse starting or is closing with ")" */
         match self.current().kind {
             TokenKind::RightParen => {
-                self.consume(TokenKind::RightParen);
+                self.parse(TokenKind::RightParen);
                 return Ok(vec![]);
             }
             TokenKind::Ident(_) => {
@@ -71,7 +71,7 @@ impl Parser {
         let typed_bindings = self.parse_bindings();
         match self.current().kind {
             TokenKind::RightParen => {
-                self.consume(TokenKind::RightParen);
+                self.parse(TokenKind::RightParen);
                 return Ok(typed_bindings);
             }
             e => {
@@ -83,7 +83,7 @@ impl Parser {
 
     fn parse_returns(&mut self) -> Ast<TypeRef> {
         println!("started parse fn returns");
-        self.consume(TokenKind::Colon);
+        self.parse(TokenKind::Colon);
         self.parse_type_ref()
     }
 }

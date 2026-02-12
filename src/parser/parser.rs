@@ -33,7 +33,7 @@ impl Parser {
         self.tokens.get(self.position - 1).unwrap()
     }
 
-    pub fn consume(&mut self, token_kind: TokenKind) -> Token {
+    pub fn parse(&mut self, token_kind: TokenKind) -> Token {
         let token = self.current().clone();
         if token_kind != token.kind {
             self.error(format!(
@@ -43,7 +43,7 @@ impl Parser {
         }
         self.position += 1;
         return token;
-    } // TODO: consume ident way
+    } // TODO: parse ident way
 
     pub fn is_not_end(&self) -> bool {
         self.position < self.tokens.len()

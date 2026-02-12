@@ -9,7 +9,7 @@ impl Parser {
         println!("[STARTED] parse StmtsBlock");
         match self.current().kind {
             TokenKind::LeftBrace => {
-                self.consume(TokenKind::LeftBrace);
+                self.parse(TokenKind::LeftBrace);
             }
             e => {
                 self.error(format!(
@@ -27,7 +27,7 @@ impl Parser {
 
         match self.current().kind {
             TokenKind::RightBrace => {
-                self.consume(TokenKind::RightBrace);
+                self.parse(TokenKind::RightBrace);
                 return StmtsBlock {
                     stmts: Ast::Parsed(vec![]),
                 };

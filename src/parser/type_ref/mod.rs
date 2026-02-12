@@ -30,15 +30,15 @@ impl Parser {
         match self.current().kind {
             TokenKind::Keyword(keyword) => match keyword {
                 Keyword::Own => {
-                    self.consume(TokenKind::Keyword(keyword));
+                    self.parse(TokenKind::Keyword(keyword));
                     return Ok(RefKind::Own);
                 }
                 Keyword::Ref => {
-                    self.consume(TokenKind::Keyword(keyword));
+                    self.parse(TokenKind::Keyword(keyword));
                     return Ok(RefKind::Ref);
                 }
                 Keyword::Var => {
-                    self.consume(TokenKind::Keyword(keyword));
+                    self.parse(TokenKind::Keyword(keyword));
                     return Ok(RefKind::Var);
                 }
                 e => Err(format!("expected 'own', 'ref', 'var', found {:?}", e)),

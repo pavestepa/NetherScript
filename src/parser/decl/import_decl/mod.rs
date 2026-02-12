@@ -12,7 +12,7 @@ impl Parser {
         match self.current().kind {
             TokenKind::Ident(i) => {
                 ident = Ast::Parsed(Ident(i));
-                self.consume(TokenKind::Ident(i));
+                self.parse(TokenKind::Ident(i));
             }
             e => {
                 let err = format!("'{:?}' is not ident, can not use it in import", e);
@@ -23,7 +23,7 @@ impl Parser {
 
         match self.current().kind {
             TokenKind::Keyword(keyword) => match keyword {
-                Keyword::From => self.consume(TokenKind::Keyword(Keyword::From)),
+                Keyword::From => self.parse(TokenKind::Keyword(Keyword::From)),
                 _ => {
                     let err = "use 'from' keyword for importing".to_string();
                     self.error(err.clone());
@@ -69,7 +69,7 @@ impl Parser {
     fn parse_import_member(&mut self) -> Result<Ident, String> {
         match self.current().kind {
             TokenKind::Ident(ident) => {
-                self.consume(TokenKind::Ident(ident));
+                self.parse(TokenKind::Ident(ident));
                 return Ok(Ident(ident));
             }
             e => Err(format!("{:?} is not index to module", e)),
@@ -79,11 +79,11 @@ impl Parser {
     fn parse_dot_or_end(&mut self) -> Result<DotOrEnd, String> {
         match self.current().kind {
             TokenKind::Dot => {
-                self.consume(TokenKind::Dot);
+                self.parse(TokenKind::Dot);
                 Ok(DotOrEnd::Dot)
             }
             TokenKind::Semicolon => {
-                self.consume(TokenKind::Semicolon);
+                self.parse(TokenKind::Semicolon);
                 Ok(DotOrEnd::End)
             }
             e => Err(format!("use '.' or end with ';', instead '{:?}'", e)),
