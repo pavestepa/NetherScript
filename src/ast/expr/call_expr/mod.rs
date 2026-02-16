@@ -8,16 +8,8 @@ pub use function_call::FunctionCall;
 pub use literal_call::LiteralCall;
 pub use member_call::MemberCall;
 
-use crate::ast::shared::RefKind;
-
 #[derive(Debug, Clone)]
-pub struct CallExpr {
-    ref_kind: RefKind,
-    calls: Call,
-}
-
-#[derive(Debug, Clone)]
-pub enum Call {
+pub enum CallExpr {
     Function(FunctionCall),
     Literal(LiteralCall),
     Member(MemberCall),

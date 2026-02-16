@@ -56,7 +56,10 @@ impl Parser {
                 self.parse(TokenKind::Ident(ident));
                 match self.current().kind {
                     TokenKind::LeftParen => Stmt::Call(self.parse_call_stmt(ident)),
-                    TokenKind::Assign => Stmt::Assign(self.parse_assign_stmt(ident)),
+                    TokenKind::Assign => {
+                        self.parse(TokenKind::Assign);
+                        Stmt::Assign(self.parse_assign_stmt(ident))
+                    }
                     e => {
                         self.error(format!(
                             "Token {:?} is not keyword and not suitable for function call or assign operation",

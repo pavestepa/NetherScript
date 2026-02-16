@@ -16,8 +16,8 @@ pub use decl::{
 };
 
 pub use expr::{
-    BinaryOp, BindignCall, CallExpr, Expr, FunctionCall, LiteralCall, LogicalOp, MemberCall,
-    OpExpr, UnaryOp,
+    BinaryOp, BindignCall, CallExpr, Expr, FunctionCall, LiteralCall, LogicalOp, MemberCall, Op,
+    OpExpr, UnaryExpr,
 };
 pub use ident::Ident;
 pub use literal::Literal;
