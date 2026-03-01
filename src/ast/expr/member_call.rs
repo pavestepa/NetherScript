@@ -16,7 +16,7 @@
 * sugar of regular function calling with self object puting in argument.
 */
 
-use crate::ast::{expr::call_expr::BindignCall, Ident};
+use crate::ast::{expr::BindignCall, Ident};
 
 #[derive(Debug, Clone)]
 pub struct MemberCall {

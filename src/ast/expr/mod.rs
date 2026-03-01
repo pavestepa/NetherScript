@@ -1,21 +1,34 @@
-pub mod call_expr;
-pub mod op_expr;
-pub mod unary_expr;
+mod binary_op;
+mod binding_call;
+mod function_call;
+mod literal_call;
+mod logical_op;
+mod member_call;
+mod unary_op;
 
-pub use call_expr::{BindignCall, CallExpr, FunctionCall, LiteralCall, MemberCall};
-pub use op_expr::{BinaryOp, LogicalOp, Op, OpExpr};
-pub use unary_expr::UnaryExpr;
+pub use binary_op::{BinaryOp, BinaryOperator};
+pub use binding_call::BindignCall;
+pub use function_call::FunctionCall;
+pub use literal_call::LiteralCall;
+pub use logical_op::{LogicalOp, LogicalOperator};
+pub use member_call::MemberCall;
+pub use unary_op::UnaryOp;
 
 use crate::ast::RefKind;
 #[derive(Debug, Clone)]
 pub struct Expr {
-    expr_kind: ExprKind,
-    ref_kind: RefKind,
     scoped: bool,
+    ref_kind: RefKind,
+    expr_kind: Box<ExprKind>,
 }
 #[derive(Debug, Clone)]
 pub enum ExprKind {
-    Call(CallExpr),
-    Op(OpExpr),
-    UnaryExpr(UnaryExpr),
+    BindignCall(BindignCall),
+    FunctionCall(FunctionCall),
+    LiteralCall(LiteralCall),
+    MemberCall(MemberCall),
+    BinaryOp(BinaryOp),
+    LogicalOp(LogicalOp),
+    UnaryOp(UnaryOp),
+    Expr(Expr),
 }

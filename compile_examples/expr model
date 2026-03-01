@@ -3,3 +3,25 @@ expr:
   ?left_paren,
   
   ?right_paren
+
+  ref | var | own -> reference type
+
+  e = 
+    | e
+    | e.a
+    | e()
+    | ref e
+    | e + e
+    | (e)
+
+type Expr {
+  ref_kind: RefKind
+  expr: 
+    | BinaryOp
+    | LogicalOp
+    | Binding_call
+    | FnCall
+    | MemberCall
+    | LiteralCall
+  scoped: boolean
+}
