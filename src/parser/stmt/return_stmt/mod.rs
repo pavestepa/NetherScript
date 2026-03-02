@@ -13,8 +13,11 @@ impl Parser {
             }
             _ => {
                 let expr = self.parse_expr();
+                if let Ast::Error(e) = expr {
+                    return Ast::Error(e);
+                }
                 Ast::Parsed(ReturnStmt {
-                    arg: Some(Box::from(expr)),
+                    arg: Some(Box::from(expr.unwrap())),
                 })
             }
         }

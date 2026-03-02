@@ -13,15 +13,15 @@ fn main() {
 
 ```
 ``` TypeScript // only for coloring syntax
-function addNum(nums: var Vec<i32>) {
+function addNum(nums: change Vec<i32>) {
     nums.push(8);
 }
 
 function main() {
     let nums = vec![1, 2, 4];
 
-    add_num(nums);
+    add_num(change nums);
 
-    println!("{:?}", nums);
+    println!("{:?}", read nums);
 }
 ```
