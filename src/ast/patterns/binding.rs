@@ -1,7 +1,7 @@
-use crate::ast::{ast::Ast, Ident, TypeRef};
+use crate::ast::{ast::Ast, Ident, TypeNode};
 
 #[derive(Debug, Clone)]
 pub struct Binding {
     pub ident: Ident,
-    pub type_ref: Ast<TypeRef>,
+    pub type_ref: Ast<TypeNode>,
 }

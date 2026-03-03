@@ -30,7 +30,7 @@ impl Parser {
 
         self.parse(TokenKind::Colon);
 
-        let type_ref = self.parse_type_ref();
+        let type_ref = self.parse_type_node();
 
         return Ast::Parsed(Binding {
             ident: ident.unwrap(),

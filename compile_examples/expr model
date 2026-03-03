@@ -13,9 +13,9 @@ expr:
     | ref e
     | e + e
     | (e)
+    | read e
 
 type Expr {
-  ref_kind: RefKind
   expr: 
     | BinaryOp
     | LogicalOp

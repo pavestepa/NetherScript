@@ -1,7 +1,7 @@
-use crate::ast::{Expr, Ident};
+use crate::ast::{ast::Ast, Expr, Ident};
 
 #[derive(Debug, Clone)]
 pub struct AssignStmt {
     pub ident: Ident,
-    pub assign: Box<Expr>,
+    pub assign: Box<Ast<Expr>>,
 }

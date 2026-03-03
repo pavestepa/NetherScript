@@ -8,7 +8,7 @@ mod patterns;
 mod shared;
 mod stmt;
 mod syntax_error;
-mod type_ref;
+mod type_node;
 
 pub use decl::{
     ConstDecl, Decl, EnumDecl, ExportDecl, FunctionDecl, ImportDecl, IndexDecl, StructDecl,
@@ -29,4 +29,4 @@ pub use stmt::{
     StmtsBlock,
 };
 pub use syntax_error::SyntaxError;
-pub use type_ref::TypeRef;
+pub use type_node::{FunctionType, GenericType, TupleType, TypeNode, TypeParameter};

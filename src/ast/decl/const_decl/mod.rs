@@ -1,9 +1,9 @@
-use crate::ast::{ast::Ast, Expr, Ident, SyntaxError, TypeRef};
+use crate::ast::{ast::Ast, Expr, Ident, SyntaxError, TypeNode};
 
 #[derive(Debug)]
 pub struct ConstDecl {
     pub ident: Ident,
-    pub data_type: TypeRef,
+    pub data_type: TypeNode,
     pub val: Ast<Expr>,
     pub syntax_errors: Vec<SyntaxError>,
 }
@@ -11,7 +11,7 @@ pub struct ConstDecl {
 impl ConstDecl {
     pub fn new(
         ident: Ident,
-        data_type: TypeRef,
+        data_type: TypeNode,
         val: Ast<Expr>,
         syntax_errors: Vec<SyntaxError>,
     ) -> Self {

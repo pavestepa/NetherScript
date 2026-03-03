@@ -6,6 +6,6 @@ mod parser;
 mod patterns;
 mod shared;
 mod stmt;
-mod type_ref;
+mod type_node;
 
 pub use parser::Parser;

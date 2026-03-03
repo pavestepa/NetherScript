@@ -1,5 +1,5 @@
 use crate::{
-    ast::{ast::Ast, Binding, FunctionDecl, TypeRef},
+    ast::{ast::Ast, Binding, FunctionDecl, TypeNode},
     lexer::TokenKind,
     parser::Parser,
 };
@@ -81,9 +81,9 @@ impl Parser {
         }
     }
 
-    fn parse_returns(&mut self) -> Ast<TypeRef> {
+    fn parse_returns(&mut self) -> Ast<TypeNode> {
         println!("started parse fn returns");
         self.parse(TokenKind::Colon);
-        self.parse_type_ref()
+        self.parse_type_node()
     }
 }
