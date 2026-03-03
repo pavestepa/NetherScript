@@ -1,6 +1,8 @@
 import User from src.entities;
 
-function main (a: var i32): void {}
+function main (a: ): {
+  let a;
+}
   
 
 

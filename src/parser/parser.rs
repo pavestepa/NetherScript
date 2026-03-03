@@ -43,7 +43,7 @@ impl Parser {
         }
         self.position += 1;
         return token;
-    } // TODO: parse ident way
+    }
 
     pub fn is_not_end(&self) -> bool {
         self.position < self.tokens.len()

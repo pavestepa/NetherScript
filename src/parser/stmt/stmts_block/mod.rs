@@ -25,11 +25,13 @@ impl Parser {
             }
         };
 
+        let mut stmts = vec![];
+
         match self.current().kind {
             TokenKind::RightBrace => {
                 self.parse(TokenKind::RightBrace);
                 return StmtsBlock {
-                    stmts: Ast::Parsed(vec![]),
+                    stmts: Ast::Parsed(stmts),
                 };
             }
             _ => {

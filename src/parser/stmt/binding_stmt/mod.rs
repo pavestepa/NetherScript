@@ -8,7 +8,7 @@ impl Parser {
     pub fn parse_binding_stmt_let(&mut self) -> Ast<BindingStmt> {
         self.parse_binding_stmt(true)
     }
-    pub fn parse_binding_stmt_const(&mut self) -> Ast<BindingStmt> {
+    pub fn parse_binding_stmt_var(&mut self) -> Ast<BindingStmt> {
         self.parse_binding_stmt(false)
     }
 

@@ -23,7 +23,6 @@ pub enum Stmt {
     Assign(Ast<AssignStmt>),
     Binding(Ast<BindingStmt>),
     Break(Ast<BreakStmt>),
-    Call(Ast<CallStmt>),
     Expr(Ast<ExprStmt>),
     If(Ast<IfStmt>),
     Loop(Ast<LoopStmt>),

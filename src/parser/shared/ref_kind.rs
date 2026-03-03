@@ -5,23 +5,26 @@ use crate::{
 };
 
 impl Parser {
-    pub fn try_parse_ref_kind(&mut self) -> Result<RefKind, String> {
+    pub fn try_parse_ref_kind(&mut self) -> Option<RefKind> {
+        let mut parsed_ref_kind = None;
+        let mut parsed_keyword = None;
         if let TokenKind::Keyword(keyword) = self.current().kind {
             match keyword {
                 Keyword::Read => {
-                    self.parse(TokenKind::Keyword(keyword));
-                    return Ok(RefKind::Change);
+                    parsed_keyword = Some(TokenKind::Keyword(keyword));
+                    parsed_ref_kind = Some(RefKind::Read);
                 }
                 Keyword::Change => {
-                    self.parse(TokenKind::Keyword(keyword));
-                    return Ok(RefKind::Change);
+                    parsed_keyword = Some(TokenKind::Keyword(keyword));
+                    parsed_ref_kind = Some(RefKind::Change);
                 }
-                e => {
-                    return Err(format!("expexted 'read' or 'change', but found {:?}", e));
-                }
+                e => return None,
             }
         } else {
-            Err(format!("is not keyword, found{:?}", self.current().kind))
+            return None;
         }
+
+        self.parse(parsed_keyword.unwrap());
+        Some(parsed_ref_kind.unwrap())
     }
 }

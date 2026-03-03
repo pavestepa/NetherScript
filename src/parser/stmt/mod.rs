@@ -9,7 +9,7 @@ use crate::{
 mod assign_stmt;
 mod binding_stmt;
 mod break_stmt;
-mod call_stmt;
+mod expr_stmt;
 mod if_stmt;
 mod loop_stmt;
 mod return_stmt;
@@ -26,7 +26,7 @@ impl Parser {
                 }
                 Keyword::Var => {
                     self.parse(TokenKind::Keyword(keyword));
-                    Stmt::Binding(self.parse_binding_stmt_const())
+                    Stmt::Binding(self.parse_binding_stmt_var())
                 }
                 Keyword::If => {
                     self.parse(TokenKind::Keyword(keyword));
@@ -53,9 +53,11 @@ impl Parser {
                 }
             },
             TokenKind::Ident(ident) => {
+                let expr_res = self.try_parse_expr_stmt();
+                if expr_res.is_some() {}
+
                 self.parse(TokenKind::Ident(ident));
                 match self.current().kind {
-                    TokenKind::LeftParen => Stmt::Call(self.parse_call_stmt(ident)),
                     TokenKind::Assign => {
                         self.parse(TokenKind::Assign);
                         Stmt::Assign(self.parse_assign_stmt(ident))
