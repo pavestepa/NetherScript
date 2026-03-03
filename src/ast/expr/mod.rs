@@ -14,9 +14,11 @@ pub use logical_op::{LogicalOp, LogicalOperator};
 pub use member_call::MemberCall;
 pub use unary_op::UnaryOp;
 
+use crate::ast::RefKind;
 #[derive(Debug, Clone)]
 pub struct Expr {
     scoped: bool,
+    ref_kind: RefKind,
     expr_kind: Box<ExprKind>,
 }
 #[derive(Debug, Clone)]
