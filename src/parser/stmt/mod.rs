@@ -1,5 +1,3 @@
-use std::thread::current;
-
 use crate::{
     ast::Stmt,
     lexer::{Keyword, TokenKind},
@@ -53,24 +51,18 @@ impl Parser {
                 }
             },
             TokenKind::Ident(ident) => {
-                let expr_res = self.try_parse_expr_stmt();
-                if expr_res.is_some() {}
-
-                self.parse(TokenKind::Ident(ident));
-                match self.current().kind {
-                    TokenKind::Assign => {
-                        self.parse(TokenKind::Assign);
-                        Stmt::Assign(self.parse_assign_stmt(ident))
-                    }
-                    e => {
-                        self.error(format!(
-                            "Token {:?} is not keyword and not suitable for function call or assign operation",
-                            e
-                        ));
-                        Stmt::Error
-                    }
+                if self.peek(1).kind == TokenKind::Assign {
+                    self.parse(self.current().kind); // ident
+                    self.parse(self.current().kind); // assign
+                    return Stmt::Assign(self.parse_assign_stmt(ident));
+                } else {
+                    return Stmt::Expr(self.parse_expr_stmt());
                 }
             }
+            TokenKind::LeftParen
+            | TokenKind::NumberLiteral(_)
+            | TokenKind::StringLiteral(_)
+            | TokenKind::BooleanLiteral(_) => Stmt::Expr(self.parse_expr_stmt()),
             e => {
                 self.error(format!(
                     "Token {:?} is not keyword and not suitable for Stmt",

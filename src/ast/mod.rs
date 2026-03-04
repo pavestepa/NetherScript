@@ -16,7 +16,7 @@ pub use decl::{
 };
 
 pub use expr::{
-    BinaryOp, BinaryOperator, BindignCall, Expr, ExprKind, FunctionCall, LiteralCall, LogicalOp,
+    BinaryOp, BinaryOperator, BindignCall, Expr, FunctionCall, LiteralCall, LogicalOp,
     LogicalOperator, MemberCall, Referencing, UnaryOp,
 };
 pub use ident::Ident;
@@ -29,4 +29,4 @@ pub use stmt::{
     StmtsBlock,
 };
 pub use syntax_error::SyntaxError;
-pub use type_node::{FunctionType, GenericType, TupleType, TypeNode, TypeParameter};
+pub use type_node::{FunctionType, GenericType, ReferenceType, TupleType, TypeNode, TypeParameter};

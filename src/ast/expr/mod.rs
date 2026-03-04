@@ -17,12 +17,7 @@ pub use referencing::Referencing;
 pub use unary_op::UnaryOp;
 
 #[derive(Debug, Clone)]
-pub struct Expr {
-    pub scoped: bool,
-    pub expr_kind: Box<ExprKind>,
-}
-#[derive(Debug, Clone)]
-pub enum ExprKind {
+pub enum Expr {
     //                             example             second token
     BindignCall(BindignCall),   // a
     FunctionCall(FunctionCall), // a()                 (

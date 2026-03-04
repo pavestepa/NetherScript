@@ -13,6 +13,7 @@ impl Parser {
             }
             _ => {
                 let expr = self.parse_expr(0);
+                self.parse(TokenKind::Semicolon);
                 Ast::Parsed(ReturnStmt {
                     arg: Some(Box::from(expr)),
                 })

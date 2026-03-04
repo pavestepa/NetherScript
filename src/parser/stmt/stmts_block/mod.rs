@@ -1,45 +1,59 @@
 use crate::{
-    ast::{ast::Ast, Stmt, StmtsBlock},
-    lexer::{Keyword, TokenKind},
+    ast::{ast::Ast, StmtsBlock},
+    lexer::TokenKind,
     parser::Parser,
 };
 
 impl Parser {
     pub fn parse_stmts_block(&mut self) -> StmtsBlock {
         println!("[STARTED] parse StmtsBlock");
-        match self.current().kind {
-            TokenKind::LeftBrace => {
-                self.parse(TokenKind::LeftBrace);
-            }
-            e => {
-                self.error(format!(
-                    "expected '{{' for declare block of code statements, but found {:?}",
-                    e
-                ));
-                return StmtsBlock {
-                    stmts: Ast::Error(format!(
-                        "expected '{{' for declare block of code statements, but found {:?}",
-                        e
-                    )),
-                };
-            }
-        };
 
-        let mut stmts = vec![];
+        // ---------- expect { ----------
+        if self.current().kind != TokenKind::LeftBrace {
+            let found = self.current().kind.clone();
+            self.error(format!(
+                "expected '{{' for block start, but found {:?}",
+                found
+            ));
 
-        match self.current().kind {
-            TokenKind::RightBrace => {
-                self.parse(TokenKind::RightBrace);
-                return StmtsBlock {
-                    stmts: Ast::Parsed(stmts),
-                };
-            }
-            _ => {
-                self.error("[TODO] make stmts parser");
-                return StmtsBlock {
-                    stmts: Ast::Error("[TODO] make stmts parser".to_string()),
-                };
-            }
+            return StmtsBlock {
+                stmts: Ast::Error(format!(
+                    "expected '{{' for block start, but found {:?}",
+                    found
+                )),
+            };
+        }
+
+        self.parse(TokenKind::LeftBrace);
+
+        let mut stmts = Vec::new();
+
+        // ---------- parse statements ----------
+        while self.is_not_end() && self.current().kind != TokenKind::RightBrace {
+            let stmt = self.parse_stmt();
+            stmts.push(stmt);
+        }
+
+        // ---------- expect } ----------
+        if self.current().kind != TokenKind::RightBrace {
+            let found = self.current().kind.clone();
+            self.error(format!(
+                "expected '}}' to close block, but found {:?}",
+                found
+            ));
+
+            return StmtsBlock {
+                stmts: Ast::Error(format!(
+                    "expected '}}' to close block, but found {:?}",
+                    found
+                )),
+            };
+        }
+
+        self.parse(TokenKind::RightBrace);
+
+        StmtsBlock {
+            stmts: Ast::Parsed(stmts),
         }
     }
 }

@@ -1,12 +1,12 @@
-use crate::ast::Expr;
+use crate::ast::{ast::Ast, Expr};
 
 #[derive(Debug)]
 pub struct ExprStmt {
-    pub expr: Box<Expr>,
+    pub expr: Box<Ast<Expr>>,
 }
 
 impl ExprStmt {
-    pub fn new(expr: Expr) -> Self {
+    pub fn new(expr: Ast<Expr>) -> Self {
         Self {
             expr: Box::new(expr),
         }

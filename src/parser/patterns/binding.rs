@@ -28,9 +28,11 @@ impl Parser {
             return Ast::Error(ident.err().unwrap());
         }
 
-        self.parse(TokenKind::Colon);
-
-        let type_ref = self.parse_type_node();
+        let mut type_ref = None;
+        if self.current().kind == TokenKind::Colon {
+            self.parse(TokenKind::Colon);
+            type_ref = Some(self.parse_type_node());
+        }
 
         return Ast::Parsed(Binding {
             ident: ident.unwrap(),

@@ -1,8 +1,7 @@
 use crate::{
     ast::{
-        ast::Ast, BinaryOp, BinaryOperator, BindignCall, Expr, ExprKind, FunctionCall, Ident,
-        Literal, LiteralCall, LogicalOp, LogicalOperator, MemberCall, RefKind, Referencing,
-        UnaryOp,
+        ast::Ast, BinaryOp, BinaryOperator, BindignCall, Expr, FunctionCall, Ident, Literal,
+        LiteralCall, LogicalOp, LogicalOperator, MemberCall, RefKind, Referencing, UnaryOp,
     },
     lexer::{Keyword, TokenKind},
     parser::Parser,
@@ -48,8 +47,8 @@ impl Parser {
                     self.parse(TokenKind::RightParen);
 
                     let ident = match &left {
-                        Ast::Parsed(expr) => match expr.expr_kind.as_ref() {
-                            ExprKind::BindignCall(b) => b.0.clone(),
+                        Ast::Parsed(expr) => match &expr {
+                            Expr::BindignCall(b) => b.0.clone(),
                             _ => {
                                 self.error("Invalid function call target");
                                 return left.clone();
@@ -61,10 +60,7 @@ impl Parser {
                         }
                     };
 
-                    Ast::Parsed(Expr {
-                        scoped: false,
-                        expr_kind: Box::new(ExprKind::FunctionCall(FunctionCall::new(ident, args))),
-                    })
+                    Ast::Parsed(Expr::FunctionCall(FunctionCall::new(ident, args)))
                 }
 
                 // ---------------- member access ----------------
@@ -83,8 +79,8 @@ impl Parser {
                     };
 
                     let object = match &left {
-                        Ast::Parsed(expr) => match expr.expr_kind.as_ref() {
-                            ExprKind::BindignCall(b) => b.clone(),
+                        Ast::Parsed(expr) => match &expr {
+                            Expr::BindignCall(b) => b.clone(),
                             _ => {
                                 self.error("Invalid member access target");
                                 return left;
@@ -96,13 +92,7 @@ impl Parser {
                         }
                     };
 
-                    Ast::Parsed(Expr {
-                        scoped: false,
-                        expr_kind: Box::new(ExprKind::MemberCall(MemberCall::new(
-                            object,
-                            Ident(ident),
-                        ))),
-                    })
+                    Ast::Parsed(Expr::MemberCall(MemberCall::new(object, Ident(ident))))
                 }
 
                 // ---------------- binary ----------------
@@ -122,14 +112,11 @@ impl Parser {
                         _ => unreachable!(),
                     };
 
-                    Ast::Parsed(Expr {
-                        scoped: false,
-                        expr_kind: Box::new(ExprKind::BinaryOp(BinaryOp {
-                            left: Box::new(left),
-                            kind: op_kind,
-                            right: Box::new(right),
-                        })),
-                    })
+                    Ast::Parsed(Expr::BinaryOp(BinaryOp {
+                        left: Box::new(left),
+                        kind: op_kind,
+                        right: Box::new(right),
+                    }))
                 }
 
                 // ---------------- logical ----------------
@@ -151,14 +138,11 @@ impl Parser {
                         _ => unreachable!(),
                     };
 
-                    Ast::Parsed(Expr {
-                        scoped: false,
-                        expr_kind: Box::new(ExprKind::LogicalOp(LogicalOp {
-                            left: Box::new(left),
-                            kind: op_kind,
-                            right: Box::new(right),
-                        })),
-                    })
+                    Ast::Parsed(Expr::LogicalOp(LogicalOp {
+                        left: Box::new(left),
+                        kind: op_kind,
+                        right: Box::new(right),
+                    }))
                 }
 
                 _ => unreachable!(),
@@ -180,25 +164,19 @@ impl Parser {
                     self.parse(token.kind.clone());
                     let right = self.parse_expr(60);
 
-                    Ast::Parsed(Expr {
-                        scoped: false,
-                        expr_kind: Box::new(ExprKind::Referencing(Referencing {
-                            ref_kind: RefKind::Change,
-                            expr: Box::new(right),
-                        })),
-                    })
+                    Ast::Parsed(Expr::Referencing(Referencing {
+                        ref_kind: RefKind::Change,
+                        expr: Box::new(right),
+                    }))
                 }
                 Keyword::Read => {
                     self.parse(token.kind.clone());
                     let right = self.parse_expr(60);
 
-                    Ast::Parsed(Expr {
-                        scoped: false,
-                        expr_kind: Box::new(ExprKind::Referencing(Referencing {
-                            ref_kind: RefKind::Read,
-                            expr: Box::new(right),
-                        })),
-                    })
+                    Ast::Parsed(Expr::Referencing(Referencing {
+                        ref_kind: RefKind::Read,
+                        expr: Box::new(right),
+                    }))
                 }
                 _ => {
                     self.error(format!("Unexpected keyword: {:?}", token.kind));
@@ -211,52 +189,35 @@ impl Parser {
                 self.parse(token.kind.clone());
                 let right = self.parse_expr(60);
 
-                Ast::Parsed(Expr {
-                    scoped: false,
-                    expr_kind: Box::new(ExprKind::UnaryOp(UnaryOp::from(token.kind, right))),
-                })
+                Ast::Parsed(Expr::UnaryOp(UnaryOp::from(token.kind, right)))
             }
 
             // ------------- number -------------
             TokenKind::NumberLiteral(atom) => {
                 self.parse(token.kind.clone());
 
-                Ast::Parsed(Expr {
-                    scoped: false,
-                    expr_kind: Box::new(ExprKind::LiteralCall(LiteralCall(Literal::Number(atom)))),
-                })
+                Ast::Parsed(Expr::LiteralCall(LiteralCall(Literal::Number(atom))))
             }
 
             // ------------- string -------------
             TokenKind::StringLiteral(atom) => {
                 self.parse(token.kind.clone());
 
-                Ast::Parsed(Expr {
-                    scoped: false,
-                    expr_kind: Box::new(ExprKind::LiteralCall(LiteralCall(Literal::String(atom)))),
-                })
+                Ast::Parsed(Expr::LiteralCall(LiteralCall(Literal::String(atom))))
             }
 
             // ------------- boolean -------------
             TokenKind::BooleanLiteral(boolean) => {
                 self.parse(token.kind.clone());
 
-                Ast::Parsed(Expr {
-                    scoped: false,
-                    expr_kind: Box::new(ExprKind::LiteralCall(LiteralCall(Literal::Boolean(
-                        boolean,
-                    )))),
-                })
+                Ast::Parsed(Expr::LiteralCall(LiteralCall(Literal::Boolean(boolean))))
             }
 
             // ------------- identifier -------------
             TokenKind::Ident(name) => {
                 self.parse(token.kind.clone());
 
-                Ast::Parsed(Expr {
-                    scoped: false,
-                    expr_kind: Box::new(ExprKind::BindignCall(BindignCall(Ident(name)))),
-                })
+                Ast::Parsed(Expr::BindignCall(BindignCall(Ident(name))))
             }
 
             // ------------- grouped -------------

@@ -5,10 +5,7 @@ mod text_range;
 pub use atom::{atom, Atom};
 pub use text_range::TextRange;
 
-use crate::{
-    lexer::{Keyword, Token},
-    parser::Parser,
-};
+use crate::parser::Parser;
 mod lexer;
 
 fn main() {
@@ -20,7 +17,7 @@ fn main() {
     println!(" ");
     println!(" ");
     println!(" ");
-    println!("{:#?}", parsed.parse_expr(0));
+    println!("{:#?}", parsed.parse_module());
     println!(" ");
     for e in parsed.get_errors() {
         println!("[ERROR] start: {:?}, end: {:?}", e.range.start, e.range.end);
