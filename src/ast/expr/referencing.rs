@@ -1,7 +1,7 @@
-use crate::ast::{Expr, RefKind};
+use crate::ast::{ast::Ast, Expr, RefKind};
 
 #[derive(Debug, Clone)]
 pub struct Referencing {
-    ref_kind: RefKind,
-    expr: Box<Expr>,
+    pub ref_kind: RefKind,
+    pub expr: Box<Ast<Expr>>,
 }

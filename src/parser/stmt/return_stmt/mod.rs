@@ -12,7 +12,7 @@ impl Parser {
                 Ast::Parsed(ReturnStmt { arg: None })
             }
             _ => {
-                let expr = self.parse_expr();
+                let expr = self.parse_expr(0);
                 Ast::Parsed(ReturnStmt {
                     arg: Some(Box::from(expr)),
                 })

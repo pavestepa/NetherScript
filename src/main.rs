@@ -20,7 +20,7 @@ fn main() {
     println!(" ");
     println!(" ");
     println!(" ");
-    println!("{:#?}", parsed.parse_module());
+    println!("{:#?}", parsed.parse_expr(0));
     println!(" ");
     for e in parsed.get_errors() {
         println!("[ERROR] start: {:?}, end: {:?}", e.range.start, e.range.end);

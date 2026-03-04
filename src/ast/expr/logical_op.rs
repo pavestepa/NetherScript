@@ -1,4 +1,4 @@
-use crate::ast::Expr;
+use crate::ast::{ast::Ast, Expr};
 
 #[derive(Debug, Clone)]
 pub enum LogicalOperator {
@@ -12,7 +12,7 @@ pub enum LogicalOperator {
 
 #[derive(Debug, Clone)]
 pub struct LogicalOp {
-    left: Box<Expr>,
-    kind: LogicalOperator,
-    right: Box<Expr>,
+    pub left: Box<Ast<Expr>>,
+    pub kind: LogicalOperator,
+    pub right: Box<Ast<Expr>>,
 }

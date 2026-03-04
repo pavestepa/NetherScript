@@ -6,7 +6,7 @@ use crate::{
 
 impl Parser {
     pub fn parse_if_stmt(&mut self) -> Ast<IfStmt> {
-        let test = Box::from(self.parse_expr());
+        let test = Box::from(self.parse_expr(0));
         let body = Box::from(self.parse_stmts_block());
         let alt = match self.current().kind {
             TokenKind::Keyword(keyword) => match keyword {

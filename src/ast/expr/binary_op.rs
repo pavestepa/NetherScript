@@ -1,4 +1,4 @@
-use crate::ast::Expr;
+use crate::ast::{ast::Ast, Expr};
 
 #[derive(Debug, Clone)]
 pub enum BinaryOperator {
@@ -10,7 +10,7 @@ pub enum BinaryOperator {
 }
 #[derive(Debug, Clone)]
 pub struct BinaryOp {
-    left: Box<Expr>,
-    kind: BinaryOperator,
-    right: Box<Expr>,
+    pub left: Box<Ast<Expr>>,
+    pub kind: BinaryOperator,
+    pub right: Box<Ast<Expr>>,
 }

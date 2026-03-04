@@ -13,13 +13,13 @@ pub use function_call::FunctionCall;
 pub use literal_call::LiteralCall;
 pub use logical_op::{LogicalOp, LogicalOperator};
 pub use member_call::MemberCall;
+pub use referencing::Referencing;
 pub use unary_op::UnaryOp;
 
-use crate::ast::{ast::Ast, expr::referencing::Referencing, RefKind};
 #[derive(Debug, Clone)]
 pub struct Expr {
-    scoped: bool,
-    expr_kind: Box<ExprKind>,
+    pub scoped: bool,
+    pub expr_kind: Box<ExprKind>,
 }
 #[derive(Debug, Clone)]
 pub enum ExprKind {
@@ -31,6 +31,5 @@ pub enum ExprKind {
     BinaryOp(BinaryOp),         // e + e               +
     LogicalOp(LogicalOp),       // e > e               >
     Referencing(Referencing),   // read e              e
-    UnaryOp(UnaryOp),           // -e                  e
-    Expr(Ast<Expr>),
+    UnaryOp(UnaryOp),
 }

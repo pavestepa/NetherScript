@@ -1,9 +1,1 @@
-import User from src.entities;
-
-function main (a: ): {
-  let a;
-}
-  
-
-
-export main;
+read 2
