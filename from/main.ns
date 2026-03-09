@@ -4,4 +4,7 @@ function main(): box i32 {
       return;
     }
   }
+
+  let a; 
+  a = 43;
 }

@@ -1,17 +1,14 @@
-mod ast;
-mod atom;
-mod parser;
-mod text_range;
-pub use atom::{atom, Atom};
-pub use text_range::TextRange;
+pub mod semantics;
+pub mod syntax;
+pub mod utils;
+pub use utils::{atom, Atom};
 
-use crate::parser::Parser;
-mod lexer;
-
+use crate::syntax::lexer::lexer;
+use crate::syntax::parser::Parser;
 fn main() {
     // Путь к NetherScript-файлу, который нужно распарсить
     let path = "./from/main.ns";
-    let lexem = lexer::lexer(path);
+    let lexem = lexer(path);
     let mut parsed = Parser::new(lexem);
     println!(" ");
     println!(" ");
