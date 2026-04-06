@@ -19,11 +19,30 @@ impl Parser {
 
         let typed_binding = self.parse_binding();
 
-        self.parse(TokenKind::Semicolon);
-
-        Ast::Parsed(BindingStmt {
-            kind: kind,
-            typed_binding: typed_binding,
-        })
+        match self.current().kind {
+            TokenKind::Assign => {
+                self.parse(TokenKind::Assign);
+                let expr = self.parse_expr(0);
+                self.parse(TokenKind::Semicolon);
+                return Ast::Parsed(BindingStmt {
+                    kind: kind,
+                    typed_binding: typed_binding,
+                    assign: Some(Box::new(expr)),
+                });
+            }
+            TokenKind::Semicolon => {
+                self.parse(TokenKind::Semicolon);
+                return Ast::Parsed(BindingStmt {
+                    kind: kind,
+                    typed_binding: typed_binding,
+                    assign: None,
+                });
+            }
+            e => {
+                let err = format!("Expected '=' for assigning of inited binding, or ';' for and statement. Found {:?}", e);
+                self.error(err.clone());
+                return Ast::Error(err);
+            }
+        }
     }
 }

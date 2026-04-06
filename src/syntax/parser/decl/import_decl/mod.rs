@@ -11,7 +11,7 @@ impl Parser {
 
         match self.current().kind {
             TokenKind::Ident(i) => {
-                ident = Ast::Parsed(Ident(i));
+                ident = Ast::Parsed(Ident::new(i));
                 self.parse(TokenKind::Ident(i));
             }
             e => {
@@ -70,7 +70,7 @@ impl Parser {
         match self.current().kind {
             TokenKind::Ident(ident) => {
                 self.parse(TokenKind::Ident(ident));
-                return Ok(Ident(ident));
+                return Ok(Ident::new(ident));
             }
             e => Err(format!("{:?} is not index to module", e)),
         }

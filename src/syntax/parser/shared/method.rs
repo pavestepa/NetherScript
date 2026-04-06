@@ -1,56 +1,44 @@
-use crate::syntax::{
-    ast::{ast::Ast, Binding, FunctionDecl, TypeNode},
-    lexer::TokenKind,
-    parser::Parser,
-};
+use crate::{Atom, atom, syntax::{ast::{Binding, Method, RefKind, This, TypeNode, ast::Ast}, lexer::{Keyword, TokenKind}, parser::Parser}};
 
 impl Parser {
-    pub fn parse_function_decl(&mut self) -> Ast<FunctionDecl> {
+    pub fn parse_method(&mut self) -> Ast<Method> {
         println!("[STARTED] parse FunctionDecl");
-        /*  parsing of function name Ident */
+        /*  parsing of method name Ident */
         let ident = match self.parse_ident() {
             Ok(v) => v,
             Err(v) => {
                 return Ast::Error(v);
             }
         };
-        println!("fn ident parsed");
 
         /* parsing arguments of function like: "(a: i32, s: String)" */
-        let args = self.parse_arguments_with_parens();
-        if args.is_err() {
-            return Ast::Error(args.err().unwrap());
-        }
-        println!("fn args parsed");
-        /* parsing for function return type */
-        let returns = self.parse_returns();
+        let args = match self.parse_this_arguments_with_parens() {
+            Ok(v) => v,
+            Err(v) => {
+                return Ast::Error(v);
+            }
+        };
 
-        println!("fn returns type parsed");
-        let body = self.parse_stmts_block();
-
-        Ast::Parsed(FunctionDecl::new(
-            ident,
-            args.unwrap(),
-            returns,
-            body,
-        ))
+        
     }
-
-    fn parse_arguments_with_parens(&mut self) -> Result<Vec<Ast<Binding>>, String> {
+    fn parse_this_arguments_with_parens(&mut self) -> Result<(This, Vec<Ast<Binding>>), String> {
         /* check for "(" existing */
         self.parse(TokenKind::LeftParen);
+
+        /* check for existing 'this' and type kind of */
+        let this = self.parse_this();
 
         /* check for Ident of argument parse starting or is closing with ")" */
         match self.current().kind {
             TokenKind::RightParen => {
                 self.parse(TokenKind::RightParen);
-                return Ok(vec![]);
+                return Ok((this, vec![]));
             }
             TokenKind::Ident(_) => {
-                let args = self.parse_arguments();
+                let args = self.parse_method_arguments();
 
                 if args.is_ok() {
-                    return Ok(args.unwrap());
+                    return Ok((this, args.unwrap()));
                 } else {
                     return Err(args.err().unwrap());
                 }
@@ -68,7 +56,24 @@ impl Parser {
         }
     }
 
-    fn parse_arguments(&mut self) -> Result<Vec<Ast<Binding>>, String> {
+    fn parse_this(&mut self) -> This {
+        match self.current().kind {
+            TokenKind::Ident(ident) => {
+                if ident == atom("this") {
+                    
+                }
+            }
+            TokenKind::Keyword(keyword) => {
+                let ref_kind = self.try_parse_ref_kind();
+                
+            }
+            }
+        }
+    }
+
+    fn parse_method_arguments(&mut self) -> Result<Vec<Ast<Binding>>, String> {
+
+        
         let typed_bindings = self.parse_bindings();
         match self.current().kind {
             TokenKind::RightParen => {
@@ -82,7 +87,7 @@ impl Parser {
         }
     }
 
-    fn parse_returns(&mut self) -> Ast<TypeNode> {
+    fn parse_method_returns(&mut self) -> Ast<TypeNode> {
         println!("started parse fn returns");
         self.parse(TokenKind::Colon);
         self.parse_type_node()

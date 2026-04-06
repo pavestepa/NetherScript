@@ -1,10 +1,4 @@
-function main(): box i32 {
-  loop {
-    if (true) {
-      return;
-    }
-  }
-
-  let a; 
-  a = 43;
+function main(): box<i32> {
+  var a = own 3;
+  var b: mut i32 = mut 2;
 }

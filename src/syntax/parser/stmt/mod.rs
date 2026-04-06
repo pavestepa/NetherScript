@@ -54,7 +54,7 @@ impl Parser {
                 if self.peek(1).kind == TokenKind::Assign {
                     self.parse(self.current().kind); // ident
                     self.parse(self.current().kind); // assign
-                    return Stmt::Assign(self.parse_assign_stmt(Ident(ident)));
+                    return Stmt::Assign(self.parse_assign_stmt(Ident::new(ident)));
                 } else {
                     return Stmt::Expr(self.parse_expr_stmt());
                 }

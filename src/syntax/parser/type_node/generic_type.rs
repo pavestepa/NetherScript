@@ -7,7 +7,7 @@ use crate::syntax::{
 impl Parser {
     pub fn parse_generic_type(&mut self) -> Ast<TypeNode> {
         if let TokenKind::Ident(ident) = self.current().kind {
-            let ident = Ident(ident);
+            let ident = Ident::new(ident);
             self.parse(self.current().kind);
 
             let arguments = self.parse_generic_arguments();

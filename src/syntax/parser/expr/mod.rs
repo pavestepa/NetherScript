@@ -92,7 +92,7 @@ impl Parser {
                         }
                     };
 
-                    Ast::Parsed(Expr::MemberCall(MemberCall::new(object, Ident(ident))))
+                    Ast::Parsed(Expr::MemberCall(MemberCall::new(object, Ident::new(ident))))
                 }
 
                 // ---------------- binary ----------------
@@ -160,21 +160,30 @@ impl Parser {
         match token.kind {
             // ---------- referencing ----------
             TokenKind::Keyword(keyword) => match keyword {
-                Keyword::Change => {
+                Keyword::Own => {
                     self.parse(token.kind.clone());
                     let right = self.parse_expr(60);
 
                     Ast::Parsed(Expr::Referencing(Referencing {
-                        ref_kind: RefKind::Change,
+                        ref_kind: RefKind::Own,
                         expr: Box::new(right),
                     }))
                 }
-                Keyword::Read => {
+                Keyword::Ref => {
                     self.parse(token.kind.clone());
                     let right = self.parse_expr(60);
 
                     Ast::Parsed(Expr::Referencing(Referencing {
-                        ref_kind: RefKind::Read,
+                        ref_kind: RefKind::Ref,
+                        expr: Box::new(right),
+                    }))
+                }
+                Keyword::Mut => {
+                    self.parse(token.kind.clone());
+                    let right = self.parse_expr(60);
+
+                    Ast::Parsed(Expr::Referencing(Referencing {
+                        ref_kind: RefKind::Mut,
                         expr: Box::new(right),
                     }))
                 }
@@ -217,7 +226,7 @@ impl Parser {
             TokenKind::Ident(name) => {
                 self.parse(token.kind.clone());
 
-                Ast::Parsed(Expr::BindignCall(BindignCall(Ident(name))))
+                Ast::Parsed(Expr::BindignCall(BindignCall(Ident::new(name))))
             }
 
             // ------------- grouped -------------
@@ -239,7 +248,7 @@ impl Parser {
 fn infix_binding_power(kind: &TokenKind) -> Option<(u8, u8)> {
     match kind {
         TokenKind::Keyword(keyword) => match keyword {
-            Keyword::Read | Keyword::Change => Some((55, 60)),
+            Keyword::Ref | Keyword::Mut | Keyword::Own => Some((55, 60)),
             _ => None,
         },
         TokenKind::Star | TokenKind::Slash | TokenKind::Percent => Some((50, 51)),

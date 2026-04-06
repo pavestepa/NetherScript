@@ -11,7 +11,7 @@ impl Parser {
                 self.parse(TokenKind::Ident(ident));
                 self.parse(TokenKind::Semicolon);
                 Ast::Parsed(BreakStmt {
-                    label: Some(Ident(ident)),
+                    label: Some(Ident::new(ident)),
                 })
             }
             TokenKind::Semicolon => {

@@ -1,6 +1,8 @@
 #[derive(Debug, Clone)]
 pub enum RefKind {
-    Read,
-    Change,
-    /* RawPtr, */
+    Own,
+    Ref,
+    Mut,
+    /* Ptr */
+    /* MutPtr, */
 }

@@ -11,8 +11,7 @@ mod syntax_error;
 mod type_node;
 
 pub use decl::{
-    ConstDecl, Decl, EnumDecl, ExportDecl, FunctionDecl, ImportDecl, IndexDecl, StructDecl,
-    TypeDecl,
+    ClassDecl, ConstDecl, Decl, EnumDecl, ExportDecl, FunctionDecl, ImportDecl, IndexDecl, TypeDecl,
 };
 
 pub use expr::{
@@ -22,8 +21,8 @@ pub use expr::{
 pub use ident::Ident;
 pub use literal::Literal;
 pub use module::Module;
-pub use patterns::{Binding, EnumMember};
-pub use shared::{LetOrVar, RefKind};
+pub use patterns::{Binding, EnumMember, TypedBinding};
+pub use shared::{LetOrVar, Method, RefKind, This};
 pub use stmt::{
     AssignStmt, BindingStmt, BreakStmt, CallStmt, ExprStmt, IfStmt, LoopStmt, ReturnStmt, Stmt,
     StmtsBlock,

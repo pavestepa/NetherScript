@@ -1,13 +1,12 @@
-use crate::semantics::hir::decls::Decl;
+pub mod binding;
+pub mod data_type;
+pub mod decls;
+pub mod enum_member;
+pub mod exprs;
+pub mod ref_kind;
+pub mod stmts;
 
-mod binding;
-mod data_type;
-mod decls;
-mod enum_member;
-mod exprs;
-mod ref_kind;
-mod stmts;
-
+pub use decls::Decl;
 pub struct Module {
     pub decls: Vec<Decl>,
 }

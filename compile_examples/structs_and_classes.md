@@ -11,34 +11,34 @@ function main() {
     console.log(`${girl.getName()}`) // girl only can print name
 }
 
-type User {
+class User {
     name: String;
 }
 
-implement User {
+extend User {
     new(name: String): User {
         return User {
             name: name
-        }
+        };
     }
-    changeNameTo(var this, newName: String) {
+    changeNameTo(mut this, newName: own String) {
         this.name = newName;
     }
-    getName(ref this): String {
-        return this.name;
+    getName(ref this): ref String {
+        return ref this.name;
     }
 }
 ```
 ``` Rust
 fn main() {
     // that boy will change name
-    let mut boy = Box::new(User::new("Paul"));
+    let mut boy = Box::new(User::new(String::from("Paul")));
     println!("{}", boy.get_name()); // print name in console
     boy.change_name_to("Mark");
     println!("{}", boy.get_name()); // and boy printing changed name
 
     // that girl never will change name
-    let girl = Box::new(User::new("Martha"));
+    let girl = Box::new(User::new(String::from("Martha")));
     println!("{}", girl.get_name()); // girl only can print name
 }
 
@@ -47,13 +47,13 @@ struct User {
 }
 
 impl User {
-    pub fn new(name: impl Into<String>) -> Self {
+    pub fn new(name: String) -> Self {
         Self {
-            name: String::from(name.into()),
+            name: name,
         }
     }
-    pub fn change_name_to(&mut self, new_name: impl Into<String>) {
-        self.name = new_name.into();
+    pub fn change_name_to(&mut self, new_name: String) {
+        self.name = new_name;
     }
     pub fn get_name(&self) -> &String {
         &self.name

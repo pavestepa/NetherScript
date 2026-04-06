@@ -5,3 +5,9 @@ pub struct Binding {
     pub ident: Ident,
     pub type_ref: Option<Ast<TypeNode>>,
 }
+
+#[derive(Debug, Clone)]
+pub struct TypedBinding {
+    pub ident: Ident,
+    pub type_ref: Ast<TypeNode>,
+}

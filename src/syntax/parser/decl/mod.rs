@@ -5,6 +5,7 @@ use crate::syntax::{
 
 use super::parser::Parser;
 
+mod class_decl;
 // mod const_decl;
 // mod enum_decl;
 mod export_decl;
@@ -20,6 +21,11 @@ impl Parser {
         println!("{:?}", self.current().kind);
         if let TokenKind::Keyword(keyword) = self.current().kind {
             match keyword {
+                Keyword::Class => {
+                    println!("parse_decl: match Keyword::Class");
+                    self.parse(TokenKind::Keyword(keyword));
+                    Decl::Class(self.parse_class_decl())
+                }
                 // Keyword::Const => {
                 //     self.next();
                 //     Decl::Const(self.parse_const_decl())

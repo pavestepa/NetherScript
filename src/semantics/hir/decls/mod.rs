@@ -1,4 +1,4 @@
-use crate::semantics::hir::decls::{
+pub use crate::semantics::hir::decls::{
     export::ExportDecl, import::ImportDecl, r#const::ConstDecl, r#enum::EnumDecl, r#fn::FnDecl,
     r#struct::StructDecl, r#type::TypeDecl,
 };

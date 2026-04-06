@@ -6,7 +6,7 @@ impl Parser {
         match self.current().kind {
             TokenKind::Ident(ident) => {
                 self.parse(TokenKind::Ident(ident));
-                Ok(Ident(ident))
+                Ok(Ident::new(ident))
             }
             e => Err(format!("can not use {:?} for identificate name", e)),
         }

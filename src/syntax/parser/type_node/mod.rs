@@ -19,11 +19,14 @@ impl Parser {
                 return self.parse_generic_type();
             }
             TokenKind::Keyword(keyword) => match keyword {
-                Keyword::Change => {
-                    return self.parse_reference_type_change();
+                Keyword::Own => {
+                    return self.parse_reference_type_own();
                 }
-                Keyword::Read => {
-                    return self.parse_reference_type_read();
+                Keyword::Ref => {
+                    return self.parse_reference_type_ref();
+                }
+                Keyword::Mut => {
+                    return self.parse_reference_type_mut();
                 }
                 e => {
                     return Ast::Error(format!(

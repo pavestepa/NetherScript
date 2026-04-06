@@ -83,7 +83,7 @@ impl Parser {
                     | Keyword::Enum
                     | Keyword::Import
                     | Keyword::Index
-                    | Keyword::Struct
+                    | Keyword::Class
                     | Keyword::Type => {
                         return;
                     }

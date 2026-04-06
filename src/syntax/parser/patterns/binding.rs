@@ -1,5 +1,5 @@
 use crate::syntax::{
-    ast::{ast::Ast, Binding, Ident},
+    ast::{ast::Ast, Binding, Ident, TypedBinding},
     lexer::TokenKind,
     parser::Parser,
 };
@@ -35,6 +35,22 @@ impl Parser {
         }
 
         return Ast::Parsed(Binding {
+            ident: ident.unwrap(),
+            type_ref: type_ref,
+        });
+    }
+
+    pub fn parse_typed_binding(&mut self) -> Ast<TypedBinding> {
+        println!("[STARTED] parse TypedBinding");
+        let ident = self.parse_ident();
+        if ident.is_err() {
+            self.error(ident.clone().err().unwrap());
+            return Ast::Error(ident.err().unwrap());
+        }
+        self.parse(TokenKind::Colon);
+        let type_ref = self.parse_type_node();
+
+        return Ast::Parsed(TypedBinding {
             ident: ident.unwrap(),
             type_ref: type_ref,
         });

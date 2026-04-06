@@ -10,13 +10,17 @@ impl Parser {
         let mut parsed_keyword = None;
         if let TokenKind::Keyword(keyword) = self.current().kind {
             match keyword {
-                Keyword::Read => {
+                Keyword::Own => {
                     parsed_keyword = Some(TokenKind::Keyword(keyword));
-                    parsed_ref_kind = Some(RefKind::Read);
+                    parsed_ref_kind = Some(RefKind::Own);
                 }
-                Keyword::Change => {
+                Keyword::Ref => {
                     parsed_keyword = Some(TokenKind::Keyword(keyword));
-                    parsed_ref_kind = Some(RefKind::Change);
+                    parsed_ref_kind = Some(RefKind::Ref);
+                }
+                Keyword::Mut => {
+                    parsed_keyword = Some(TokenKind::Keyword(keyword));
+                    parsed_ref_kind = Some(RefKind::Mut);
                 }
                 e => return None,
             }

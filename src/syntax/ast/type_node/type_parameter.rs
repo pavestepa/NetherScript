@@ -2,7 +2,7 @@ use crate::syntax::ast::{type_node::TypeNode, Ident};
 
 #[derive(Debug, Clone)]
 pub struct TypeParameter {
-    ident: Ident,
-    constaint: Option<TypeNode>,
-    default_type: Option<TypeNode>,
+    pub ident: Ident,
+    pub constaint: Option<TypeNode>,
+    pub default_type: Option<TypeNode>,
 }
