@@ -1,6 +1,7 @@
-use crate::syntax::{
-    ast::{ast::Ast, Expr},
-    lexer::TokenKind,
+use ns_lexer::TokenKind;
+
+use crate::{
+    ast::Ast, Expr,
 };
 
 #[derive(Debug, Clone)]

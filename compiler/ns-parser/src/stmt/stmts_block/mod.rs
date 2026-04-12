@@ -1,8 +1,7 @@
-use crate::syntax::{
-    ast::{ast::Ast, StmtsBlock},
-    lexer::TokenKind,
-    parser::Parser,
-};
+use ns_ast::{StmtsBlock, ast::Ast};
+use ns_lexer::TokenKind;
+
+use crate::Parser;
 
 impl Parser {
     pub fn parse_stmts_block(&mut self) -> StmtsBlock {

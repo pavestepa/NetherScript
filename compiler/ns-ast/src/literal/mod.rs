@@ -1,4 +1,4 @@
-use crate::utils::Atom;
+use ns_atom::Atom;
 
 #[derive(Debug, Clone)]
 pub enum Literal {

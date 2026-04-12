@@ -1,4 +1,4 @@
-use crate::syntax::ast::type_node::TypeNode;
+use crate::type_node::TypeNode;
 
 #[derive(Debug, Clone)]
 pub struct TupleType {

@@ -1,8 +1,7 @@
-use crate::syntax::{
-    ast::{Ident, Stmt},
-    lexer::{Keyword, TokenKind},
-    parser::Parser,
-};
+use ns_ast::{Ident, Stmt};
+use ns_lexer::{Keyword, TokenKind};
+
+use crate::Parser;
 
 mod assign_stmt;
 mod binding_stmt;

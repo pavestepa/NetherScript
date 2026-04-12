@@ -1,8 +1,7 @@
-use crate::syntax::{
-    ast::{ast::Ast, BreakStmt, Ident},
-    lexer::{Keyword, Token, TokenKind},
-    parser::Parser,
-};
+use ns_ast::{BreakStmt, Ident, ast::Ast};
+use ns_lexer::TokenKind;
+
+use crate::Parser;
 
 impl Parser {
     pub fn parse_break_stmt(&mut self) -> Ast<BreakStmt> {

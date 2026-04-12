@@ -1,4 +1,4 @@
-use crate::syntax::ast::{ast::Ast, type_node::TypeNode, RefKind};
+use crate::{ast::Ast, type_node::TypeNode, RefKind};
 
 #[derive(Debug, Clone)]
 pub struct ReferenceType {

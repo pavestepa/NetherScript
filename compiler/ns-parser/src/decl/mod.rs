@@ -1,7 +1,5 @@
-use crate::syntax::{
-    ast::Decl,
-    lexer::{Keyword, TokenKind},
-};
+use ns_ast::Decl;
+use ns_lexer::{Keyword, TokenKind};
 
 use super::parser::Parser;
 

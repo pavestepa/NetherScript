@@ -1,14 +1,13 @@
+use ns_ast::{TypeNode, ast::Ast};
+use ns_lexer::{Keyword, TokenKind};
+
+use crate::Parser;
+
 mod function_type;
 mod generic_type;
 mod reference_type;
 mod tuple_type;
 mod type_parameter;
-
-use crate::syntax::{
-    ast::{ast::Ast, TypeNode},
-    lexer::{Keyword, TokenKind},
-    parser::Parser,
-};
 
 impl Parser {
     pub fn parse_type_node(&mut self) -> Ast<TypeNode> {

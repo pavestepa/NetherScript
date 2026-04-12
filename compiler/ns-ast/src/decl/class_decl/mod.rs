@@ -1,4 +1,4 @@
-use crate::syntax::ast::{ast::Ast, Binding, Ident, Method, TypedBinding};
+use crate::{ast::Ast, Ident, Method, TypedBinding};
 
 #[derive(Debug)]
 pub struct ClassDecl {

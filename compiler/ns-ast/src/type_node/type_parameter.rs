@@ -1,4 +1,4 @@
-use crate::syntax::ast::{type_node::TypeNode, Ident};
+use crate::{type_node::TypeNode, Ident};
 
 #[derive(Debug, Clone)]
 pub struct TypeParameter {

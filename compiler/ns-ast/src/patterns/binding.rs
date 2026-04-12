@@ -1,4 +1,4 @@
-use crate::syntax::ast::{ast::Ast, Ident, TypeNode};
+use crate::{ast::Ast, Ident, TypeNode};
 
 #[derive(Debug, Clone)]
 pub struct Binding {

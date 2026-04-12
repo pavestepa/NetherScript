@@ -1,7 +1,6 @@
-use crate::{
-    syntax::{lexer::Keyword, text_range::TextRange},
-    Atom,
-};
+use ns_atom::Atom;
+
+use crate::{Keyword, TextRange};
 
 #[derive(Debug, Clone)]
 pub struct Token {

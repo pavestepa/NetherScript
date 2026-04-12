@@ -7,5 +7,6 @@ mod patterns;
 mod shared;
 mod stmt;
 mod type_node;
+mod syntax_error;
 
 pub use parser::Parser;

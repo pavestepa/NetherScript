@@ -1,8 +1,8 @@
-use crate::syntax::{
-    ast::{ast::Ast, GenericType, Ident, TypeNode},
-    lexer::TokenKind,
-    parser::Parser,
-};
+use ns_ast::{GenericType, Ident, TypeNode, ast::Ast};
+use ns_lexer::TokenKind;
+
+use crate::Parser;
+
 
 impl Parser {
     pub fn parse_generic_type(&mut self) -> Ast<TypeNode> {

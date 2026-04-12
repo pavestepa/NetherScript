@@ -1,10 +1,3 @@
-//pub mod semantics;
-pub mod syntax;
-pub mod utils;
-pub use utils::{atom, Atom};
-
-use crate::syntax::lexer::lexer;
-use crate::syntax::parser::Parser;
 fn main() {
     // Путь к NetherScript-файлу, который нужно распарсить
     let path = "./from/main.ns";

@@ -1,4 +1,4 @@
-use crate::syntax::ast::{ast::Ast, Ident};
+use crate::{ast::Ast, Ident};
 
 #[derive(Debug)]
 pub struct ExportDecl {

@@ -1,4 +1,4 @@
-use crate::syntax::ast::stmt::StmtsBlock;
+use crate::stmt::StmtsBlock;
 
 #[derive(Debug)]
 pub struct LoopStmt {

@@ -1,5 +1,7 @@
-use crate::syntax::ast::SyntaxError;
-use crate::syntax::lexer::{Keyword, Token, TokenKind};
+
+use ns_lexer::{Keyword, Token, TokenKind};
+
+use crate::syntax_error::SyntaxError;
 
 pub struct Parser {
     tokens: Vec<Token>,

@@ -1,8 +1,9 @@
-use crate::syntax::{
-    ast::{ast::Ast, ExprStmt},
-    lexer::TokenKind,
-    parser::Parser,
-};
+use ns_ast::{ExprStmt, ast::Ast};
+use ns_lexer::TokenKind;
+
+use crate::Parser;
+
+
 
 impl Parser {
     pub fn parse_expr_stmt(&mut self) -> Ast<ExprStmt> {

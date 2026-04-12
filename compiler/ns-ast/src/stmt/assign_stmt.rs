@@ -1,4 +1,4 @@
-use crate::syntax::ast::{ast::Ast, Expr, Ident};
+use crate::{ast::Ast, Expr, Ident};
 
 #[derive(Debug, Clone)]
 pub struct AssignStmt {

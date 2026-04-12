@@ -1,4 +1,4 @@
-use crate::syntax::ast::{ast::Ast, Binding, Expr, LetOrVar};
+use crate::{ast::Ast, Binding, Expr, LetOrVar};
 
 #[derive(Debug)]
 pub struct BindingStmt {

@@ -1,8 +1,9 @@
-use crate::syntax::{
-    ast::{ast::Ast, Binding, Ident, TypedBinding},
-    lexer::TokenKind,
-    parser::Parser,
-};
+use ns_ast::{Binding, TypedBinding, ast::Ast};
+use ns_lexer::TokenKind;
+
+use crate::Parser;
+
+
 
 impl Parser {
     pub fn parse_bindings(&mut self) -> Vec<Ast<Binding>> {

@@ -1,4 +1,4 @@
-use crate::syntax::ast::{Ident, SyntaxError, TypeNode};
+use crate::{Ident, TypeNode};
 
 #[derive(Debug)]
 pub struct TypeDecl {

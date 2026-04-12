@@ -4,3 +4,6 @@ version = "0.0.0"
 edition = "2024"
 
 [dependencies]
+ns-atom = { path = "../ns-atom" }
+ns-ast = { path = "../ns-ast" }
+ns-lexer = { path = "../ns-lexer"}

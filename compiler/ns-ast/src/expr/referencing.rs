@@ -1,4 +1,4 @@
-use crate::syntax::ast::{ast::Ast, Expr, RefKind};
+use crate::{ast::Ast, Expr, RefKind};
 
 #[derive(Debug, Clone)]
 pub struct Referencing {

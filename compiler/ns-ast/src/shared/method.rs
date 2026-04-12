@@ -1,4 +1,4 @@
-use crate::syntax::ast::{Binding, Ident, RefKind, StmtsBlock, TypeNode, ast::Ast, shared::this::This};
+use crate::{Binding, Ident, StmtsBlock, TypeNode, ast::Ast, shared::this::This};
 
 #[derive(Debug)]
 pub struct Method {

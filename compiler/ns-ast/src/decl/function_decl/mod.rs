@@ -1,4 +1,4 @@
-use crate::syntax::ast::{ast::Ast, Binding, Ident, StmtsBlock, TypeNode};
+use crate::{ast::Ast, Binding, Ident, StmtsBlock, TypeNode};
 
 #[derive(Debug)]
 pub struct FunctionDecl {

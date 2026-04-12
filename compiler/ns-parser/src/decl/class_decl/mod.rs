@@ -1,8 +1,7 @@
-use crate::syntax::{
-    ast::{ast::Ast, Binding, ClassDecl, Ident, Method, TypedBinding},
-    lexer::{Keyword, TokenKind},
-    parser::Parser,
-};
+use ns_ast::{ClassDecl, Ident, Method, TypedBinding, ast::Ast};
+use ns_lexer::{Keyword, TokenKind};
+
+use crate::Parser;
 
 impl Parser {
     pub fn parse_class_decl(&mut self) -> Ast<ClassDecl> {

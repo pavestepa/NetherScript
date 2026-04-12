@@ -1,8 +1,7 @@
-use crate::syntax::{
-    ast::{ast::Ast, AssignStmt, Ident},
-    lexer::TokenKind,
-    parser::Parser,
-};
+use ns_ast::{AssignStmt, Ident, ast::Ast};
+use ns_lexer::TokenKind;
+
+use crate::Parser;
 
 impl Parser {
     pub fn parse_assign_stmt(&mut self, ident: Ident) -> Ast<AssignStmt> {

@@ -1,8 +1,7 @@
-use crate::syntax::ast::{ast::Ast, EnumMember, Ident, SyntaxError};
+use crate::{ast::Ast, EnumMember, Ident};
 
 #[derive(Debug)]
 pub struct EnumDecl {
     ident: Ident,
     members: Vec<Ast<EnumMember>>,
-    syntax_errors: Vec<SyntaxError>,
 }

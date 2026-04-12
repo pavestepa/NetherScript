@@ -1,8 +1,7 @@
-use crate::syntax::{
-    ast::{ast::Ast, ExportDecl, Ident},
-    lexer::TokenKind,
-    parser::Parser,
-};
+use ns_ast::{ExportDecl, ast::Ast};
+use ns_lexer::TokenKind;
+
+use crate::Parser;
 
 impl Parser {
     pub fn parse_export_decl(&mut self) -> Ast<ExportDecl> {

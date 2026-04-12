@@ -1,8 +1,7 @@
-use crate::syntax::{
-    ast::{ast::Ast, RefKind, ReferenceType, TypeNode},
-    lexer::{Keyword, TokenKind},
-    parser::Parser,
-};
+use ns_ast::{RefKind, ReferenceType, TypeNode, ast::Ast};
+use ns_lexer::{Keyword, TokenKind};
+
+use crate::Parser;
 
 impl Parser {
     pub fn parse_reference_type_own(&mut self) -> Ast<TypeNode> {

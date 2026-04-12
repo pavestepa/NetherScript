@@ -1,8 +1,7 @@
-use crate::syntax::{
-    ast::{ast::Ast, BindingStmt, LetOrVar},
-    lexer::TokenKind,
-    parser::Parser,
-};
+use ns_ast::{BindingStmt, LetOrVar, ast::Ast};
+use ns_lexer::TokenKind;
+
+use crate::Parser;
 
 impl Parser {
     pub fn parse_binding_stmt_let(&mut self) -> Ast<BindingStmt> {

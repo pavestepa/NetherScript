@@ -1,10 +1,11 @@
 use std::{fs, iter::Peekable, str::CharIndices};
 
-use crate::syntax::{
-    lexer::{keyword_to_token, Token, TokenKind},
+use ns_atom::atom;
+
+use crate::{Token, TokenKind, keyword_to_token};
+use crate::{
     text_range::TextRange,
 };
-use crate::utils::atom;
 
 pub fn lexer(file_path: &str) -> Vec<Token> {
     let contents = fs::read_to_string(file_path).expect("Failed to read file");

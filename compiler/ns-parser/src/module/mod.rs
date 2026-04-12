@@ -1,4 +1,6 @@
-use crate::syntax::{ast::Module, parser::Parser};
+use ns_ast::Module;
+
+use crate::Parser;
 
 impl Parser {
     pub fn parse_module(&mut self) -> Module {

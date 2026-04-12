@@ -1,4 +1,4 @@
-use crate::syntax::ast::Ident;
+use crate::Ident;
 
 #[derive(Debug)]
 pub struct IndexDecl {

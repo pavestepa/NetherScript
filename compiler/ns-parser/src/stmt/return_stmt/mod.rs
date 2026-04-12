@@ -1,8 +1,7 @@
-use crate::syntax::{
-    ast::{ast::Ast, ReturnStmt},
-    lexer::TokenKind,
-    parser::Parser,
-};
+use ns_ast::{ReturnStmt, ast::Ast};
+use ns_lexer::TokenKind;
+
+use crate::Parser;
 
 impl Parser {
     pub fn parse_return_stmt(&mut self) -> Ast<ReturnStmt> {

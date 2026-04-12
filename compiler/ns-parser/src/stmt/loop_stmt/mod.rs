@@ -1,7 +1,7 @@
-use crate::syntax::{
-    ast::{ast::Ast, LoopStmt},
-    parser::Parser,
-};
+use ns_ast::{LoopStmt, ast::Ast};
+
+use crate::Parser;
+
 
 impl Parser {
     pub fn parse_loop_stmt(&mut self) -> Ast<LoopStmt> {

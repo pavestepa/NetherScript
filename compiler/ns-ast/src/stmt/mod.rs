@@ -16,7 +16,7 @@ pub use if_stmt::IfStmt;
 pub use loop_stmt::LoopStmt;
 pub use return_stmt::ReturnStmt;
 
-use crate::syntax::ast::ast::Ast;
+use crate::ast::Ast;
 
 #[derive(Debug)]
 pub enum Stmt {

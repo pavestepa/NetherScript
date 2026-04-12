@@ -1,4 +1,4 @@
-use crate::syntax::ast::{
+use crate::{
     ast::Ast,
     type_node::{TypeNode, TypeParameter},
 };

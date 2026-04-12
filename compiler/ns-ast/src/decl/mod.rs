@@ -16,7 +16,7 @@ pub use import_decl::ImportDecl;
 pub use index_decl::IndexDecl;
 pub use type_decl::TypeDecl;
 
-use crate::syntax::ast::ast::Ast;
+use crate::ast::Ast;
 
 #[derive(Debug)]
 pub enum Decl {

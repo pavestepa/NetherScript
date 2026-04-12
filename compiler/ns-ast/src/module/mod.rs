@@ -1,4 +1,4 @@
-use crate::syntax::ast::decl::Decl;
+use crate::decl::Decl;
 
 #[derive(Debug)]
 pub struct Module {

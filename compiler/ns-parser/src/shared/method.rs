@@ -1,4 +1,7 @@
-use crate::{Atom, atom, syntax::{ast::{Binding, Method, RefKind, This, TypeNode, ast::Ast}, lexer::{Keyword, TokenKind}, parser::Parser}};
+use ns_ast::{Binding, Method, This, TypeNode, ast::Ast};
+use ns_lexer::TokenKind;
+
+use crate::Parser;
 
 impl Parser {
     pub fn parse_method(&mut self) -> Ast<Method> {
@@ -67,7 +70,7 @@ impl Parser {
                 let ref_kind = self.try_parse_ref_kind();
                 
             }
-            }
+            
         }
     }
 

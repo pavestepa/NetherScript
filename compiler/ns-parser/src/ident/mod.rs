@@ -1,4 +1,8 @@
-use crate::syntax::{ast::Ident, lexer::TokenKind, parser::Parser};
+use ns_ast::Ident;
+use ns_lexer::TokenKind;
+
+use crate::Parser;
+
 
 impl Parser {
     pub fn parse_ident(&mut self) -> Result<Ident, String> {

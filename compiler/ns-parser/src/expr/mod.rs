@@ -1,11 +1,8 @@
-use crate::syntax::{
-    ast::{
-        ast::Ast, BinaryOp, BinaryOperator, BindignCall, Expr, FunctionCall, Ident, Literal,
-        LiteralCall, LogicalOp, LogicalOperator, MemberCall, RefKind, Referencing, UnaryOp,
-    },
-    lexer::{Keyword, TokenKind},
-    parser::Parser,
-};
+use ns_ast::{BinaryOp, BinaryOperator, BindignCall, Expr, FunctionCall, Ident, Literal, LiteralCall, LogicalOp, LogicalOperator, MemberCall, RefKind, Referencing, UnaryOp, ast::Ast};
+use ns_lexer::{Keyword, TokenKind};
+
+use crate::Parser;
+
 
 impl Parser {
     pub fn parse_expr(&mut self, min_bp: u8) -> Ast<Expr> {

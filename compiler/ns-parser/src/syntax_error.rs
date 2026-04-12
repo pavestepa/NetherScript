@@ -1,4 +1,5 @@
-use crate::syntax::text_range::TextRange;
+use ns_lexer::TextRange;
+
 
 #[derive(Debug, Clone)]
 pub struct SyntaxError {

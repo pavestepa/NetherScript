@@ -1,4 +1,4 @@
-use crate::syntax::ast::{ast::Ast, type_node::TypeNode, Ident};
+use crate::{ast::Ast, type_node::TypeNode, Ident};
 
 #[derive(Debug, Clone)]
 pub struct GenericType {

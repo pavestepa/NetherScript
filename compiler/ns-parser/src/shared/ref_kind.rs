@@ -1,8 +1,7 @@
-use crate::syntax::{
-    ast::RefKind,
-    lexer::{Keyword, TokenKind},
-    parser::Parser,
-};
+use ns_ast::RefKind;
+use ns_lexer::{Keyword, TokenKind};
+
+use crate::Parser;
 
 impl Parser {
     pub fn try_parse_ref_kind(&mut self) -> Option<RefKind> {

@@ -1,4 +1,4 @@
-use crate::syntax::ast::{ast::Ast, Expr};
+use crate::{ast::Ast, Expr};
 
 #[derive(Debug, Clone)]
 pub enum LogicalOperator {
