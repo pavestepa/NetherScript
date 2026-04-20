@@ -1,13 +1,13 @@
-use crate::{ast::Ast, Ident, TypeNode};
+use crate::{Ident, TypeNode};
 
 #[derive(Debug, Clone)]
 pub struct Binding {
     pub ident: Ident,
-    pub type_ref: Option<Ast<TypeNode>>,
+    pub type_ref: Option<TypeNode>,
 }
 
 #[derive(Debug, Clone)]
 pub struct TypedBinding {
     pub ident: Ident,
-    pub type_ref: Ast<TypeNode>,
+    pub type_ref: TypeNode,
 }

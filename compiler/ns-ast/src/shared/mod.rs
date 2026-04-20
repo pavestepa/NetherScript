@@ -1,9 +1,17 @@
-mod let_or_var;
-mod method;
+mod binding;
+mod callable;
+mod enum_member;
+mod field;
+mod function;
+mod ident;
 mod ref_kind;
 mod this;
 
-pub use let_or_var::LetOrVar;
-pub use method::Method;
+pub use binding::{Binding, TypedBinding};
+pub use callable::Callable;
+pub use enum_member::EnumMember;
+pub use field::Field;
+pub use function::Function;
+pub use ident::Ident;
 pub use ref_kind::RefKind;
 pub use this::This;

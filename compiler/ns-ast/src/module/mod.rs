@@ -1,16 +1,15 @@
-use crate::decl::Decl;
+mod export;
+mod import;
+
+pub use export::Export;
+pub use import::Import;
+
+use crate::{Ident, decl::Decl};
 
 #[derive(Debug)]
 pub struct Module {
     decls: Vec<Decl>,
-}
-
-impl Module {
-    pub fn new(decls: Vec<Decl>) -> Self {
-        Self { decls }
-    }
-
-    pub fn decls(&self) -> &[Decl] {
-        &self.decls
-    }
+    exports: Vec<Export>,
+    imports: Vec<Import>,
+    index: Vec<Ident>,
 }

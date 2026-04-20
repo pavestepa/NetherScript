@@ -1,22 +1,18 @@
-use crate::{ast::Ast, Binding, Expr, LetOrVar};
+use crate::{Binding, Expr};
 
 #[derive(Debug)]
 pub struct BindingStmt {
-    pub kind: LetOrVar,
-    pub typed_binding: Ast<Binding>,
-    pub assign: Option<Box<Ast<Expr>>>,
+    pub is_let: bool,
+    pub binding: Binding,
+    pub value: Box<Expr>,
 }
 
 impl BindingStmt {
-    pub fn new(
-        kind: LetOrVar,
-        typed_binding: Ast<Binding>,
-        assign: Option<Box<Ast<Expr>>>,
-    ) -> Self {
+    pub fn new(is_let: bool, binding: Binding, value: Box<Expr>) -> Self {
         Self {
-            kind,
-            typed_binding,
-            assign,
+            is_let,
+            binding,
+            value,
         }
     }
 }

@@ -16,21 +16,18 @@ pub use if_stmt::IfStmt;
 pub use loop_stmt::LoopStmt;
 pub use return_stmt::ReturnStmt;
 
-use crate::ast::Ast;
-
 #[derive(Debug)]
 pub enum Stmt {
-    Assign(Ast<AssignStmt>),
-    Binding(Ast<BindingStmt>),
-    Break(Ast<BreakStmt>),
-    Expr(Ast<ExprStmt>),
-    If(Ast<IfStmt>),
-    Loop(Ast<LoopStmt>),
-    Return(Ast<ReturnStmt>),
-    Error,
+    Assign(AssignStmt),
+    Binding(BindingStmt),
+    Break(BreakStmt),
+    Expr(ExprStmt),
+    If(IfStmt),
+    Loop(LoopStmt),
+    Return(ReturnStmt),
 }
 
 #[derive(Debug)]
 pub struct StmtsBlock {
-    pub stmts: Ast<Vec<Stmt>>,
+    pub stmts: Vec<Stmt>,
 }

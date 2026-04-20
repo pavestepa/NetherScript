@@ -2,6 +2,6 @@ use crate::{Ident, TypeNode};
 
 #[derive(Debug)]
 pub struct TypeDecl {
-    ident: Ident,
-    type_value: TypeNode,
+    pub ident: Ident,
+    pub assign: TypeNode,
 }

@@ -1,5 +1,5 @@
-use crate::{RefKind, ast::Ast};
+use crate::{RefKind};
 
 #[derive(Debug)]
-pub struct This (pub Ast<Option<Option<RefKind>>>);
+pub struct This (pub Option<RefKind>);
 

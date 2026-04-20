@@ -1,10 +1,10 @@
-use crate::{ast::Ast, Ident, Method, TypedBinding};
+use crate::{Function, Ident, TypedBinding};
 
 #[derive(Debug)]
 pub struct ClassDecl {
     pub ident: Ident,
     pub extends: Option<Ident>,
     pub implements: Option<Vec<Ident>>,
-    pub fields: Vec<Ast<TypedBinding>>,
-    pub methods: Vec<Ast<Method>>,
+    pub fields: Vec<TypedBinding>,
+    pub methods: Vec<Function>,
 }

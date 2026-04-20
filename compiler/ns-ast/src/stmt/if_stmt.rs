@@ -1,14 +1,14 @@
-use crate::{ast::Ast, stmt::StmtsBlock, Expr};
+use crate::{Expr, stmt::StmtsBlock};
 
 #[derive(Debug)]
 pub struct IfStmt {
-    pub test: Box<Ast<Expr>>,
+    pub test: Box<Expr>,
     pub body: Box<StmtsBlock>,
     pub alt: Option<Box<StmtsBlock>>,
 }
 
 impl IfStmt {
-    pub fn new(test: Ast<Expr>, body: StmtsBlock, alt: Option<StmtsBlock>) -> Self {
+    pub fn new(test: Expr, body: StmtsBlock, alt: Option<StmtsBlock>) -> Self {
         let alt_stmt = match alt {
             Some(v) => Some(Box::new(v)),
             None => None,

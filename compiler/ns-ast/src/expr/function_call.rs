@@ -1,13 +1,13 @@
-use crate::{ast::Ast, Expr, Ident};
+use crate::{Expr, Ident};
 
 #[derive(Debug, Clone)]
 pub struct FunctionCall {
     pub callee: Ident,
-    pub args: Vec<Ast<Expr>>,
+    pub args: Vec<Expr>,
 }
 
 impl FunctionCall {
-    pub fn new(callee: Ident, args: Vec<Ast<Expr>>) -> Self {
+    pub fn new(callee: Ident, args: Vec<Expr>) -> Self {
         Self {
             callee: callee,
             args: args,

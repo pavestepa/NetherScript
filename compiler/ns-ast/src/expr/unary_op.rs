@@ -1,19 +1,17 @@
 use ns_lexer::TokenKind;
 
-use crate::{
-    ast::Ast, Expr,
-};
+use crate::Expr;
 
 #[derive(Debug, Clone)]
 pub enum UnaryOp {
-    Minus(Box<Ast<Expr>>),
-    Plus(Box<Ast<Expr>>),
-    Not(Box<Ast<Expr>>),
-    BitNot(Box<Ast<Expr>>),
+    Minus(Box<Expr>),
+    Plus(Box<Expr>),
+    Not(Box<Expr>),
+    BitNot(Box<Expr>),
 }
 
 impl UnaryOp {
-    pub fn from(token: TokenKind, expr: Ast<Expr>) -> Self {
+    pub fn from(token: TokenKind, expr: Expr) -> Self {
         match token {
             TokenKind::Minus => UnaryOp::Minus(Box::new(expr)),
             TokenKind::Plus => UnaryOp::Plus(Box::new(expr)),

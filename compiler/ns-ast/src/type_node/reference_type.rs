@@ -1,12 +1,12 @@
-use crate::{ast::Ast, type_node::TypeNode, RefKind};
+use crate::{RefKind, type_node::TypeNode};
 
 #[derive(Debug, Clone)]
 pub struct ReferenceType {
     pub kind: RefKind,
-    pub argument: Box<Ast<TypeNode>>,
+    pub argument: Box<TypeNode>,
 }
 impl ReferenceType {
-    pub fn new(kind: RefKind, argument: Box<Ast<TypeNode>>) -> Self {
+    pub fn new(kind: RefKind, argument: Box<TypeNode>) -> Self {
         Self { kind, argument }
     }
 }
