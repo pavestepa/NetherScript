@@ -1,6 +1,6 @@
 use crate::{Expr, RefKind};
 
-/// Address-of / reference expression: `&expr` or `&mut expr` (Rust-style).
+/// Expression that takes the address of another expression according to the given reference mode.
 #[derive(Debug, Clone)]
 pub struct Referencing {
     pub ref_kind: RefKind,

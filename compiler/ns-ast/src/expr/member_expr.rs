@@ -6,8 +6,9 @@ pub struct MemberExpr {
     property: MemberProperty,
 }
 
+/// How a member is selected on the object expression.
 #[derive(Debug, Clone)]
 pub enum MemberProperty {
-    Ident(Ident),      // obj.name
-    Expr(Box<Expr>),   // obj[key]
+    Ident(Ident),    // obj.name
+    Expr(Box<Expr>), // obj[key]
 }

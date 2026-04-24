@@ -1,4 +1,9 @@
-use crate::Literal;
+use ns_atom::Atom;
 
+/// Fixed primitive value carried inside a literal expression.
 #[derive(Debug, Clone)]
-pub struct LiteralExpr(pub Literal);
+pub enum LiteralExpr {
+    Number(Atom),
+    String(Atom),
+    Boolean(Atom),
+}

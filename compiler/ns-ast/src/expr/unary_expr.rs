@@ -8,8 +8,7 @@ pub enum UnaryExpr {
     Plus(Box<Expr>),
     Not(Box<Expr>),
     BitNot(Box<Expr>),
-    /// Unary `*expr` — dereference (Rust-style). Lexer token is `Star`; the parser
-    /// chooses this only in unary position (distinct from binary `*`).
+    /// Indirection: reads the value behind one level of pointer or reference-like storage on the operand.
     Deref(Box<Expr>),
 }
 

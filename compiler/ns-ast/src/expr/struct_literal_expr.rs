@@ -1,13 +1,13 @@
 use crate::{Expr, Ident};
 
-/// One field in a struct literal: `id: expr` (Rust-style; shorthand `id` can be lowered to `id: id`).
+/// One named field initializer inside a structural literal.
 #[derive(Debug, Clone)]
 pub struct StructLiteralField {
     pub ident: Ident,
     pub value: Box<Expr>,
 }
 
-/// Struct / nominal object literal: `User { id: id, name: "Paul" }`.
+/// Value built by naming a type and listing field initializers for that type.
 #[derive(Debug, Clone)]
 pub struct StructLiteralExpr {
     pub struct_name: Ident,

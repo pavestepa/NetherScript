@@ -1,4 +1,4 @@
-/// How a value is borrowed or passed by reference (Rust-style `&` / `&mut`).
+/// Whether a value is used by ownership or through a shared or exclusive borrow.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub enum RefKind {
     /// Owned value (no reference modifier).

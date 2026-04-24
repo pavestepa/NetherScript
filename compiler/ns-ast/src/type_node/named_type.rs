@@ -1,6 +1,6 @@
 use crate::{Ident, type_node::TypeNode};
 
-/// TypeScript-style type reference: `T`, `number`, or `Promise<string>` with type arguments.
+/// Refers to a type by name and optionally supplies type arguments in declaration order.
 #[derive(Debug, Clone)]
 pub struct NamedType {
     pub ident: Ident,

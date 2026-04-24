@@ -20,15 +20,14 @@ pub use unary_expr::UnaryExpr;
 
 #[derive(Debug, Clone)]
 pub enum Expr {
-    //                             example             second token
-    BindingExpr(BindingExpr),   // a
-    CallExpr(CallExpr), // a()                 (
-    LiteralExpr(LiteralExpr),   // true, "text", 4
-    MemberExpr(MemberExpr),     // e.a                 .
-    BinaryExpr(BinaryExpr),         // e + e               +
-    LogicalExpr(LogicalExpr),       // e > e               >
-    Referencing(Referencing),   // read e              e
+    BindingExpr(BindingExpr),
+    CallExpr(CallExpr),
+    LiteralExpr(LiteralExpr),
+    MemberExpr(MemberExpr),
+    BinaryExpr(BinaryExpr),
+    LogicalExpr(LogicalExpr),
+    Referencing(Referencing),
     UnaryExpr(UnaryExpr),
-    /// `User { id: id, name: "Paul" }` — Rust-style struct literal.
+    /// Structural value: a resolved type name plus explicit field initializers.
     StructLiteral(StructLiteralExpr),
 }

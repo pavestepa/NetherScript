@@ -6,11 +6,11 @@ pub use {
     dynamic_type::DynamicType, named_type::NamedType, type_parameter::TypeParameter,
 };
 
-/// Types in parameter and return positions (`T`, `Map<K,V>`, `dynamic IFace`).
+/// Types allowed wherever a type annotation is required, including nested positions inside other types.
 #[derive(Debug, Clone)]
 pub enum TypeNode {
-    /// Identifier with optional type arguments: `T`, `Map<K, V>`.
+    /// Named type with an optional ordered list of type arguments applied to that name.
     Named(NamedType),
-    /// `dynamic InterfaceName` — call interface methods with dynamic dispatch.
+    /// Run-time dispatch through a named interface, with an owned or borrowed passing mode.
     Dynamic(DynamicType),
 }

@@ -6,7 +6,7 @@ pub struct Callable {
     pub ident: Ident,
     /// Type parameters on the callable, e.g. `<T>` in `function identity<T>(…)`.
     pub type_parameters: Vec<TypeParameter>,
-    /// `Static` or a Rust-style explicit receiver (`self` / `&self` / …).
+    /// `Static` or explicit receiver (`this` / `&this` / …).
     pub this: This,
     pub arguments: Vec<TypedBinding>,
     pub return_type: TypeNode,

@@ -10,7 +10,9 @@ pub struct ClassDecl {
     pub ident: Ident,
     /// Type parameters from the class header, e.g. `<T>` or `<T implements ToString + Debug>`.
     pub type_parameters: Vec<TypeParameter>,
+    /// Single supertype when inheritance is specified.
     pub extends: Option<Ident>,
+    /// Interface names whose contracts this class must satisfy when the list is present.
     pub implements: Option<Vec<Ident>>,
     pub fields: Vec<Field>,
     pub methods: Vec<Method>,
