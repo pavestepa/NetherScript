@@ -1,13 +1,13 @@
-use ns_ast::{DynamicType, Ident, RefKind, TypeNode, ast::Ast};
+use ns_ast::{DynamicType, TypeNode};
 use ns_lexer::{Keyword, TokenKind};
 
 use crate::Parser;
 
 mod named_type;
-mod type_parameter;
+pub mod type_parameter;
 
 impl Parser {
-    pub fn parse_type_node(&mut self) -> Ast<TypeNode> {
+    pub fn parse_type_node(&mut self) -> TypeNode {
         match self.current().kind {
             TokenKind::Ampersand => {
                 self.parse(TokenKind::Ampersand);
@@ -15,50 +15,48 @@ impl Parser {
                     TokenKind::Keyword(Keyword::Mut) => {
                         self.parse(TokenKind::Keyword(Keyword::Mut));
                         match self.current().kind {
-                            TokenKind::Keyword(Keyword::Dynamic) => {
-                                self.parse_dynamic_type(RefKind::Mut)
-                            }
-                            _ => Ast::Error(
-                                "expected `dynamic` after `&mut` in dynamic interface type".to_string(),
+                            TokenKind::Keyword(Keyword::Dynamic) => self.parse_dynamic_type(ns_ast::RefKind::Mut),
+                            _ => self.panic_at_current(
+                                "expected `dynamic` after `&mut` in dynamic interface type",
                             ),
                         }
                     }
-                    TokenKind::Keyword(Keyword::Dynamic) => self.parse_dynamic_type(RefKind::Ref),
-                    _ => Ast::Error(
-                        "after `&` in type position, expected `mut dynamic …` or `dynamic …`".to_string(),
+                    TokenKind::Keyword(Keyword::Dynamic) => self.parse_dynamic_type(ns_ast::RefKind::Ref),
+                    _ => self.panic_at_current(
+                        "after `&` in type position, expected `mut dynamic …` or `dynamic …`",
                     ),
                 }
             }
             TokenKind::Keyword(Keyword::Ref) => {
                 self.parse(TokenKind::Keyword(Keyword::Ref));
                 match self.current().kind {
-                    TokenKind::Keyword(Keyword::Dynamic) => self.parse_dynamic_type(RefKind::Ref),
-                    _ => Ast::Error("expected `dynamic` after `ref` in type position".to_string()),
+                    TokenKind::Keyword(Keyword::Dynamic) => self.parse_dynamic_type(ns_ast::RefKind::Ref),
+                    _ => self.panic_at_current("expected `dynamic` after `ref` in type position"),
                 }
             }
             TokenKind::Keyword(Keyword::Mut) => {
                 self.parse(TokenKind::Keyword(Keyword::Mut));
                 match self.current().kind {
-                    TokenKind::Keyword(Keyword::Dynamic) => self.parse_dynamic_type(RefKind::Mut),
-                    _ => Ast::Error("expected `dynamic` after `mut` in type position".to_string()),
+                    TokenKind::Keyword(Keyword::Dynamic) => self.parse_dynamic_type(ns_ast::RefKind::Mut),
+                    _ => self.panic_at_current("expected `dynamic` after `mut` in type position"),
                 }
             }
-            TokenKind::Keyword(Keyword::Dynamic) => self.parse_dynamic_type(RefKind::Own),
+            TokenKind::Keyword(Keyword::Dynamic) => self.parse_dynamic_type(ns_ast::RefKind::Own),
             TokenKind::Ident(_) => self.parse_named_type(),
-            other => Ast::Error(format!("expected type (name or `dynamic`), found {:?}", other)),
+            other => self.panic_at_current(format!("expected type (name or `dynamic`), found {:?}", other)),
         }
     }
 
-    fn parse_dynamic_type(&mut self, ref_kind: RefKind) -> Ast<TypeNode> {
+    fn parse_dynamic_type(&mut self, ref_kind: ns_ast::RefKind) -> TypeNode {
         self.parse(TokenKind::Keyword(Keyword::Dynamic));
         let TokenKind::Ident(atom) = self.current().kind else {
-            return Ast::Error("expected interface name after `dynamic`".to_string());
+            self.panic_at_current("expected interface name after `dynamic`");
         };
-        let interface = Ident::new(atom);
+        let interface = ns_ast::Ident::new(atom);
         self.parse(TokenKind::Ident(atom));
-        Ast::Parsed(TypeNode::Dynamic(DynamicType {
+        TypeNode::Dynamic(DynamicType {
             ref_kind,
             interface,
-        }))
+        })
     }
 }

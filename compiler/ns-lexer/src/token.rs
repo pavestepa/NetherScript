@@ -57,7 +57,8 @@ pub enum TokenKind {
     // conditional
     Question, // "?"
 
-    Whitespace, // " "
+    Whitespace, // " " / "\t"
+    Newline,    // "\n" / "\r\n"
     Dot,        // "."
     Comma,      // ","
     Colon,      // ":"

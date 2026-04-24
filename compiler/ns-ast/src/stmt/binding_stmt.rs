@@ -1,6 +1,6 @@
 use crate::{Binding, Expr};
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct BindingStmt {
     pub is_let: bool,
     pub binding: Binding,

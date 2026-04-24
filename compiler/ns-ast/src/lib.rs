@@ -12,7 +12,7 @@ pub use decl::{
 
 pub use expr::{
     BinaryExpr, BinaryOperator, BindingExpr, CallExpr, Expr, LiteralExpr, LogicalExpr,
-    LogicalOperator, MemberExpr, MemberProperty, Referencing, StructLiteralExpr,
+    LogicalOperator, MemberExpr, MemberProperty, NewExpr, Referencing, StructLiteralExpr,
     StructLiteralField, UnaryExpr,
 };
 pub use module::{Export, Import, Module};
@@ -21,7 +21,9 @@ pub use shared::{
     TypedBinding,
 };
 pub use stmt::{
-    AssignStmt, BindingStmt, BreakStmt, CallStmt, ExprStmt, IfStmt, LoopStmt, ReturnStmt, Stmt,
+    AssignStmt, AssignTarget, BindingStmt, BreakStmt, CallStmt, ExprStmt, IfStmt, LoopStmt,
+    ReturnStmt, Stmt,
+    WhileStmt,
     StmtsBlock,
 };
 pub use type_node::{DynamicType, NamedType, TypeNode, TypeParameter};

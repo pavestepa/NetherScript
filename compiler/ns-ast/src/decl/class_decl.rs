@@ -5,7 +5,7 @@ use crate::{Field, Ident, Method, TypeParameter};
 /// Generic parameters on the class itself, e.g. `class Box<T> { … }`, live in [`ClassDecl::type_parameters`].
 /// Fields use [`Field`] (optional type + optional initializer). Methods are [`Method`]; see
 /// [`crate::Callable::this`] is either [`crate::This::Static`] or [`crate::This::Receiver`].
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct ClassDecl {
     pub ident: Ident,
     /// Type parameters from the class header, e.g. `<T>` or `<T implements ToString + Debug>`.

@@ -14,7 +14,7 @@ pub use interface_decl::InterfaceDecl;
 pub use type_decl::TypeDecl;
 pub use type_modifier_decl::{ExtendsDecl, ImplementsDecl, TypeModifierDecl};
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub enum Decl {
     Class(ClassDecl),
     Const(ConstDecl),

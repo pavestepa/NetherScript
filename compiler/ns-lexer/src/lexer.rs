@@ -16,6 +16,16 @@ pub fn lexer(file_path: &str) -> Vec<Token> {
     while let Some((start, ch)) = chars.peek().copied() {
         match ch {
             // ───────── whitespace ─────────
+            '\n' => single(&mut chars, &mut tokens, TokenKind::Newline),
+            '\r' => {
+                let (_, _) = chars.next().unwrap();
+                if let Some(&(_, '\n')) = chars.peek() {
+                    let (end, _) = chars.next().unwrap();
+                    tokens.push(token(TokenKind::Newline, start, end + 1));
+                } else {
+                    tokens.push(token(TokenKind::Newline, start, start + 1));
+                }
+            }
             c if c.is_whitespace() => {
                 let end = consume_whitespace(&mut chars, start);
                 tokens.push(token(TokenKind::Whitespace, start, end));
@@ -123,7 +133,7 @@ pub fn lexer(file_path: &str) -> Vec<Token> {
 fn consume_whitespace(chars: &mut Peekable<CharIndices>, start: usize) -> usize {
     let mut end = start;
     while let Some(&(i, c)) = chars.peek() {
-        if c.is_whitespace() {
+        if c.is_whitespace() && c != '\n' && c != '\r' {
             chars.next();
             end = i + c.len_utf8();
         } else {

@@ -1,98 +1,132 @@
-use ns_ast::{Binding, Method, This, TypeNode, ast::Ast};
-use ns_lexer::TokenKind;
+use ns_ast::{Callable, Method, This, ThisReceiver, TypedBinding};
+use ns_lexer::{Keyword, TokenKind};
 
 use crate::Parser;
 
 impl Parser {
-    pub fn parse_method(&mut self) -> Ast<Method> {
-        println!("[STARTED] parse FunctionDecl");
-        /*  parsing of method name Ident */
-        let ident = match self.parse_ident() {
-            Ok(v) => v,
-            Err(v) => {
-                return Ast::Error(v);
-            }
-        };
+    pub fn parse_method(&mut self) -> Method {
+        let signature = self.parse_callable_signature(true);
+        let body = self.parse_stmts_block();
 
-        /* parsing arguments of function like: "(a: i32, s: String)" */
-        let args = match self.parse_this_arguments_with_parens() {
-            Ok(v) => v,
-            Err(v) => {
-                return Ast::Error(v);
-            }
-        };
-
-        
+        Method {
+            signature,
+            body,
+        }
     }
-    fn parse_this_arguments_with_parens(&mut self) -> Result<(This, Vec<Ast<Binding>>), String> {
-        /* check for "(" existing */
+
+    pub fn parse_callable_signature(&mut self, allow_this_receiver: bool) -> Callable {
+        let ident = self.parse_ident();
+        let type_parameters = self.parse_type_parameters_in_angle_brackets();
+        let (this, arguments) = self.parse_arguments_with_optional_this(allow_this_receiver);
+        self.parse(TokenKind::Colon);
+        let return_type = self.parse_type_node();
+
+        Callable {
+            ident,
+            type_parameters,
+            this,
+            arguments,
+            return_type,
+        }
+    }
+
+    fn parse_arguments_with_optional_this(
+        &mut self,
+        allow_this_receiver: bool,
+    ) -> (This, Vec<TypedBinding>) {
         self.parse(TokenKind::LeftParen);
+        self.consume_newlines();
 
-        /* check for existing 'this' and type kind of */
-        let this = self.parse_this();
+        let this = if allow_this_receiver && self.starts_this_receiver() {
+            self.parse_this()
+        } else {
+            This::Static
+        };
+        self.consume_newlines();
 
-        /* check for Ident of argument parse starting or is closing with ")" */
-        match self.current().kind {
-            TokenKind::RightParen => {
-                self.parse(TokenKind::RightParen);
-                return Ok((this, vec![]));
-            }
-            TokenKind::Ident(_) => {
-                let args = self.parse_method_arguments();
+        let mut args = Vec::new();
+        if allow_this_receiver && matches!(this, This::Receiver(_)) && self.current().kind == TokenKind::Comma
+        {
+            self.parse(TokenKind::Comma);
+            self.consume_newlines();
+        }
 
-                if args.is_ok() {
-                    return Ok((this, args.unwrap()));
-                } else {
-                    return Err(args.err().unwrap());
-                }
-            }
-            e => {
-                self.error(format!(
-                    "can not use {:?} in function arguments declaration",
-                    e
-                ));
-                return Err(format!(
-                    "can not use {:?} in function arguments declaration",
-                    e
-                ));
+        while self.current().kind != TokenKind::RightParen {
+            let ident = self.parse_ident();
+            self.parse(TokenKind::Colon);
+            let type_ref = self.parse_type_node();
+            args.push(TypedBinding { ident, type_ref });
+
+            if self.current().kind == TokenKind::Comma {
+                self.parse(TokenKind::Comma);
+                self.consume_newlines();
+            } else {
+                break;
             }
         }
+
+        self.parse(TokenKind::RightParen);
+        (this, args)
+    }
+
+    fn starts_this_receiver(&self) -> bool {
+        if self.current().kind == TokenKind::Ident(ns_atom::atom("this")) {
+            return true;
+        }
+        if self.current().kind == TokenKind::Ampersand
+            && self.peek(1).kind == TokenKind::Ident(ns_atom::atom("this"))
+        {
+            return true;
+        }
+        if self.current().kind == TokenKind::Ampersand
+            && self.peek(1).kind == TokenKind::Keyword(Keyword::Mut)
+            && self.peek(2).kind == TokenKind::Ident(ns_atom::atom("this"))
+        {
+            return true;
+        }
+        false
     }
 
     fn parse_this(&mut self) -> This {
-        match self.current().kind {
-            TokenKind::Ident(ident) => {
-                if ident == atom("this") {
-                    
-                }
-            }
-            TokenKind::Keyword(keyword) => {
-                let ref_kind = self.try_parse_ref_kind();
-                
-            }
-            
+        if self.current().kind == TokenKind::Ident(ns_atom::atom("this")) {
+            self.parse(TokenKind::Ident(ns_atom::atom("this")));
+            let type_annotation = if self.current().kind == TokenKind::Colon {
+                self.parse(TokenKind::Colon);
+                Some(self.parse_type_node())
+            } else {
+                None
+            };
+            return This::Receiver(ThisReceiver {
+                ref_kind: ns_ast::RefKind::Own,
+                type_annotation,
+            });
         }
-    }
 
-    fn parse_method_arguments(&mut self) -> Result<Vec<Ast<Binding>>, String> {
-
-        
-        let typed_bindings = self.parse_bindings();
-        match self.current().kind {
-            TokenKind::RightParen => {
-                self.parse(TokenKind::RightParen);
-                return Ok(typed_bindings);
-            }
-            e => {
-                self.error(format!("expected ')' but found {:?}", e));
-                return Err(format!("expected ')' but found {:?}", e));
-            }
+        if self.current().kind == TokenKind::Ampersand {
+            self.parse(TokenKind::Ampersand);
+            let ref_kind = if self.current().kind == TokenKind::Keyword(Keyword::Mut) {
+                self.parse(TokenKind::Keyword(Keyword::Mut));
+                ns_ast::RefKind::Mut
+            } else {
+                ns_ast::RefKind::Ref
+            };
+            self.parse(TokenKind::Ident(ns_atom::atom("this")));
+            let type_annotation = if self.current().kind == TokenKind::Colon {
+                self.parse(TokenKind::Colon);
+                Some(self.parse_type_node())
+            } else {
+                None
+            };
+            return This::Receiver(ThisReceiver {
+                ref_kind,
+                type_annotation,
+            });
         }
-    }
 
-    fn parse_method_returns(&mut self) -> Ast<TypeNode> {
-        println!("started parse fn returns");
-        self.parse(TokenKind::Colon);
-        self.parse_type_node()
+        if self.current().kind == TokenKind::RightParen {
+            return This::Static;
+        }
+
+        self.panic_at_current("expected `this`, `&this`, `&mut this`, or `)` in method parameters")
     }
 }

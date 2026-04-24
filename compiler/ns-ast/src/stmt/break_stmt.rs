@@ -1,6 +1,6 @@
 use crate::Ident;
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct BreakStmt {
     pub label: Option<Ident>,
 }

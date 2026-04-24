@@ -1,6 +1,6 @@
 use crate::{Expr, stmt::StmtsBlock};
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct IfStmt {
     pub test: Box<Expr>,
     pub body: Box<StmtsBlock>,

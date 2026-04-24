@@ -3,16 +3,14 @@ use ns_lexer::TokenKind;
 
 use crate::Parser;
 
-
 impl Parser {
-    pub fn parse_ident(&mut self) -> Result<Ident, String> {
-        println!("[STARTED] parse Ident");
+    pub fn parse_ident(&mut self) -> Ident {
         match self.current().kind {
             TokenKind::Ident(ident) => {
                 self.parse(TokenKind::Ident(ident));
-                Ok(Ident::new(ident))
+                Ident::new(ident)
             }
-            e => Err(format!("can not use {:?} for identificate name", e)),
+            other => self.panic_at_current(format!("expected identifier, found {:?}", other)),
         }
     }
 }

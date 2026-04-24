@@ -1,6 +1,6 @@
 use crate::{Expr, TypedBinding};
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct ConstDecl {
     pub binding: TypedBinding,
     pub val: Expr,

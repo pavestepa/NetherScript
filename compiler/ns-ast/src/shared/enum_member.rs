@@ -1,6 +1,6 @@
 use crate::{Ident, TypeNode};
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct EnumMember {
     pub ident: Ident,
     pub contains: Option<TypeNode>,

@@ -1,6 +1,6 @@
 use crate::{Callable, StmtsBlock};
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct Function {
     pub signature: Callable,
     pub body: StmtsBlock,

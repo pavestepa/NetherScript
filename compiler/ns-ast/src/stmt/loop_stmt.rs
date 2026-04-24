@@ -1,6 +1,6 @@
 use crate::stmt::StmtsBlock;
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct LoopStmt {
     pub body: Box<StmtsBlock>,
 }

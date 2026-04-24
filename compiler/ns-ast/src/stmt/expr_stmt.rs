@@ -1,6 +1,6 @@
 use crate::Expr;
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct ExprStmt {
     pub expr: Box<Expr>,
 }

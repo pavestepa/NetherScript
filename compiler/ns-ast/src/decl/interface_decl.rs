@@ -1,7 +1,7 @@
 use crate::{Callable, Ident, StmtsBlock, TypeParameter};
 
 /// Interface declaration; type parameters mirror `interface Box<T> { … }`.
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct InterfaceDecl {
     pub ident: Ident,
     /// Header generics, e.g. `<T>` or `<T implements ToString + Debug>`.
