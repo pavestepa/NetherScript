@@ -9,7 +9,7 @@ pub enum BinaryOperator {
     Percent,
 }
 #[derive(Debug, Clone)]
-pub struct BinaryOp {
+pub struct BinaryExpr {
     pub left: Box<Expr>,
     pub kind: BinaryOperator,
     pub right: Box<Expr>,

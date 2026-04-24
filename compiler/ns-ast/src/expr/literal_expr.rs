@@ -1,4 +1,4 @@
 use crate::Literal;
 
 #[derive(Debug, Clone)]
-pub struct LiteralCall(pub Literal);
+pub struct LiteralExpr(pub Literal);

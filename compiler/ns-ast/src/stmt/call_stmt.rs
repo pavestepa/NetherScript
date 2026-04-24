@@ -1,4 +1,4 @@
-use crate::expr::FunctionCall;
+use crate::expr::CallExpr;
 
 #[derive(Debug, Clone)]
-pub struct CallStmt(pub FunctionCall);
+pub struct CallStmt(pub CallExpr);

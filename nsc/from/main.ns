@@ -1,4 +1,27 @@
-function main(): box<i32> {
-  var a = own 3;
-  var b: mut i32 = mut 2;
+function main() {
 }
+
+class User {
+  id: string
+  name: string
+
+  constructor(id: string, name: string) {
+    this.id = id
+    this.name = name
+  }
+} 
+
+enum Role {
+  Admin,
+  Customer,
+  Seller,
+
+  toString(&this): String {
+    return match this {
+      Admin => "Admin",
+      Customer => "Customer",
+      Seller => "Seller",
+    }
+  }
+}
+

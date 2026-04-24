@@ -1,30 +1,34 @@
-mod binary_op;
-mod binding_call;
-mod function_call;
-mod literal_call;
-mod logical_op;
-mod member_call;
+mod binary_expr;
+mod binding_expr;
+mod call_expr;
+mod literal_expr;
+mod logical_expr;
+mod member_expr;
 mod referencing;
-mod unary_op;
+mod struct_literal_expr;
+mod unary_expr;
 
-pub use binary_op::{BinaryOp, BinaryOperator};
-pub use binding_call::BindignCall;
-pub use function_call::FunctionCall;
-pub use literal_call::LiteralCall;
-pub use logical_op::{LogicalOp, LogicalOperator};
-pub use member_call::MemberCall;
+pub use binary_expr::{BinaryExpr, BinaryOperator};
+pub use binding_expr::BindingExpr;
+pub use call_expr::CallExpr;
+pub use literal_expr::LiteralExpr;
+pub use logical_expr::{LogicalExpr, LogicalOperator};
+pub use member_expr::{MemberExpr, MemberProperty};
 pub use referencing::Referencing;
-pub use unary_op::UnaryOp;
+pub use struct_literal_expr::{StructLiteralExpr, StructLiteralField};
+pub use unary_expr::UnaryExpr;
 
 #[derive(Debug, Clone)]
 pub enum Expr {
     //                             example             second token
-    BindignCall(BindignCall),   // a
-    FunctionCall(FunctionCall), // a()                 (
-    LiteralCall(LiteralCall),   // true, "text", 4
-    MemberCall(MemberCall),     // e.a                 .
-    BinaryOp(BinaryOp),         // e + e               +
-    LogicalOp(LogicalOp),       // e > e               >
+    BindingExpr(BindingExpr),   // a
+    CallExpr(CallExpr), // a()                 (
+    LiteralExpr(LiteralExpr),   // true, "text", 4
+    MemberExpr(MemberExpr),     // e.a                 .
+    BinaryExpr(BinaryExpr),         // e + e               +
+    LogicalExpr(LogicalExpr),       // e > e               >
     Referencing(Referencing),   // read e              e
-    UnaryOp(UnaryOp),
+    UnaryExpr(UnaryExpr),
+    /// `User { id: id, name: "Paul" }` — Rust-style struct literal.
+    StructLiteral(StructLiteralExpr),
 }

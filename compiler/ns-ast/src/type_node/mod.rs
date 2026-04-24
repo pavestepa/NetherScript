@@ -1,18 +1,16 @@
-mod function_type;
-mod generic_type;
-mod reference_type;
-mod tuple_type;
+mod dynamic_type;
+mod named_type;
 mod type_parameter;
 
 pub use {
-    function_type::FunctionType, generic_type::GenericType, reference_type::ReferenceType,
-    tuple_type::TupleType, type_parameter::TypeParameter,
+    dynamic_type::DynamicType, named_type::NamedType, type_parameter::TypeParameter,
 };
 
+/// Types in parameter and return positions (`T`, `Map<K,V>`, `dynamic IFace`).
 #[derive(Debug, Clone)]
 pub enum TypeNode {
-    ReferenceType(ReferenceType),
-    GenericType(GenericType),
-    FunctionType(FunctionType),
-    TupleType(TupleType),
+    /// Identifier with optional type arguments: `T`, `Map<K, V>`.
+    Named(NamedType),
+    /// `dynamic InterfaceName` — call interface methods with dynamic dispatch.
+    Dynamic(DynamicType),
 }

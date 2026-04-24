@@ -12,6 +12,11 @@ impl Parser {
             }
         };
 
+        let type_parameters = match self.parse_type_parameters_in_angle_brackets() {
+            Ok(v) => v,
+            Err(e) => return Ast::Error(e),
+        };
+
         let mut extends: Option<Ident> = None;
         let mut implements: Option<Vec<Ident>> = None;
 
@@ -48,6 +53,7 @@ impl Parser {
 
         Ast::Parsed(ClassDecl {
             ident,
+            type_parameters,
             extends,
             implements,
             fields,

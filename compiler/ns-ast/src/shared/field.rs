@@ -1,7 +1,8 @@
 use crate::{Binding, Expr};
 
-#[derive(Debug)]
+/// Class field in TypeScript style: optional type annotation and optional initializer.
+#[derive(Debug, Clone)]
 pub struct Field {
-    binding: Binding,
-    init: Option<Expr>,
+    pub binding: Binding,
+    pub init: Option<Expr>,
 }

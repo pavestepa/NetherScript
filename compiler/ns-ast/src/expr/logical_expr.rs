@@ -11,7 +11,7 @@ pub enum LogicalOperator {
 }
 
 #[derive(Debug, Clone)]
-pub struct LogicalOp {
+pub struct LogicalExpr {
     pub left: Box<Expr>,
     pub kind: LogicalOperator,
     pub right: Box<Expr>,
