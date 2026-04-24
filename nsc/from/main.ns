@@ -1,27 +1,7 @@
-function main() {
-}
+class A implements Hey {
+  a: i32
 
-class User {
-  id: string
-  name: string
-
-  constructor(id: string, name: string) {
-    this.id = id
-    this.name = name
-  }
-} 
-
-enum Role {
-  Admin,
-  Customer,
-  Seller,
-
-  toString(&this): String {
-    return match this {
-      Admin => "Admin",
-      Customer => "Customer",
-      Seller => "Seller",
-    }
+  constructor() {
+    this.a = 3;
   }
 }
-

@@ -15,7 +15,7 @@ pub use expr::{
     LogicalOperator, MemberExpr, MemberProperty, NewExpr, Referencing, StructLiteralExpr,
     StructLiteralField, UnaryExpr,
 };
-pub use module::{Export, Import, Module};
+pub use module::{Export, Import, Module, ModuleDecl};
 pub use shared::{
     Binding, Callable, EnumMember, Field, Function, Ident, Method, RefKind, This, ThisReceiver,
     TypedBinding,

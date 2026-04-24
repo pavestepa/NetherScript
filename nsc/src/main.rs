@@ -1,3 +1,6 @@
+use ns_lexer::lexer;
+use ns_parser::Parser;
+
 fn main() {
     // Путь к NetherScript-файлу, который нужно распарсить
     let path = "./from/main.ns";
@@ -9,9 +12,4 @@ fn main() {
     println!(" ");
     println!("{:#?}", parsed.parse_module());
     println!(" ");
-    for e in parsed.get_errors() {
-        println!("[ERROR] start: {:?}, end: {:?}", e.range.start, e.range.end);
-        println!("  * {:#?}", e.message);
-        println!("");
-    }
 }

@@ -7,15 +7,35 @@ pub use import::Import;
 use crate::{Ident, decl::Decl};
 
 #[derive(Debug)]
+pub struct ModuleDecl {
+    decl: Decl,
+    exported: bool,
+}
+
+impl ModuleDecl {
+    pub fn new(decl: Decl, exported: bool) -> Self {
+        Self { decl, exported }
+    }
+
+    pub fn decl(&self) -> &Decl {
+        &self.decl
+    }
+
+    pub fn exported(&self) -> bool {
+        self.exported
+    }
+}
+
+#[derive(Debug)]
 pub struct Module {
-    decls: Vec<Decl>,
+    decls: Vec<ModuleDecl>,
     exports: Vec<Export>,
     imports: Vec<Import>,
     index: Vec<Ident>,
 }
 
 impl Module {
-    pub fn new(decls: Vec<Decl>) -> Self {
+    pub fn new(decls: Vec<ModuleDecl>) -> Self {
         Self {
             decls,
             exports: Vec::new(),
@@ -25,7 +45,7 @@ impl Module {
     }
 
     pub fn new_full(
-        decls: Vec<Decl>,
+        decls: Vec<ModuleDecl>,
         exports: Vec<Export>,
         imports: Vec<Import>,
         index: Vec<Ident>,
@@ -38,7 +58,7 @@ impl Module {
         }
     }
 
-    pub fn decls(&self) -> &[Decl] {
+    pub fn decls(&self) -> &[ModuleDecl] {
         &self.decls
     }
 

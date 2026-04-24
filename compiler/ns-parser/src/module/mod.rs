@@ -40,8 +40,7 @@ impl Parser {
                             )
                         ) {
                             let decl = self.parse_export_decl_form();
-                            exports.push(ns_ast::Export::Decl(decl.clone()));
-                            decls.push(decl);
+                            decls.push(ns_ast::ModuleDecl::new(decl, true));
                         } else {
                             exports.push(self.parse_export());
                         }
@@ -56,7 +55,7 @@ impl Parser {
                 }
             }
 
-            decls.push(self.parse_decl());
+            decls.push(ns_ast::ModuleDecl::new(self.parse_decl(), false));
         }
 
         Module::new_full(decls, exports, imports, index)
@@ -112,16 +111,15 @@ mod tests {
     }
 
     #[test]
-    fn export_decl_stays_export_decl_and_adds_to_decls() {
+    fn export_decl_marked_exported_in_decls_without_export_entry() {
         let module = parse_module_from_source("export class Foo {}");
-        assert_eq!(module.exports().len(), 1);
-        match &module.exports()[0] {
-            Export::Decl(Decl::Class(_)) => {}
-            other => panic!("expected Export::Decl(Class), got {:?}", other),
-        }
+        assert_eq!(module.exports().len(), 0);
         assert!(
-            module.decls().iter().any(|d| matches!(d, Decl::Class(_))),
-            "expected module.decls to contain Decl::Class"
+            module
+                .decls()
+                .iter()
+                .any(|d| d.exported() && matches!(d.decl(), Decl::Class(_))),
+            "expected exported Decl::Class in module.decls"
         );
         let dbg = format!("{:?}", module);
         assert!(dbg.contains("Foo"), "expected parsed module to include class Foo");
