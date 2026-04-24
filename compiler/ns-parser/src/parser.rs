@@ -86,6 +86,7 @@ impl Parser {
                     | Keyword::Import
                     | Keyword::Index
                     | Keyword::Class
+                    | Keyword::Interface
                     | Keyword::Type => {
                         return;
                     }

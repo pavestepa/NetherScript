@@ -6,6 +6,7 @@ pub enum Keyword {
     From,
     Function,
     Class,
+    Interface,
     Extends,
     Implements,
     Dynamic,
@@ -23,6 +24,8 @@ pub enum Keyword {
     Match,
     Loop,
     Break,
+    /// Spelled bitwise AND (`bitand`); same name as `std::ops::BitAnd::bitand` in Rust.
+    BitAnd,
 }
 
 pub fn keyword_to_token(ident: &str) -> Option<Keyword> {
@@ -33,6 +36,7 @@ pub fn keyword_to_token(ident: &str) -> Option<Keyword> {
         "from" => Some(Keyword::From),
         "function" => Some(Keyword::Function),
         "class" => Some(Keyword::Class),
+        "interface" => Some(Keyword::Interface),
         "extends" => Some(Keyword::Extends),
         "implements" => Some(Keyword::Implements),
         "dynamic" => Some(Keyword::Dynamic),
@@ -50,6 +54,7 @@ pub fn keyword_to_token(ident: &str) -> Option<Keyword> {
         "match" => Some(Keyword::Match),
         "loop" => Some(Keyword::Loop),
         "break" => Some(Keyword::Break),
+        "bitand" => Some(Keyword::BitAnd),
         _ => None,
     }
 }

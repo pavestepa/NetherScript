@@ -9,8 +9,8 @@ mod type_parameter;
 impl Parser {
     pub fn parse_type_node(&mut self) -> Ast<TypeNode> {
         match self.current().kind {
-            TokenKind::BitAnd => {
-                self.parse(TokenKind::BitAnd);
+            TokenKind::Ampersand => {
+                self.parse(TokenKind::Ampersand);
                 match self.current().kind {
                     TokenKind::Keyword(Keyword::Mut) => {
                         self.parse(TokenKind::Keyword(Keyword::Mut));

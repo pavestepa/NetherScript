@@ -50,6 +50,7 @@ pub fn lexer(file_path: &str) -> Vec<Token> {
             '+' => single(&mut chars, &mut tokens, TokenKind::Plus),
             '-' => single(&mut chars, &mut tokens, TokenKind::Minus),
             '*' => single(&mut chars, &mut tokens, TokenKind::Star),
+            '&' => single(&mut chars, &mut tokens, TokenKind::Ampersand),
             '(' => single(&mut chars, &mut tokens, TokenKind::LeftParen),
             ')' => single(&mut chars, &mut tokens, TokenKind::RightParen),
             '{' => single(&mut chars, &mut tokens, TokenKind::LeftBrace),

@@ -66,8 +66,9 @@ pub enum TokenKind {
     BitNot,     // "~"
 
     // bitwise
-    BitAnd,     // "&"
-    BitOr,      // "|"
+    /// Punctuator `&` (borrow / reference prefix; bitwise AND is the `bitand` keyword).
+    Ampersand,
+    BitOr, // "|"
     BitXor,     // "^"
     ShiftLeft,  // "<<"
     ShiftRight, // ">>"
