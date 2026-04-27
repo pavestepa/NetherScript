@@ -10,7 +10,10 @@ impl TypeChecker<'_> {
         match type_node {
             TypeNode::Named(n) => {
                 let name = super::checker::ident_name(&n.ident);
-                if self.builtin_checked_by_name(&name).is_some() || self.global_types.contains_key(&name) {
+                if self.lookup_type_param(&name).is_some()
+                    || self.builtin_checked_by_name(&name).is_some()
+                    || self.global_types.contains_key(&name)
+                {
                     CheckedType::Resolved(type_id)
                 } else {
                     self.report(
@@ -43,6 +46,9 @@ impl TypeChecker<'_> {
             TypeNode::Named(n) => {
                 let name = super::checker::ident_name(&n.ident);
                 if n.type_arguments.is_empty() {
+                    if let Some(type_param) = self.lookup_type_param(&name) {
+                        return type_param;
+                    }
                     if let Some(builtin) = self.builtin_type_id_by_name(&name) {
                         return builtin;
                     }

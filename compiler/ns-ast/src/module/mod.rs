@@ -34,6 +34,61 @@ pub struct Module {
     index: Vec<Ident>,
 }
 
+#[derive(Debug)]
+pub struct PackageModule {
+    path: String,
+    module: Module,
+}
+
+impl PackageModule {
+    pub fn new(path: String, module: Module) -> Self {
+        Self { path, module }
+    }
+
+    pub fn path(&self) -> &str {
+        &self.path
+    }
+
+    pub fn module(&self) -> &Module {
+        &self.module
+    }
+}
+
+#[derive(Debug)]
+pub struct Package {
+    entry_path: String,
+    modules: Vec<PackageModule>,
+}
+
+impl Package {
+    pub fn new(entry_path: String, modules: Vec<PackageModule>) -> Self {
+        Self { entry_path, modules }
+    }
+
+    pub fn entry_path(&self) -> &str {
+        &self.entry_path
+    }
+
+    pub fn modules(&self) -> &[PackageModule] {
+        &self.modules
+    }
+
+    pub fn entry_module(&self) -> Option<&Module> {
+        self.modules
+            .iter()
+            .find(|m| m.path() == self.entry_path)
+            .map(PackageModule::module)
+    }
+
+    pub fn into_entry_module(self) -> Option<Module> {
+        let entry = self.entry_path;
+        self.modules
+            .into_iter()
+            .find(|m| m.path == entry)
+            .map(|m| m.module)
+    }
+}
+
 impl Module {
     pub fn new(decls: Vec<ModuleDecl>) -> Self {
         Self {

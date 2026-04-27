@@ -1,6 +1,9 @@
+use std::collections::HashMap;
+
 use ns_ast::{BinaryOperator, Expr, LiteralExpr, LogicalOperator, MemberProperty};
 
 use super::{checker::TypeChecker, types::CheckedType};
+use crate::types::TypeId;
 
 impl TypeChecker<'_> {
     pub(super) fn check_expr(&mut self, expr: &Expr) -> CheckedType {
@@ -130,7 +133,15 @@ impl TypeChecker<'_> {
                 }
             }
             Expr::CallExpr(c) => {
-                let callee_ty = self.check_expr(&c.callee);
+                let mut callee_ty = self.check_expr(&c.callee);
+                let explicit_type_args: Vec<TypeId> = c
+                    .type_arguments
+                    .iter()
+                    .map(|type_arg| {
+                        let _ = self.type_from_node(type_arg);
+                        self.intern_type_node(type_arg)
+                    })
+                    .collect();
 
                 if let Expr::BindingExpr(be) = c.callee.as_ref() {
                     let func_name = super::checker::ident_name(&be.0);
@@ -145,6 +156,11 @@ impl TypeChecker<'_> {
                             let _ = self.check_expr(arg);
                         }
                         return CheckedType::Resolved(self.builtins.never);
+                    }
+
+                    if !explicit_type_args.is_empty() {
+                        callee_ty =
+                            self.instantiate_callable_with_explicit_type_args(&func_name, callee_ty, &explicit_type_args);
                     }
                 }
 
@@ -267,6 +283,70 @@ impl TypeChecker<'_> {
 
     fn is_builtin_type(&self, ty: &CheckedType, builtin: crate::types::TypeId) -> bool {
         matches!(ty, CheckedType::Resolved(id) if *id == builtin)
+    }
+
+    fn instantiate_callable_with_explicit_type_args(
+        &mut self,
+        function_name: &str,
+        callee_ty: CheckedType,
+        explicit_type_args: &[TypeId],
+    ) -> CheckedType {
+        let Some(type_param_names) = self.function_type_params.get(function_name).cloned() else {
+            return callee_ty;
+        };
+
+        if type_param_names.len() != explicit_type_args.len() {
+            self.report(
+                "E0640",
+                format!(
+                    "function `{function_name}` expects {} type args, got {}",
+                    type_param_names.len(),
+                    explicit_type_args.len()
+                ),
+                format!("call {function_name}<...>(...)"),
+                vec![],
+            );
+            return callee_ty;
+        }
+
+        let subst: HashMap<String, TypeId> = type_param_names
+            .into_iter()
+            .zip(explicit_type_args.iter().copied())
+            .collect();
+
+        match callee_ty {
+            CheckedType::Callable { params, ret } => {
+                let params = params
+                    .into_iter()
+                    .map(|param| self.substitute_type_params(param, &subst))
+                    .collect();
+                let ret = self.substitute_type_params(ret, &subst);
+                CheckedType::Callable { params, ret }
+            }
+            other => other,
+        }
+    }
+
+    fn substitute_type_params(&mut self, ty: TypeId, subst: &HashMap<String, TypeId>) -> TypeId {
+        let Some(node) = self.ctx.types.get(ty.0 as usize).cloned() else {
+            return ty;
+        };
+
+        match node {
+            crate::types::Type::TypeParam { name } => subst.get(&name).copied().unwrap_or(ty),
+            crate::types::Type::Named { name, args } => {
+                if args.is_empty() {
+                    return ty;
+                }
+                let replaced_args: Vec<TypeId> = args
+                    .into_iter()
+                    .map(|arg| self.substitute_type_params(arg, subst))
+                    .collect();
+                self.ctx
+                    .intern_type(crate::types::Type::Named { name, args: replaced_args })
+            }
+            _ => ty,
+        }
     }
 
     fn checked_object_name(&self, ty: &CheckedType) -> Option<String> {

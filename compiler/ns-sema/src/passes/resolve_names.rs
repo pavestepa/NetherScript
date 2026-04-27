@@ -309,6 +309,9 @@ fn resolve_expr(ctx: &mut SemaContext, expr: &Expr) {
         Expr::BindingExpr(e) => resolve_value_ident(ctx, &e.0),
         Expr::CallExpr(e) => {
             resolve_expr(ctx, &e.callee);
+            for type_arg in &e.type_arguments {
+                resolve_type_node(ctx, type_arg);
+            }
             for arg in &e.args {
                 resolve_expr(ctx, arg);
             }

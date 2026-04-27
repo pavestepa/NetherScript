@@ -13,14 +13,14 @@ fn main() {
 
 ```
 ``` TypeScript // only for coloring syntax
-function addNum(nums: mut Array i32) {
+function addNum(nums: &mut Array<i32>) {
     nums.push(8);
 }
 
 function main() {
     let nums = [1, 2, 4];
 
-    addNum(mut nums);
+    addNum(&mut nums);
 
     console.log(nums);
 }

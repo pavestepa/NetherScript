@@ -1,4 +1,4 @@
-use ns_ast::{Callable, FunctionDecl, InterfaceDecl, This};
+use ns_ast::{Callable, FunctionDecl, InterfaceDecl, Stmt, This};
 use std::collections::HashSet;
 
 use super::checker::{TypeChecker, ident_name};
@@ -6,12 +6,27 @@ use super::checker::{TypeChecker, ident_name};
 impl TypeChecker<'_> {
     pub(super) fn check_function_decl(&mut self, d: &FunctionDecl) {
         self.push_scope();
+        for tp in &d.signature.type_parameters {
+            self.declare_type_param(&ident_name(&tp.ident));
+        }
         for arg in &d.signature.arguments {
             let arg_ty = self.type_from_node(&arg.type_ref);
             self.declare_value(&ident_name(&arg.ident), arg_ty);
         }
         let return_ty = self.type_from_node(&d.signature.return_type);
-        self.check_block(&d.body.stmts, Some(return_ty));
+        self.check_block(&d.body.stmts, Some(return_ty.clone()));
+        if self.requires_explicit_return(&return_ty) && !self.block_guarantees_return(&d.body.stmts) {
+            self.report(
+                "E0641",
+                format!(
+                    "function `{}` must return `{}` on all paths",
+                    ident_name(&d.signature.ident),
+                    self.type_name(&return_ty)
+                ),
+                format!("function {}", ident_name(&d.signature.ident)),
+                vec!["add `return <expr>` in all control-flow paths".to_string()],
+            );
+        }
         self.pop_scope();
     }
 
@@ -31,12 +46,30 @@ impl TypeChecker<'_> {
 
             if let Some(body) = maybe_body {
                 self.push_scope();
+                for tp in &i.type_parameters {
+                    self.declare_type_param(&ident_name(&tp.ident));
+                }
+                for tp in &sig.type_parameters {
+                    self.declare_type_param(&ident_name(&tp.ident));
+                }
                 for arg in &sig.arguments {
                     let arg_ty = self.type_from_node(&arg.type_ref);
                     self.declare_value(&ident_name(&arg.ident), arg_ty);
                 }
                 let return_ty = self.type_from_node(&sig.return_type);
-                self.check_block(&body.stmts, Some(return_ty));
+                self.check_block(&body.stmts, Some(return_ty.clone()));
+                if self.requires_explicit_return(&return_ty) && !self.block_guarantees_return(&body.stmts) {
+                    self.report(
+                        "E0641",
+                        format!(
+                            "method `{}` must return `{}` on all paths",
+                            ident_name(&sig.ident),
+                            self.type_name(&return_ty)
+                        ),
+                        format!("method {}", ident_name(&sig.ident)),
+                        vec!["add `return <expr>` in all control-flow paths".to_string()],
+                    );
+                }
                 self.pop_scope();
             }
         }
@@ -109,6 +142,38 @@ impl TypeChecker<'_> {
                     format!("found `{}`", self.type_name(&got_ret)),
                 ],
             );
+        }
+    }
+}
+
+impl TypeChecker<'_> {
+    fn requires_explicit_return(&self, return_ty: &super::types::CheckedType) -> bool {
+        match return_ty {
+            super::types::CheckedType::Resolved(id) => {
+                *id != self.builtins.void && *id != self.builtins.never
+            }
+            super::types::CheckedType::Callable { .. } => true,
+            super::types::CheckedType::Error => false,
+        }
+    }
+
+    fn block_guarantees_return(&self, stmts: &[Stmt]) -> bool {
+        stmts.iter().any(|stmt| self.stmt_guarantees_return(stmt))
+    }
+
+    fn stmt_guarantees_return(&self, stmt: &Stmt) -> bool {
+        match stmt {
+            Stmt::Return(_) => true,
+            Stmt::If(s) => {
+                let then_returns = self.block_guarantees_return(&s.body.stmts);
+                let else_returns = s
+                    .alt
+                    .as_ref()
+                    .map(|alt| self.block_guarantees_return(&alt.stmts))
+                    .unwrap_or(false);
+                then_returns && else_returns
+            }
+            _ => false,
         }
     }
 }

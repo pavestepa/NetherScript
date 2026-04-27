@@ -1,9 +1,12 @@
 use std::fs;
+use std::sync::atomic::{AtomicU64, Ordering};
 use std::time::{SystemTime, UNIX_EPOCH};
 
 use ns_lexer::lexer;
 use ns_parser::Parser;
 use ns_sema::analyze;
+
+static TEMP_FILE_COUNTER: AtomicU64 = AtomicU64::new(0);
 
 fn analyze_source(source: &str) -> Result<ns_sema::SemaContext, Vec<ns_sema::Diagnostic>> {
     let mut path = std::env::temp_dir();
@@ -11,7 +14,13 @@ fn analyze_source(source: &str) -> Result<ns_sema::SemaContext, Vec<ns_sema::Dia
         .duration_since(UNIX_EPOCH)
         .expect("clock drift")
         .as_nanos();
-    path.push(format!("nsc_definite_assignment_{nanos}.ns"));
+    let seq = TEMP_FILE_COUNTER.fetch_add(1, Ordering::Relaxed);
+    path.push(format!(
+        "nsc_definite_assignment_{}_{}_{}.ns",
+        std::process::id(),
+        nanos,
+        seq
+    ));
 
     fs::write(&path, source).expect("write temp source");
     let path_str = path.to_str().expect("utf8 temp path");

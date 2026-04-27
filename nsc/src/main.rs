@@ -1,16 +1,26 @@
-use ns_lexer::lexer;
-use ns_parser::Parser;
+use ns_parser::main_parse;
 use ns_sema::analyze;
 
 fn main() {
     // Путь к NetherScript-файлу, который нужно распарсить
     let path = "./from/main.ns";
-    let lexem = lexer(path);
-    let mut parsed = Parser::new(lexem);
-    let module = parsed.parse_module();
-    println!("{:#?}", module);
-
-    match analyze(&module) {
+    let parsed = match main_parse(path) {
+        Ok(package) => {
+            let entry_path = package.entry_path().to_string();
+            match package.into_entry_module() {
+                Some(module) => module,
+                None => {
+                    eprintln!("ns-parser: entry module `{entry_path}` not found in package");
+                    std::process::exit(1);
+                }
+            }
+        }
+        Err(err) => {
+            eprintln!("ns-parser: {err}");
+            std::process::exit(1);
+        }
+    };
+    match analyze(&parsed) {
         Ok(_ctx) => {
             println!("ns-sema: ok");
         }

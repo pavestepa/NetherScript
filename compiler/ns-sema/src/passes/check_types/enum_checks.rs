@@ -6,6 +6,10 @@ use super::checker::{TypeChecker, ident_name};
 impl TypeChecker<'_> {
     pub(super) fn check_enum_decl(&mut self, e: &EnumDecl) {
         let enum_name = ident_name(&e.ident);
+        self.push_scope();
+        for tp in &e.type_parameters {
+            self.declare_type_param(&ident_name(&tp.ident));
+        }
 
         if let Some(interfaces) = &e.implements {
             for interface in interfaces {
@@ -80,6 +84,12 @@ impl TypeChecker<'_> {
             }
 
             self.push_scope();
+            for tp in &e.type_parameters {
+                self.declare_type_param(&ident_name(&tp.ident));
+            }
+            for tp in &m.signature.type_parameters {
+                self.declare_type_param(&ident_name(&tp.ident));
+            }
             for arg in &m.signature.arguments {
                 let arg_ty = self.type_from_node(&arg.type_ref);
                 self.declare_value(&ident_name(&arg.ident), arg_ty);
@@ -88,5 +98,6 @@ impl TypeChecker<'_> {
             self.check_block(&m.body.stmts, Some(return_ty));
             self.pop_scope();
         }
+        self.pop_scope();
     }
 }

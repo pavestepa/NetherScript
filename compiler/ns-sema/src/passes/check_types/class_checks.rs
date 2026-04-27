@@ -17,6 +17,10 @@ impl TypeChecker<'_> {
 
     pub(super) fn check_class_decl(&mut self, c: &ClassDecl) {
         let class_name = ident_name(&c.ident);
+        self.push_scope();
+        for tp in &c.type_parameters {
+            self.declare_type_param(&ident_name(&tp.ident));
+        }
         if let Some(interfaces) = &c.implements {
             for interface in interfaces {
                 let interface_name = ident_name(interface);
@@ -101,6 +105,12 @@ impl TypeChecker<'_> {
             }
 
             self.push_scope();
+            for tp in &c.type_parameters {
+                self.declare_type_param(&ident_name(&tp.ident));
+            }
+            for tp in &m.signature.type_parameters {
+                self.declare_type_param(&ident_name(&tp.ident));
+            }
             for arg in &m.signature.arguments {
                 let arg_ty = self.type_from_node(&arg.type_ref);
                 self.declare_value(&ident_name(&arg.ident), arg_ty);
@@ -109,5 +119,6 @@ impl TypeChecker<'_> {
             self.check_block(&m.body.stmts, Some(return_ty));
             self.pop_scope();
         }
+        self.pop_scope();
     }
 }

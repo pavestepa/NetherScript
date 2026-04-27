@@ -16,11 +16,13 @@ pub(super) struct TypeChecker<'a> {
     pub(super) interface_methods: HashMap<String, HashMap<String, Callable>>,
     pub(super) type_method_names: HashMap<String, HashSet<String>>,
     pub(super) type_methods: HashMap<String, HashMap<String, Callable>>,
+    pub(super) function_type_params: HashMap<String, Vec<String>>,
     pub(super) type_fields: HashMap<String, HashMap<String, Option<TypeId>>>,
     pub(super) global_values: HashMap<String, CheckedType>,
     pub(super) global_types: HashMap<String, TypeId>,
     pub(super) value_scopes: Vec<HashMap<String, CheckedType>>,
     pub(super) init_scopes: Vec<HashMap<String, bool>>,
+    pub(super) type_scopes: Vec<HashMap<String, TypeId>>,
     pub(super) named_type_cache: HashMap<String, TypeId>,
     pub(super) canonical_named_types: HashMap<(String, Vec<TypeId>), TypeId>,
 }
@@ -33,6 +35,7 @@ impl<'a> TypeChecker<'a> {
         let mut interface_methods: HashMap<String, HashMap<String, Callable>> = HashMap::new();
         let mut type_method_names: HashMap<String, HashSet<String>> = HashMap::new();
         let mut type_methods: HashMap<String, HashMap<String, Callable>> = HashMap::new();
+        let mut function_type_params: HashMap<String, Vec<String>> = HashMap::new();
 
         for module_decl in module.decls() {
             match module_decl.decl() {
@@ -76,7 +79,16 @@ impl<'a> TypeChecker<'a> {
                     }
                     interface_methods.insert(interface_name, methods);
                 }
-                Decl::Function(_f) => {}
+                Decl::Function(f) => {
+                    function_type_params.insert(
+                        ident_name(&f.signature.ident),
+                        f.signature
+                            .type_parameters
+                            .iter()
+                            .map(|tp| ident_name(&tp.ident))
+                            .collect(),
+                    );
+                }
                 _ => {}
             }
         }
@@ -90,11 +102,13 @@ impl<'a> TypeChecker<'a> {
             interface_methods,
             type_method_names,
             type_methods,
+            function_type_params,
             type_fields: HashMap::new(),
             global_values: HashMap::new(),
             global_types: HashMap::new(),
             value_scopes: vec![HashMap::new()],
             init_scopes: vec![HashMap::new()],
+            type_scopes: vec![HashMap::new()],
             named_type_cache: HashMap::new(),
             canonical_named_types: HashMap::new(),
         };
@@ -112,16 +126,21 @@ impl<'a> TypeChecker<'a> {
     pub(super) fn push_scope(&mut self) {
         self.value_scopes.push(HashMap::new());
         self.init_scopes.push(HashMap::new());
+        self.type_scopes.push(HashMap::new());
     }
 
     pub(super) fn pop_scope(&mut self) {
         self.value_scopes.pop();
         self.init_scopes.pop();
+        self.type_scopes.pop();
         if self.value_scopes.is_empty() {
             self.value_scopes.push(HashMap::new());
         }
         if self.init_scopes.is_empty() {
             self.init_scopes.push(HashMap::new());
+        }
+        if self.type_scopes.is_empty() {
+            self.type_scopes.push(HashMap::new());
         }
     }
 
@@ -166,6 +185,25 @@ impl<'a> TypeChecker<'a> {
             }
         }
         self.global_values.get(name).cloned()
+    }
+
+    pub(super) fn declare_type_param(&mut self, name: &str) -> TypeId {
+        let tid = self.ctx.intern_type(Type::TypeParam {
+            name: name.to_string(),
+        });
+        if let Some(scope) = self.type_scopes.last_mut() {
+            scope.insert(name.to_string(), tid);
+        }
+        tid
+    }
+
+    pub(super) fn lookup_type_param(&self, name: &str) -> Option<TypeId> {
+        for scope in self.type_scopes.iter().rev() {
+            if let Some(ty) = scope.get(name) {
+                return Some(*ty);
+            }
+        }
+        None
     }
 
     fn collect_global_environments(&mut self, module: &Module) {
@@ -264,11 +302,16 @@ impl<'a> TypeChecker<'a> {
     }
 
     pub(super) fn callable_type_from_signature(&mut self, sig: &Callable) -> CheckedType {
+        self.push_scope();
+        for tp in &sig.type_parameters {
+            self.declare_type_param(&ident_name(&tp.ident));
+        }
         let mut params = Vec::with_capacity(sig.arguments.len());
         for arg in &sig.arguments {
             params.push(self.intern_type_node(&arg.type_ref));
         }
         let ret = self.intern_type_node(&sig.return_type);
+        self.pop_scope();
         CheckedType::Callable { params, ret }
     }
 }

@@ -1,4 +1,9 @@
 function main(): i32 {
-  let a: i32;
+  let a = init<i32>(2);
+
   return a;
+}
+
+function init<T>(value: T): T {
+  return value;
 }

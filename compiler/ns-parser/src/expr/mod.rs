@@ -12,6 +12,25 @@ impl Parser {
         let mut left = self.parse_prefix();
 
         while self.is_not_end() {
+            if self.current().kind == TokenKind::Less && self.looks_like_generic_call_suffix() {
+                let type_arguments = self.parse_type_arguments();
+                self.parse(TokenKind::LeftParen);
+                let mut args = Vec::new();
+                if self.current().kind != TokenKind::RightParen {
+                    loop {
+                        args.push(self.parse_expr(0));
+                        if self.current().kind == TokenKind::Comma {
+                            self.parse(TokenKind::Comma);
+                        } else {
+                            break;
+                        }
+                    }
+                }
+                self.parse(TokenKind::RightParen);
+                left = Expr::CallExpr(CallExpr::new(Box::new(left), type_arguments, args));
+                continue;
+            }
+
             let op = self.current().kind;
             let Some((l_bp, r_bp)) = infix_binding_power(op) else {
                 break;
@@ -35,7 +54,7 @@ impl Parser {
                         }
                     }
                     self.parse(TokenKind::RightParen);
-                    Expr::CallExpr(CallExpr::new(Box::new(left), args))
+                    Expr::CallExpr(CallExpr::new(Box::new(left), Vec::new(), args))
                 }
                 TokenKind::Dot => {
                     let prop = self.parse_ident();
@@ -170,6 +189,35 @@ impl Parser {
                 expr
             }
             other => self.panic_at_current(format!("unexpected token in expression {:?}", other)),
+        }
+    }
+}
+
+impl Parser {
+    fn looks_like_generic_call_suffix(&self) -> bool {
+        if self.current().kind != TokenKind::Less {
+            return false;
+        }
+
+        let mut depth = 0usize;
+        let mut offset = 0usize;
+        let max_offset = 1024usize;
+        loop {
+            match self.peek(offset).kind {
+                TokenKind::Less => depth += 1,
+                TokenKind::Greater => {
+                    depth = depth.saturating_sub(1);
+                    if depth == 0 {
+                        return self.peek(offset + 1).kind == TokenKind::LeftParen;
+                    }
+                }
+                TokenKind::Comma | TokenKind::Ident(_) | TokenKind::Keyword(ns_lexer::Keyword::Dynamic) => {}
+                _ => return false,
+            }
+            offset += 1;
+            if offset > max_offset {
+                return false;
+            }
         }
     }
 }
