@@ -13,6 +13,14 @@ impl MemberExpr {
             property,
         }
     }
+
+    pub fn object(&self) -> &Expr {
+        &self.object
+    }
+
+    pub fn property(&self) -> &MemberProperty {
+        &self.property
+    }
 }
 
 /// How a member is selected on the object expression.

@@ -12,3 +12,4 @@ ns-atom = { path = "../compiler/ns-atom" }
 ns-ast = { path = "../compiler/ns-ast" }
 ns-lexer = { path = "../compiler/ns-lexer"}
 ns-parser = { path = "../compiler/ns-parser"}
+ns-sema = { path = "../compiler/ns-sema"}

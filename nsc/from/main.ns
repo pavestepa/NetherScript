@@ -1,7 +1,4 @@
-class A implements Hey {
-  a: i32
-
-  constructor() {
-    this.a = 3;
-  }
+function main(): i32 {
+  let a: i32;
+  return a;
 }
