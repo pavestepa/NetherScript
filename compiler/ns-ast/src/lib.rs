@@ -6,12 +6,12 @@ mod stmt;
 mod type_node;
 
 pub use decl::{
-    ClassDecl, ConstDecl, Decl, EnumDecl, ExtendsDecl, FunctionDecl, ImplementsDecl, InterfaceDecl,
-    TypeDecl, TypeModifierDecl,
+    ClassDecl, ConstDecl, Decl, EnumDecl, ErrorDecl, ExtendsDecl, FunctionDecl, ImplementsDecl,
+    InterfaceDecl, TypeDecl, TypeModifierDecl,
 };
 
 pub use expr::{
-    BinaryExpr, BinaryOperator, BindingExpr, CallExpr, Expr, LiteralExpr, LogicalExpr,
+    BinaryExpr, BinaryOperator, BindingExpr, CallExpr, ErrorExpr, Expr, LiteralExpr, LogicalExpr,
     LogicalOperator, MemberExpr, MemberProperty, NewExpr, Referencing, StructLiteralExpr,
     StructLiteralField, UnaryExpr,
 };
@@ -21,9 +21,7 @@ pub use shared::{
     TypedBinding,
 };
 pub use stmt::{
-    AssignStmt, AssignTarget, BindingStmt, BreakStmt, CallStmt, ExprStmt, IfStmt, LoopStmt,
-    ReturnStmt, Stmt,
-    WhileStmt,
-    StmtsBlock,
+    AssignStmt, AssignTarget, BindingStmt, BreakStmt, CallStmt, ErrorStmt, ExprStmt, IfStmt,
+    LoopStmt, ReturnStmt, Stmt, StmtsBlock, WhileStmt,
 };
 pub use type_node::{DynamicType, NamedType, TypeNode, TypeParameter};

@@ -7,3 +7,4 @@ edition = "2024"
 ns-atom = { path = "../ns-atom" }
 ns-ast = { path = "../ns-ast" }
 ns-lexer = { path = "../ns-lexer"}
+ns-diagnostics = { path = "../ns-diagnostics" }

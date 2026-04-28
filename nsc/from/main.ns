@@ -1,9 +1,16 @@
 function main(): i32 {
   let a = init<i32>(2);
 
+  let let ==;
+
+  s;
+
   return a;
+
+  ()=>
 }
 
 function init<T>(value: T): T {
   return value;
+  
 }

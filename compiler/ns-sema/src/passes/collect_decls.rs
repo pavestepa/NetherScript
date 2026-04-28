@@ -23,6 +23,7 @@ fn collect_decl(ctx: &mut SemaContext, decl: &Decl) {
         Decl::Function(d) => declare_value(ctx, &d.signature.ident, SymbolKind::Function),
         Decl::Type(d) => declare_type(ctx, &d.ident, SymbolKind::Type),
         Decl::Const(d) => declare_value(ctx, &d.binding.ident, SymbolKind::Value),
+        Decl::Error(_) => {}
         Decl::TypeModifier(_) => {}
     }
 }

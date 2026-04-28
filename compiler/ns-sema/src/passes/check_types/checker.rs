@@ -89,6 +89,7 @@ impl<'a> TypeChecker<'a> {
                             .collect(),
                     );
                 }
+                Decl::Error(_) => {}
                 _ => {}
             }
         }
@@ -246,6 +247,7 @@ impl<'a> TypeChecker<'a> {
                     let type_ty = self.intern_type_node(&t.assign);
                     self.global_types.insert(type_name, type_ty);
                 }
+                Decl::Error(_) => {}
                 Decl::TypeModifier(_) => {}
             }
         }

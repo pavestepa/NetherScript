@@ -23,7 +23,14 @@ impl Parser {
                 match keyword {
                     Keyword::Import => {
                         self.parse(TokenKind::Keyword(Keyword::Import));
-                        imports.push(self.parse_import());
+                        let item = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| self.parse_import()));
+                        match item {
+                            Ok(import) => imports.push(import),
+                            Err(payload) => {
+                                self.capture_panic_as_diag(&payload);
+                                self.synchronize_decl();
+                            }
+                        }
                         continue;
                     }
                     Keyword::Export => {
@@ -39,23 +46,37 @@ impl Parser {
                                     | Keyword::Type
                             )
                         ) {
-                            let decl = self.parse_export_decl_form();
+                            let decl = self.parse_decl_recover();
                             decls.push(ns_ast::ModuleDecl::new(decl, true));
                         } else {
-                            exports.push(self.parse_export());
+                            let item = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| self.parse_export()));
+                            match item {
+                                Ok(export) => exports.push(export),
+                                Err(payload) => {
+                                    self.capture_panic_as_diag(&payload);
+                                    self.synchronize_decl();
+                                }
+                            }
                         }
                         continue;
                     }
                     Keyword::Index => {
                         self.parse(TokenKind::Keyword(Keyword::Index));
-                        index.push(self.parse_index());
+                        let item = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| self.parse_index()));
+                        match item {
+                            Ok(idx) => index.push(idx),
+                            Err(payload) => {
+                                self.capture_panic_as_diag(&payload);
+                                self.synchronize_decl();
+                            }
+                        }
                         continue;
                     }
                     _ => {}
                 }
             }
 
-            decls.push(ns_ast::ModuleDecl::new(self.parse_decl(), false));
+            decls.push(ns_ast::ModuleDecl::new(self.parse_decl_recover(), false));
         }
 
         Module::new_full(decls, exports, imports, index)

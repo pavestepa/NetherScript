@@ -12,6 +12,7 @@ impl TypeChecker<'_> {
             Decl::Interface(i) => self.check_interface_decl(i),
             Decl::Type(_d) => {}
             Decl::Enum(e) => self.check_enum_decl(e),
+            Decl::Error(_) => {}
             Decl::TypeModifier(d) => self.check_type_modifier_decl(d),
         }
     }

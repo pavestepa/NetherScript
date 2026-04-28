@@ -8,6 +8,7 @@ use crate::types::TypeId;
 impl TypeChecker<'_> {
     pub(super) fn check_expr(&mut self, expr: &Expr) -> CheckedType {
         match expr {
+            Expr::Error(_) => CheckedType::Error,
             Expr::LiteralExpr(lit) => match lit {
                 LiteralExpr::Number(_) => CheckedType::Resolved(self.builtins.i32),
                 LiteralExpr::String(_) => CheckedType::Resolved(self.builtins.string),

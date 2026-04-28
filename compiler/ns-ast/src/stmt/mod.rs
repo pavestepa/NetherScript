@@ -19,10 +19,16 @@ pub use return_stmt::ReturnStmt;
 pub use while_stmt::WhileStmt;
 
 #[derive(Debug, Clone)]
+pub struct ErrorStmt {
+    pub message: String,
+}
+
+#[derive(Debug, Clone)]
 pub enum Stmt {
     Assign(AssignStmt),
     Binding(BindingStmt),
     Break(BreakStmt),
+    Error(ErrorStmt),
     Expr(ExprStmt),
     If(IfStmt),
     Loop(LoopStmt),

@@ -10,7 +10,7 @@ impl Parser {
 
         let mut stmts = Vec::new();
         while self.current().kind != TokenKind::RightBrace {
-            stmts.push(self.parse_stmt());
+            stmts.push(self.parse_stmt_recover());
             self.consume_newlines();
         }
 

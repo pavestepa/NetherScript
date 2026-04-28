@@ -21,9 +21,15 @@ pub use struct_literal_expr::{StructLiteralExpr, StructLiteralField};
 pub use unary_expr::UnaryExpr;
 
 #[derive(Debug, Clone)]
+pub struct ErrorExpr {
+    pub message: String,
+}
+
+#[derive(Debug, Clone)]
 pub enum Expr {
     BindingExpr(BindingExpr),
     CallExpr(CallExpr),
+    Error(ErrorExpr),
     LiteralExpr(LiteralExpr),
     MemberExpr(MemberExpr),
     BinaryExpr(BinaryExpr),

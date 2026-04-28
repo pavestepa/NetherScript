@@ -87,7 +87,7 @@ impl Parser {
     }
 
     fn parse_expr_like_stmt(&mut self) -> Stmt {
-        let expr = self.parse_expr(0);
+        let expr = self.parse_expr_recover();
         self.parse_optional_stmt_delimiter();
         Stmt::Expr(ExprStmt::new(expr))
     }

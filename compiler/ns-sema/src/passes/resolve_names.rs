@@ -23,6 +23,7 @@ fn resolve_decl(ctx: &mut SemaContext, decl: &Decl) {
     match decl {
         Decl::Class(d) => resolve_class_decl(ctx, d),
         Decl::Const(d) => resolve_const_decl(ctx, d),
+        Decl::Error(_) => {}
         Decl::Enum(d) => resolve_enum_decl(ctx, d),
         Decl::Function(d) => resolve_function_decl(ctx, d),
         Decl::Interface(d) => resolve_interface_decl(ctx, d),
@@ -270,6 +271,7 @@ fn resolve_stmt(ctx: &mut SemaContext, stmt: &Stmt) {
                 ctx.error(format!("duplicate local binding: {name}"));
             }
         }
+        Stmt::Error(_) => {}
         Stmt::Break(_) => {}
         Stmt::Expr(s) => resolve_expr(ctx, &s.expr),
         Stmt::If(s) => {
@@ -316,6 +318,7 @@ fn resolve_expr(ctx: &mut SemaContext, expr: &Expr) {
                 resolve_expr(ctx, arg);
             }
         }
+        Expr::Error(_) => {}
         Expr::LiteralExpr(_) => {}
         Expr::MemberExpr(_e) => {
             // MemberExpr internals are private in ns-ast; traverse what is exposed elsewhere.

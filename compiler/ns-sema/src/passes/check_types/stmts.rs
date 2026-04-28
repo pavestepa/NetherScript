@@ -5,6 +5,7 @@ use super::{checker::TypeChecker, types::CheckedType};
 impl TypeChecker<'_> {
     pub(super) fn check_stmt(&mut self, stmt: &Stmt, return_ty: Option<CheckedType>) {
         match stmt {
+            Stmt::Error(_) => {}
             Stmt::Binding(s) => {
                 let binding_ty = s.binding.type_ref.as_ref().map(|t| self.type_from_node(t));
 

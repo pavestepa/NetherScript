@@ -9,6 +9,8 @@ impl TypeChecker<'_> {
                 file: None,
                 line: None,
                 column: None,
+                start: None,
+                end: None,
                 label: Some("synthetic span from sema node".to_string()),
             })
             .with_snippet(snippet);

@@ -15,9 +15,15 @@ pub use type_decl::TypeDecl;
 pub use type_modifier_decl::{ExtendsDecl, ImplementsDecl, TypeModifierDecl};
 
 #[derive(Debug, Clone)]
+pub struct ErrorDecl {
+    pub message: String,
+}
+
+#[derive(Debug, Clone)]
 pub enum Decl {
     Class(ClassDecl),
     Const(ConstDecl),
+    Error(ErrorDecl),
     Enum(EnumDecl),
     Function(FunctionDecl),
     Interface(InterfaceDecl),
