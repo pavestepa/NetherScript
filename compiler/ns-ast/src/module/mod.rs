@@ -4,6 +4,8 @@ mod import;
 pub use export::Export;
 pub use import::Import;
 
+use std::collections::HashSet;
+
 use crate::{Ident, decl::Decl};
 
 #[derive(Debug)]
@@ -86,6 +88,73 @@ impl Package {
             .into_iter()
             .find(|m| m.path == entry)
             .map(|m| m.module)
+    }
+
+    pub fn into_merged_module(self) -> Module {
+        let mut merged_decls = Vec::new();
+        let mut merged_exports = Vec::new();
+        let mut merged_imports = Vec::new();
+        let mut merged_index = Vec::new();
+        let entry_path = self.entry_path.clone();
+
+        for package_module in self.modules {
+            let is_entry = package_module.path == entry_path;
+            let module = package_module.module;
+
+            if is_entry {
+                merged_decls.extend(module.decls);
+                merged_exports.extend(module.exports);
+                merged_imports.extend(module.imports);
+                merged_index.extend(module.index);
+                continue;
+            }
+
+            let mut exported_names = HashSet::new();
+            for export in &module.exports {
+                match export {
+                    Export::Ident(ident) => {
+                        exported_names.insert(ident_name(ident));
+                    }
+                    Export::Idents(idents) => {
+                        for ident in idents {
+                            exported_names.insert(ident_name(ident));
+                        }
+                    }
+                }
+            }
+
+            for decl in module.decls {
+                let is_exported_decl = decl.exported();
+                let is_named_export = decl
+                    .decl()
+                    .name()
+                    .map(|name| exported_names.contains(&name))
+                    .unwrap_or(false);
+                if is_exported_decl || is_named_export {
+                    merged_decls.push(decl);
+                }
+            }
+        }
+
+        Module::new_full(merged_decls, merged_exports, merged_imports, merged_index)
+    }
+}
+
+fn ident_name(ident: &Ident) -> String {
+    ident.clone().into_simple().as_str().to_string()
+}
+
+impl Decl {
+    fn name(&self) -> Option<String> {
+        match self {
+            Decl::Class(d) => Some(d.ident.clone().into_simple().as_str().to_string()),
+            Decl::Const(d) => Some(d.binding.ident.clone().into_simple().as_str().to_string()),
+            Decl::Enum(d) => Some(d.ident.clone().into_simple().as_str().to_string()),
+            Decl::Function(d) => Some(d.signature.ident.clone().into_simple().as_str().to_string()),
+            Decl::Interface(d) => Some(d.ident.clone().into_simple().as_str().to_string()),
+            Decl::Type(d) => Some(d.ident.clone().into_simple().as_str().to_string()),
+            Decl::TypeModifier(_) | Decl::Error(_) => None,
+        }
     }
 }
 

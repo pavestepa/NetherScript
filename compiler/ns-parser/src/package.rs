@@ -85,15 +85,41 @@ pub fn main_parse_with_diagnostics(entry_module_path: &str) -> Result<Package, V
 
         for index_ident in module.index() {
             let name = index_ident.clone().into_simple().as_str().to_string();
-            let index_path = module_dir.join(&name).join("index.ns");
-            if !index_path.exists() {
+            let dir_index_path = module_dir.join(&name).join("index.ns");
+            let file_module_path = module_dir.join(format!("{name}.ns"));
+            let resolved = if dir_index_path.exists() && file_module_path.exists() {
+                return Err(vec![
+                    Diagnostic::error_with_code(
+                        "P2004",
+                        format!(
+                            "ambiguous index module `{name}` referenced from `{}`: both `{}` and `{}` exist",
+                            canonical.display(),
+                            dir_index_path.display(),
+                            file_module_path.display()
+                        ),
+                    )
+                    .with_span(SourceSpan {
+                        file: Some(canonical_path_string(&canonical)),
+                        line: None,
+                        column: None,
+                        start: None,
+                        end: None,
+                        label: Some("ambiguous module resolution".to_string()),
+                    }),
+                ]);
+            } else if dir_index_path.exists() {
+                dir_index_path
+            } else if file_module_path.exists() {
+                file_module_path
+            } else {
                 return Err(vec![
                     Diagnostic::error_with_code(
                         "P2001",
                         format!(
-                            "index module `{name}` referenced from `{}` not found at `{}`",
+                            "index module `{name}` referenced from `{}` not found at `{}` or `{}`",
                             canonical.display(),
-                            index_path.display()
+                            dir_index_path.display(),
+                            file_module_path.display()
                         ),
                     )
                     .with_span(SourceSpan {
@@ -105,8 +131,8 @@ pub fn main_parse_with_diagnostics(entry_module_path: &str) -> Result<Package, V
                         label: Some("missing index module".to_string()),
                     }),
                 ]);
-            }
-            queue.push_back(index_path);
+            };
+            queue.push_back(resolved);
         }
 
         modules.push(PackageModule::new(canonical_path_string(&canonical), module));
@@ -201,6 +227,78 @@ index missing;
 
         let err = main_parse(entry.to_str().expect("utf8 path")).expect_err("must fail");
         assert_eq!(err.kind(), std::io::ErrorKind::NotFound);
+    }
+
+    #[test]
+    fn main_parse_loads_file_module_when_folder_index_missing() {
+        let root = temp_case_dir("package_parse_file_module");
+        let entry = root.join("main.ns");
+        let file_module = root.join("util.ns");
+
+        fs::write(
+            &entry,
+            r#"
+index util;
+
+function main(): i32 {
+    return 1;
+}
+"#,
+        )
+        .expect("write entry");
+        fs::write(
+            &file_module,
+            r#"
+function helper(): i32 {
+    return 2;
+}
+"#,
+        )
+        .expect("write file module");
+
+        let pkg = main_parse(entry.to_str().expect("utf8 path")).expect("main_parse should succeed");
+        assert_eq!(pkg.modules().len(), 2, "expected entry + one file module");
+    }
+
+    #[test]
+    fn main_parse_errors_when_index_folder_and_file_module_both_exist() {
+        let root = temp_case_dir("package_parse_ambiguous_module");
+        let entry = root.join("main.ns");
+        let child_dir = root.join("util");
+        let child_index = child_dir.join("index.ns");
+        let file_module = root.join("util.ns");
+
+        fs::create_dir_all(&child_dir).expect("create child dir");
+        fs::write(
+            &entry,
+            r#"
+index util;
+"#,
+        )
+        .expect("write entry");
+        fs::write(
+            &child_index,
+            r#"
+function helper(): i32 {
+    return 2;
+}
+"#,
+        )
+        .expect("write child index");
+        fs::write(
+            &file_module,
+            r#"
+function helper_file(): i32 {
+    return 3;
+}
+"#,
+        )
+        .expect("write file module");
+
+        let diags = main_parse_with_diagnostics(entry.to_str().expect("utf8 path"))
+            .expect_err("must fail with ambiguity diagnostics");
+        assert!(!diags.is_empty());
+        assert_eq!(diags[0].code.as_deref(), Some("P2004"));
     }
 
     #[test]
