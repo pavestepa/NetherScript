@@ -47,6 +47,38 @@ impl Parser {
                 Stmt::Break(self.parse_break_stmt())
             }
             TokenKind::Ident(lhs) => {
+                if lhs == ns_atom::atom("console")
+                    && self.peek(1).kind == TokenKind::Dot
+                    && self.peek(2).kind == TokenKind::Ident(ns_atom::atom("log"))
+                    && self.peek_non_newline_kind(3) == TokenKind::LeftParen
+                {
+                    self.parse(TokenKind::Ident(lhs));
+                    self.parse(TokenKind::Dot);
+                    self.parse(TokenKind::Ident(ns_atom::atom("log")));
+                    self.parse(TokenKind::LeftParen);
+                    let mut args = Vec::new();
+                    if self.current().kind != TokenKind::RightParen {
+                        loop {
+                            args.push(self.parse_expr(0));
+                            if self.current().kind == TokenKind::Comma {
+                                self.parse(TokenKind::Comma);
+                            } else {
+                                break;
+                            }
+                        }
+                    }
+                    self.parse(TokenKind::RightParen);
+                    self.parse_optional_stmt_delimiter();
+                    return Stmt::Expr(ExprStmt::new(Expr::CallExpr(ns_ast::CallExpr::new(
+                        Box::new(Expr::MemberExpr(MemberExpr::new(
+                            Expr::BindingExpr(BindingExpr(ns_ast::Ident::new(lhs))),
+                            MemberProperty::Ident(ns_ast::Ident::new(ns_atom::atom("log"))),
+                        ))),
+                        Vec::new(),
+                        args,
+                    ))));
+                }
+
                 if self.peek(1).kind == TokenKind::Dot
                     && matches!(self.peek(2).kind, TokenKind::Ident(_))
                     && self.peek_non_newline_kind(3) == TokenKind::Assign

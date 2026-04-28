@@ -13,7 +13,7 @@ pub use decl::{
 pub use expr::{
     BinaryExpr, BinaryOperator, BindingExpr, CallExpr, ErrorExpr, Expr, LiteralExpr, LogicalExpr,
     LogicalOperator, MemberExpr, MemberProperty, NewExpr, Referencing, StructLiteralExpr,
-    StructLiteralField, UnaryExpr,
+    StructLiteralField, TemplateStringExpr, TemplateStringPart, UnaryExpr,
 };
 pub use module::{Export, Import, Module, ModuleDecl, Package, PackageModule};
 pub use shared::{

@@ -148,7 +148,11 @@ impl Parser {
             }
             TokenKind::StringLiteral(v) => {
                 self.parse(token);
-                Expr::LiteralExpr(LiteralExpr::String(v))
+                if let Some(template) = self.parse_template_string_literal(v.as_str().as_ref()) {
+                    Expr::TemplateString(template)
+                } else {
+                    Expr::LiteralExpr(LiteralExpr::String(v))
+                }
             }
             TokenKind::BooleanLiteral(v) => {
                 self.parse(token);
@@ -190,6 +194,43 @@ impl Parser {
             }
             other => self.panic_at_current(format!("unexpected token in expression {:?}", other)),
         }
+    }
+}
+
+impl Parser {
+    fn parse_template_string_literal(&self, raw: &str) -> Option<ns_ast::TemplateStringExpr> {
+        if !raw.contains("${") {
+            return None;
+        }
+
+        let mut parts = Vec::new();
+        let mut cursor = 0usize;
+        while let Some(rel_start) = raw[cursor..].find("${") {
+            let start = cursor + rel_start;
+            if start > cursor {
+                parts.push(ns_ast::TemplateStringPart::Text(raw[cursor..start].to_string()));
+            }
+
+            let expr_start = start + 2;
+            let rel_end = raw[expr_start..].find('}')?;
+            let end = expr_start + rel_end;
+            let placeholder = raw[expr_start..end].trim();
+            if placeholder.is_empty() {
+                return None;
+            }
+
+            parts.push(ns_ast::TemplateStringPart::Expr(Box::new(Expr::BindingExpr(
+                BindingExpr(ns_ast::Ident::new(ns_atom::atom(placeholder))),
+            ))));
+
+            cursor = end + 1;
+        }
+
+        if cursor < raw.len() {
+            parts.push(ns_ast::TemplateStringPart::Text(raw[cursor..].to_string()));
+        }
+
+        Some(ns_ast::TemplateStringExpr { parts })
     }
 }
 

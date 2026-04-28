@@ -1,12 +1,27 @@
-index a;
-import num from a;
+function main() {
+  const n: i64 = 31;
+  const fibN: i64 = fib(n);
+  console.log("fib(${n}) = ${fibN}");
 
-function main(): i32 {
-  let n = init<i32>(2);
-  return n + num;
+  let i: i64 = 0;
+  while (i < fibN) {
+    console.log("${i}");
+    i = i + 1;
+  }
 }
 
-function init<T>(value: T): T {
-  return value;
-  
+function fib(n: i64): i64 {
+  if (n <= 1) {
+    return n;
+  }
+  let prev: i64 = 0;
+  let curr: i64 = 1;
+  let i: i64 = 2;
+  while (i <= n) {
+    const next: i64 = prev + curr;
+    prev = curr;
+    curr = next;
+    i = i + 1;
+  }
+  return curr;
 }

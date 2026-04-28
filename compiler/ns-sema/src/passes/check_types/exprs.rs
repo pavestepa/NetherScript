@@ -279,6 +279,14 @@ impl TypeChecker<'_> {
                     }
                 }
             }
+            Expr::TemplateString(t) => {
+                for part in &t.parts {
+                    if let ns_ast::TemplateStringPart::Expr(expr) = part {
+                        let _ = self.check_expr(expr);
+                    }
+                }
+                CheckedType::Resolved(self.builtins.string)
+            }
         }
     }
 

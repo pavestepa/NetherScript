@@ -351,6 +351,13 @@ fn resolve_expr(ctx: &mut SemaContext, expr: &Expr) {
                 resolve_expr(ctx, &field.value);
             }
         }
+        Expr::TemplateString(e) => {
+            for part in &e.parts {
+                if let ns_ast::TemplateStringPart::Expr(expr) = part {
+                    resolve_expr(ctx, expr);
+                }
+            }
+        }
     }
 }
 

@@ -1,5 +1,5 @@
 [package]
-name = "netherscript"
+name = "nsc"
 version = "0.0.1"
 edition = "2021"
 
@@ -13,3 +13,5 @@ ns-ast = { path = "../compiler/ns-ast" }
 ns-lexer = { path = "../compiler/ns-lexer"}
 ns-parser = { path = "../compiler/ns-parser"}
 ns-sema = { path = "../compiler/ns-sema"}
+ns-sir = { path = "../compiler/ns-sir"}
+ns-codegen = { path = "../compiler/ns-codegen"}
