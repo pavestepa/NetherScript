@@ -1,0 +1,7 @@
+[package]
+name = "ns-lexer"
+version = "0.0.0"
+edition = "2024"
+
+[dependencies]
+ns-atom = { path = "../ns-atom" }

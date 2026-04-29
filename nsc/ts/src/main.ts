@@ -1,11 +1,11 @@
 function main(): void {
   console.time("main");
 
-  const n: number = 31;
+  const n: number = 32;
   const fibN: number = fib(n);
   console.log(`fib(${n}) = ${fibN}`);
 
-  let i = 0;
+  let i: number = 0;
   while (i < fibN) {
     console.log(`${i}`);
     i = i + 1;

@@ -1,0 +1,10 @@
+[package]
+name = "ns-parser"
+version = "0.0.0"
+edition = "2024"
+
+[dependencies]
+ns-ast = { path = "../ns-ast" }
+ns-atom = { path = "../ns-atom"}
+ns-lexer = { path = "../ns-lexer"}
+ns-diagnostics = { path = "../ns-diagnostics" }

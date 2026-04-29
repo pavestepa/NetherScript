@@ -81,7 +81,7 @@ fn write_rust_project(out_dir: &str, rust_main_source: &str) -> std::io::Result<
     let cargo_toml = r#"[package]
 name = "netherscript_output"
 version = "0.1.0"
-edition = "2026"
+edition = "2024"
 
 [dependencies]
 "#;

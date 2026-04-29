@@ -1,24 +1,32 @@
+type number = i64;
+
 function main() {
-  const n: i64 = 31;
-  const fibN: i64 = fib(n);
+  console.log("main")
+
+  const n: number = 32;
+  const fibN: number = fib(n);
   console.log("fib(${n}) = ${fibN}");
 
-  let i: i64 = 0;
+  let i: number = 0;
   while (i < fibN) {
     console.log("${i}");
     i = i + 1;
   }
+
+  // console.timeEnd("main");
 }
 
-function fib(n: i64): i64 {
+function fib(n: number): number {
   if (n <= 1) {
     return n;
   }
-  let prev: i64 = 0;
-  let curr: i64 = 1;
-  let i: i64 = 2;
+
+  let prev: number = 0;
+  let curr: number = 1;
+  let i: number = 2;
+
   while (i <= n) {
-    const next: i64 = prev + curr;
+    const next: number = prev + curr;
     prev = curr;
     curr = next;
     i = i + 1;
