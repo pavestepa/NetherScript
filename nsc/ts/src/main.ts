@@ -1,15 +1,12 @@
 function main(): void {
   console.time("main");
 
-  const n: number = 32;
+  const n: number = 48;
   const fibN: number = fib(n);
   console.log(`fib(${n}) = ${fibN}`);
 
   let i: number = 0;
-  while (i < fibN) {
-    console.log(`${i}`);
-    i = i + 1;
-  }
+
 
   console.timeEnd("main");
 }
@@ -34,3 +31,4 @@ function fib(n: number): number {
 }
 
 main();
+

@@ -1,0 +1,29 @@
+[package]
+name = "compiler"
+version = "0.1.0"
+edition = "2024"
+
+[workspace]
+members = [
+    "crates/ns-ast",
+    "crates/ns-atom",
+    "crates/ns-codegen",
+    "crates/ns-diagnostics",
+    "crates/ns-driver",
+    "crates/ns-hir",
+    "crates/ns-lexer",
+    "crates/ns-lints",
+    "crates/ns-macros",
+    "crates/ns-memory",
+    "crates/ns-mir",
+    "crates/ns-monomorph",
+    "crates/ns-parser",
+    "crates/ns-query",
+    "crates/ns-semantic",
+    "crates/ns-session",
+    "crates/ns-stdlib",
+    "crates/ns-thir",
+]
+resolver = "2"
+
+[dependencies]

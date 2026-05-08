@@ -4,17 +4,10 @@ pub type number = i64;
 
 pub fn main() -> () {
     println!("{:?}", "main");
-    let n: number = 32;
+    let n: number = 42;
     let fibN: number = fib(n);
     println!("fib({:?}) = {:?}", n, fibN);
     let mut i: number = 0;
-    loop {
-        if (!(i < fibN)) {
-            break;
-        }
-        println!("{:?}", i);
-        i = (i + 1);
-    }
 }
 
 pub fn fib(n: number) -> number {

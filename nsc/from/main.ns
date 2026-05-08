@@ -3,15 +3,11 @@ type number = i64;
 function main() {
   console.log("main")
 
-  const n: number = 32;
+  const n: number = 42;
   const fibN: number = fib(n);
   console.log("fib(${n}) = ${fibN}");
 
   let i: number = 0;
-  while (i < fibN) {
-    console.log("${i}");
-    i = i + 1;
-  }
 
   // console.timeEnd("main");
 }
