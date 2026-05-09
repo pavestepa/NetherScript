@@ -1,0 +1,25 @@
+function main() {
+    let a: Animal = new Animal("Panda");
+    console.log(&a.name); // Panda
+
+    let animalName: &mut String = &mut a.name;
+
+    animalName = "Cat";
+    console.log(a.name); // Cat
+}
+
+class Animal {
+    name: String
+
+    constructor(name: String) {
+        this.name = name;
+    }
+
+    changeName(&mut this, newName: String) {
+        this.name = newName;
+    }
+    
+    getName(&this): &String {
+        return &this.name
+    }
+}
